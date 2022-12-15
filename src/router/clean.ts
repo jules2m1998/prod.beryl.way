@@ -33,6 +33,89 @@ const routes: Array<RouteRecordRaw> = [
           breadcrumbs: ["unboardingRequest"],
         },
       },
+      {
+        path: "/credit",
+        name: "credit",
+        component: () => import("@/views/Credit.vue"),
+        meta: {
+          pageTitle: "credit",
+          breadcrumbs: ["credit"],
+        },
+      },
+      {
+        path: "/agency",
+        name: "agencies",
+        component: () => import("@/views/agency/Agencies.vue"),
+        meta: {
+          pageTitle: "agency",
+          breadcrumbs: ["agency"],
+          addPathName: "agenciesAdd"
+        },
+      },
+      {
+        path: "/agency/add",
+        name: "agenciesAdd",
+        component: () => import("@/views/agency/AddAgence.vue"),
+        meta: {
+          pageTitle: "Add new agence",
+          breadcrumbs: ["agency", "new"],
+        },
+      },
+      {
+        path: "/complaints",
+        name: "complaints",
+        component: () => import("@/views/Complaints.vue"),
+        meta: {
+          pageTitle: "complaint",
+          breadcrumbs: ["complaint"],
+        },
+      },
+      {
+        path: "/users",
+        name: "users",
+        component: () => import("@/views/user/Index.vue"),
+        meta: {
+          pageTitle: "user",
+          breadcrumbs: ["user"],
+          addPathName: "user-add"
+        },
+      },
+      {
+        path: "/users/add",
+        name: "user-add",
+        component: () => import("@/views/user/AddUser.vue"),
+        meta: {
+          pageTitle: "add user",
+          breadcrumbs: ["user", "add"],
+        },
+      },
+      {
+        path: "/questions",
+        name: "questions",
+        component: () => import("@/views/question/Index.vue"),
+        meta: {
+          pageTitle: "question",
+          breadcrumbs: ["question"],
+        },
+      },
+      {
+        path: "/questions/update/:id",
+        name: "questionsUpdate",
+        component: () => import("@/views/question/Update.vue"),
+        meta: {
+          pageTitle: "Question update",
+          breadcrumbs: ["question", "update"],
+        },
+      },
+      {
+        path: "/chat",
+        name: "chat",
+        component: () => import("@/views/apps/chat/Chat.vue"),
+        meta: {
+          pageTitle: "Private Chat",
+          breadcrumbs: ["Apps", "Chat"],
+        },
+      },
     ],
   },
   {

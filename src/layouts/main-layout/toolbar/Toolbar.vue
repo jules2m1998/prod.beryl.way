@@ -12,24 +12,18 @@
     >
       <KTPageTitle />
       <!--begin::Actions-->
-      <div class="d-flex align-items-center gap-2 gap-lg-3">
+      <div class="d-flex align-items-center gap-2 gap-lg-3" v-if="addPagePathName">
         <!--begin::Secondary button-->
-        <a
-          href="#"
+        <router-link
+          :to="{name: addPagePathName}"
           class="btn btn-sm fw-bold bg-body btn-color-gray-700 btn-active-color-primary"
-          data-bs-toggle="modal"
-          data-bs-target="#kt_modal_create_app"
-          >Rollover</a
-        >
+          >Rollover</router-link>
         <!--end::Secondary button-->
         <!--begin::Primary button-->
-        <a
-          href="#"
+        <router-link
+          :to="{name: addPagePathName}"
           class="btn btn-sm fw-bold btn-primary"
-          data-bs-toggle="modal"
-          data-bs-target="#kt_modal_new_target"
-          >Add Target</a
-        >
+          >Add</router-link>
         <!--end::Primary button-->
       </div>
       <!--end::Actions-->
@@ -40,9 +34,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
 import { toolbarWidthFluid } from "@/core/helpers/config";
 import KTPageTitle from "@/layouts/main-layout/toolbar/PageTitle.vue";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   name: "layout-toolbar",
@@ -50,8 +45,14 @@ export default defineComponent({
     KTPageTitle,
   },
   setup() {
+    const route = useRoute();
+    const addPagePathName = computed(() => {
+      return route.meta.addPathName as string;
+    });
+
     return {
       toolbarWidthFluid,
+      addPagePathName
     };
   },
 });

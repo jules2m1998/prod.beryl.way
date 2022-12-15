@@ -20,7 +20,7 @@
       />
       <img
         alt="Logo"
-        src="/media/logos/default-small.svg"
+        src="/media/logos/beryl-icon.png"
         class="h-20px app-sidebar-logo-minimize"
       />
     </router-link>
