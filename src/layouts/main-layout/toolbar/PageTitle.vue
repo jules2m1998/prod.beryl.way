@@ -9,7 +9,7 @@
       <h1
         class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0"
       >
-        {{ pageTitle }}
+        {{ t(pageTitle) }}
       </h1>
       <!--end::Title-->
 
@@ -37,7 +37,7 @@
           </li>
           <!--end::Item-->
           <!--begin::Item-->
-          <li class="breadcrumb-item text-muted">{{ item }}</li>
+          <li class="breadcrumb-item text-muted">{{ t(item) }}</li>
           <!--end::Item-->
         </template>
       </ul>
@@ -80,6 +80,7 @@ export default defineComponent({
       pageTitleDisplay,
       pageTitleBreadcrumbDisplay,
       pageTitleDirection,
+      t
     };
   },
 });

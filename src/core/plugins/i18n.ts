@@ -79,7 +79,7 @@ const messages = {
     user: "Users",
     question: "Questions",
     creditApplications: "Credit applications",
-    unboardingRequest: "Unboarding request",
+    unboardingRequest: "Onboarding request",
     periodFilter: "Filter the period",
     byMonht: "Per month",
     byYear: "Per year",
