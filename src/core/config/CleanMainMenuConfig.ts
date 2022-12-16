@@ -48,6 +48,36 @@ const MainMenuConfig: Array<MenuItem> = [
         fontIcon: "bi-layers",
       },
       {
+        sectionTitle: "zone",
+        route: "/zone",
+        svgIcon: "/media/icons/duotune//maps/map002.svg",
+        fontIcon: "bi-archive",
+        sub: [
+          {
+            heading: "List",
+            route: "/zone",
+          },
+          {
+            heading: "Create",
+            route: "/zone/create",
+          },
+          {
+            sectionTitle: "type zone",
+            route: "/zone/type",
+            sub: [
+              {
+                heading: "List",
+                route: "/zone/type",
+              },
+              {
+                heading: "Create",
+                route: "/zone/type/create",
+              },
+            ],
+          },
+        ],
+      },
+      {
         heading: "question",
         route: "/questions",
         svgIcon: "/media/icons/duotune/general/gen046.svg",

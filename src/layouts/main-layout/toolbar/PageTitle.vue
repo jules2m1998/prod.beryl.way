@@ -66,8 +66,8 @@ export default defineComponent({
 
     const { t } = useI18n();
 
-    const pageTitle = computed(() => {
-      return route.meta.pageTitle;
+    const pageTitle = computed((): string => {
+      return route.meta.pageTitle as string;
     });
 
     const breadcrumbs = computed(() => {

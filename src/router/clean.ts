@@ -5,6 +5,7 @@ import {
 } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 import { useConfigStore } from "@/stores/config";
+import i18n from "@/core/plugins/i18n";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -20,8 +21,8 @@ const routes: Array<RouteRecordRaw> = [
         name: "dashboard",
         component: () => import("@/views/Dashboard.vue"),
         meta: {
-          pageTitle: "Dashboard",
-          breadcrumbs: ["Dashboards"],
+          pageTitle: "dashboard",
+          breadcrumbs: ["dashboard"],
         },
       },
       {
@@ -57,7 +58,7 @@ const routes: Array<RouteRecordRaw> = [
         name: "agenciesAdd",
         component: () => import("@/views/agency/AddAgence.vue"),
         meta: {
-          pageTitle: "Add new agence",
+          pageTitle: "addAgence",
           breadcrumbs: ["agency", "new"],
         },
       },
@@ -112,8 +113,45 @@ const routes: Array<RouteRecordRaw> = [
         name: "chat",
         component: () => import("@/views/apps/chat/Chat.vue"),
         meta: {
-          pageTitle: "Private Chat",
+          pageTitle: "Chat",
           breadcrumbs: ["Apps", "Chat"],
+        },
+      },
+      {
+        path: "/zone",
+        name: "zone",
+        component: () => import("@/views/zone/Index.vue"),
+        meta: {
+          pageTitle: "adminZone",
+          breadcrumbs: ["Zone"],
+          addPathName: "create-zone"
+        },
+      },
+      {
+        path: "/zone/create",
+        name: "create-zone",
+        component: () => import("@/views/zone/Create.vue"),
+        meta: {
+          pageTitle: "adminZoneCreate",
+          breadcrumbs: ["Zone", "new"],
+        },
+      },
+      {
+        path: "/zone/type",
+        name: "zone-type",
+        component: () => import("@/views/zone/type-zone/Index.vue"),
+        meta: {
+          pageTitle: "adminZoneType",
+          breadcrumbs: ["Zone", "Type"],
+        },
+      },
+      {
+        path: "/zone/type/create",
+        name: "zone-type-create",
+        component: () => import("@/views/zone/type-zone/Create.vue"),
+        meta: {
+          pageTitle: "adminZoneTypeCreate",
+          breadcrumbs: ["Zone", "Type", "Create"],
         },
       },
     ],
@@ -188,9 +226,10 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   const configStore = useConfigStore();
+  
 
   // current page view title
-  document.title = `${to.meta.pageTitle} - ${import.meta.env.VITE_APP_NAME}`;
+  document.title = `${i18n.global.t(to.meta.pageTitle)} - ${import.meta.env.VITE_APP_NAME}`;
 
   // reset config to initial state
   configStore.resetLayoutConfig();

@@ -2,7 +2,7 @@
     <div class="card rounded-0">
         <div class="card-header">
             <div class="card-title">
-                Create new agence
+                {{t("addAgence")}}
             </div>
         </div>
         <div class="card-body">
@@ -993,4 +993,7 @@
 
 <script setup lang="ts">
 import { ErrorMessage, Field, Form as VForm } from "vee-validate";
+import { useI18n } from "vue-i18n";
+
+const {t} = useI18n();
 </script>

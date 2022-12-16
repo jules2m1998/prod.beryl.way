@@ -66,7 +66,7 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute();
-
+    
     onBeforeMount(() => {
       LayoutService.init();
     });

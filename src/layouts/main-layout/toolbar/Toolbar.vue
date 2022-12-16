@@ -16,6 +16,7 @@
         <!--begin::Secondary button-->
         <router-link
           :to="{name: addPagePathName}"
+          v-if="false"
           class="btn btn-sm fw-bold bg-body btn-color-gray-700 btn-active-color-primary"
           >Rollover</router-link>
         <!--end::Secondary button-->
@@ -23,7 +24,7 @@
         <router-link
           :to="{name: addPagePathName}"
           class="btn btn-sm fw-bold btn-primary"
-          >Add</router-link>
+          >{{t("add")}}</router-link>
         <!--end::Primary button-->
       </div>
       <!--end::Actions-->
@@ -38,6 +39,7 @@ import { defineComponent, computed } from "vue";
 import { toolbarWidthFluid } from "@/core/helpers/config";
 import KTPageTitle from "@/layouts/main-layout/toolbar/PageTitle.vue";
 import { useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   name: "layout-toolbar",
@@ -49,10 +51,12 @@ export default defineComponent({
     const addPagePathName = computed(() => {
       return route.meta.addPathName as string;
     });
+    const {t} = useI18n();
 
     return {
       toolbarWidthFluid,
-      addPagePathName
+      addPagePathName,
+      t
     };
   },
 });

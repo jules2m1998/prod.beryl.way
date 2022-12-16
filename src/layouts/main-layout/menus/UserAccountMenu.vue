@@ -199,66 +199,6 @@
         <!--begin::Menu item-->
         <div class="menu-item px-3">
           <a
-            @click="setLang('es')"
-            href="#"
-            class="menu-link d-flex px-5"
-            :class="{ active: currentLanguage === 'es' }"
-          >
-            <span class="symbol symbol-20px me-4">
-              <img
-                class="rounded-1"
-                src="/media/flags/spain.svg"
-                alt="metronic"
-              />
-            </span>
-            Spanish
-          </a>
-        </div>
-        <!--end::Menu item-->
-
-        <!--begin::Menu item-->
-        <div class="menu-item px-3">
-          <a
-            @click="setLang('de')"
-            href="#"
-            class="menu-link d-flex px-5"
-            :class="{ active: currentLanguage === 'de' }"
-          >
-            <span class="symbol symbol-20px me-4">
-              <img
-                class="rounded-1"
-                src="/media/flags/germany.svg"
-                alt="metronic"
-              />
-            </span>
-            German
-          </a>
-        </div>
-        <!--end::Menu item-->
-
-        <!--begin::Menu item-->
-        <div class="menu-item px-3">
-          <a
-            @click="setLang('ja')"
-            href="#"
-            class="menu-link d-flex px-5"
-            :class="{ active: currentLanguage === 'ja' }"
-          >
-            <span class="symbol symbol-20px me-4">
-              <img
-                class="rounded-1"
-                src="/media/flags/japan.svg"
-                alt="metronic"
-              />
-            </span>
-            Japanese
-          </a>
-        </div>
-        <!--end::Menu item-->
-
-        <!--begin::Menu item-->
-        <div class="menu-item px-3">
-          <a
             @click="setLang('fr')"
             href="#"
             class="menu-link d-flex px-5"
