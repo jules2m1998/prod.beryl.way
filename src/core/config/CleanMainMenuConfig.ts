@@ -20,7 +20,7 @@ const MainMenuConfig: Array<MenuItem> = [
       {
         heading: "unboardingRequest",
         route: "/unboarding-request",
-        svgIcon: "/media/icons/duotune/general/gen026.svg",
+        svgIcon: "/media/icons/duotune/arrows/arr033.svg",
         fontIcon: "bi-layers",
       },
       {

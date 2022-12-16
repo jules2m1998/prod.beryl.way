@@ -229,7 +229,7 @@ router.beforeEach((to, from, next) => {
   
 
   // current page view title
-  document.title = `${i18n.global.t(to.meta.pageTitle)} - ${import.meta.env.VITE_APP_NAME}`;
+  document.title = `${i18n.global.t(to.meta.pageTitle as string)} - ${import.meta.env.VITE_APP_NAME}`;
 
   // reset config to initial state
   configStore.resetLayoutConfig();
