@@ -9,7 +9,7 @@ interface IUnboarding {
 const unboardings: Array<IUnboarding> = [
     {
         id: Math.floor(Math.random() * 99999) + 1,
-        name: "Data name 1",
+        name: 'Data name 1',
         field1: "Field 1",
         field2: "Field 2",
         field3: "Field 2"

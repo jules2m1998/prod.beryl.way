@@ -1,21 +1,22 @@
 <template>
-    <page-with-table @search-items="searchByText" :value="tableData" :table-header="tableHeader" :selected-ids="selectedIds">
+    <page-with-table @search-items="searchByText" :value="tableData" :table-header="tableHeader"
+        :selected-ids="selectedIds">
         <Datatable @on-sort="sort" @on-items-select="onItemSelect" :data="arrayFind" :header="tableHeader"
             :enable-items-per-page-dropdown="true" :checkbox-enabled="true" checkbox-label="id">
 
             <template v-slot:name="{ row: customer }">
-                {{ customer.name }}
+                <span v-html="highlightDetectedText(customer.name, searchValue)"></span>
             </template>
             <template v-slot:email="{ row: customer }">
                 <a href="#" class="text-gray-600 text-hover-primary mb-1">
-                    {{ customer.field1 }}
+                    <span v-html="highlightDetectedText(customer.field1, searchValue)"></span>
                 </a>
             </template>
             <template v-slot:company="{ row: customer }">
-                {{ customer.field2 }}
+                <span v-html="highlightDetectedText(customer.field2, searchValue)"></span>
             </template>
             <template v-slot:date="{ row: customer }">
-                {{ customer.field3 }}
+                <span v-html="highlightDetectedText(customer.field3, searchValue)"></span>
             </template>
             <template v-slot:actions="{ row: customer }">
                 <a href="#" class="btn btn-sm btn-light btn-active-light-primary" data-kt-menu-trigger="click"
@@ -54,10 +55,9 @@ import Datatable from "@/components/kt-datatable/KTDataTable.vue";
 import arraySort from "array-sort";
 import type { Sort } from "@/components/kt-datatable//table-partials/models";
 import { searchByName } from "@/core/helpers/array";
+import { highlightDetectedText } from "@/core/helpers/dom";
 
 const tableData = ref<Array<IUnboarding>>(unboarding);
-
-const searchValue = ref<string>('')
 
 const tableHeader = ref([
     {
@@ -94,14 +94,6 @@ const tableHeader = ref([
 
 const selectedIds = ref<Array<number>>([]);
 
-const arrayFind = computed(
-    () => searchByName(tableData.value, searchValue.value, ["id"])
-)
-
-const searchByText = (e: string) => {
-    searchValue.value = e;
-}
-
 
 const sort = (sort: Sort) => {
     const reverse: boolean = sort.order === "asc";
@@ -117,4 +109,16 @@ const onItemSelect = (selectedItems: Array<number>) => {
 const searchItems = (selectedItems: Array<number>) => {
     selectedIds.value = selectedItems;
 };
+
+// Filter logic
+const searchValue = ref<string>('')
+
+const arrayFind = computed(
+    () => searchByName(tableData.value, searchValue.value, ["id"])
+)
+
+const searchByText = (e: string) => {
+    searchValue.value = e;
+}
+
 </script>

@@ -17,4 +17,13 @@ const removeModalBackdrop = (): void => {
   }
 };
 
-export { removeModalBackdrop, hideModal };
+const escapeHtml = (unsafe: string): string => {
+  return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+}
+
+const highlightDetectedText = (value: string, search: string, className: string = "text-primary") : string => {
+  if(!search || !value.toLocaleLowerCase().includes(search.toLocaleLowerCase())) return escapeHtml(value);
+  return value.toLocaleLowerCase().replace(search.toLocaleLowerCase(), `<strong class="${className}">${escapeHtml(search)}</strong>`)
+}
+
+export { removeModalBackdrop, hideModal, highlightDetectedText };

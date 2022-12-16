@@ -1,21 +1,22 @@
 <template>
-    <page-with-table :value="tableData" @search-items="searchByText" :table-header="tableHeader" :selected-ids="selectedIds">
-        <Datatable @on-sort="sort" @on-items-select="onItemSelect" :data="tableData" :header="tableHeader"
+    <page-with-table :charts="charts" @search-items="searchByText" :value="tableData" :table-header="tableHeader"
+        :selected-ids="selectedIds">
+        <Datatable @on-sort="sort" @on-items-select="onItemSelect" :data="arrayFind" :header="tableHeader"
             :enable-items-per-page-dropdown="true" :checkbox-enabled="true" checkbox-label="id">
 
             <template v-slot:name="{ row: customer }">
-                {{ customer.name }}
+                <span v-html="highlightDetectedText(customer.name, searchValue)"></span>
             </template>
             <template v-slot:email="{ row: customer }">
                 <a href="#" class="text-gray-600 text-hover-primary mb-1">
-                    {{ customer.field1 }}
+                    <span v-html="highlightDetectedText(customer.field1, searchValue)"></span>
                 </a>
             </template>
             <template v-slot:company="{ row: customer }">
-                {{ customer.field2 }}
+                <span v-html="highlightDetectedText(customer.field2, searchValue)"></span>
             </template>
             <template v-slot:date="{ row: customer }">
-                {{ customer.field3 }}
+                <span v-html="highlightDetectedText(customer.field3, searchValue)"></span>
             </template>
             <template v-slot:actions="{ row: customer }">
                 <a href="#" class="btn btn-sm btn-light btn-active-light-primary" data-kt-menu-trigger="click"
@@ -47,13 +48,91 @@
 
 <script setup lang="ts">
 import PageWithTable from '@/components/PageWithTable.vue';
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import type { IChart } from '@/types';
 import type { IUnboarding } from "@/core/data/Unboarding";
 import unboarding from "@/core/data/Unboarding";
 import Datatable from "@/components/kt-datatable/KTDataTable.vue";
 import arraySort from "array-sort";
 import type { Sort } from "@/components/kt-datatable//table-partials/models";
+import { searchByName } from "@/core/helpers/array";
+import { highlightDetectedText } from "@/core/helpers/dom";
 
+
+const charts = ref<IChart[]>([
+    {
+        type: "bar",
+        series: [
+            {
+                name: 'Non traité',
+                data: [30, 40, 45, 50, 49, 60, 70, 91]
+            },
+            {
+                name: 'Traité',
+                data: [10, 20, 50, 20, 60, 10, 20, 40]
+            },
+        ],
+        options: {
+            title: {
+                text: "Status"
+            }
+        }
+    },
+    {
+        type: "area",
+        options: {
+            title: {
+                text: "Demography"
+            }
+        },
+        series: [
+            {
+                name: 'Non traité',
+                data: [30, 40, 45, 50, 49, 60, 70, 91]
+            },
+            {
+                name: 'Traité',
+                data: [10, 20, 50, 20, 60, 10, 20, 40]
+            },
+        ]
+    },
+    {
+        type: "area",
+        options: {
+            title: {
+                text: "Age"
+            }
+        },
+        series: [
+            {
+                name: 'Non traité',
+                data: [30, 40, 45, 50, 49, 60, 70, 91]
+            },
+            {
+                name: 'Traité',
+                data: [10, 20, 50, 20, 60, 10, 20, 40]
+            },
+        ]
+    },
+    {
+        type: "area",
+        options: {
+            title: {
+                text: "Geography"
+            }
+        },
+        series: [
+            {
+                name: 'Non traité',
+                data: [30, 40, 45, 50, 49, 60, 70, 91]
+            },
+            {
+                name: 'Traité',
+                data: [10, 20, 50, 20, 60, 10, 20, 40]
+            },
+        ]
+    },
+]);
 const tableData = ref<Array<IUnboarding>>(unboarding);
 
 const tableHeader = ref([
@@ -107,7 +186,15 @@ const searchItems = (selectedItems: Array<number>) => {
     selectedIds.value = selectedItems;
 };
 
-const searchByText = () => {
-    console.log("Test");
+// Filter logic
+const searchValue = ref<string>('')
+
+const arrayFind = computed(
+    () => searchByName(tableData.value, searchValue.value, ["id"])
+)
+
+const searchByText = (e: string) => {
+    searchValue.value = e;
 }
+
 </script>

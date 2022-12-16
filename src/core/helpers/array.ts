@@ -11,7 +11,7 @@ function searchByName(data: Array<object>, value: string, excludes: string[]): A
                 props
                     .some(
                         p => {
-                            return (v[p] as string)?.toLocaleLowerCase().includes(value) || false
+                            return (v[p] as string)?.toLocaleLowerCase().includes(value.toLocaleLowerCase()) || false
                         }
                     )
         )
