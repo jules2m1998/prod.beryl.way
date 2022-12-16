@@ -1,5 +1,5 @@
 <template>
-  <div class="card card-flush" :class="className">
+  <div class="card card-flush rounded-0" :class="className">
     <!--begin::Header-->
     <div class="card-header pt-7">
       <!--begin::Title-->
