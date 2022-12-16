@@ -1,5 +1,5 @@
 <template>
-    <page-with-table :value="tableData" :table-header="tableHeader" :selected-ids="selectedIds">
+    <page-with-table :value="tableData" @search-items="searchByText" :table-header="tableHeader" :selected-ids="selectedIds">
         <Datatable @on-sort="sort" @on-items-select="onItemSelect" :data="tableData" :header="tableHeader"
             :enable-items-per-page-dropdown="true" :checkbox-enabled="true" checkbox-label="id">
 
@@ -106,4 +106,8 @@ const onItemSelect = (selectedItems: Array<number>) => {
 const searchItems = (selectedItems: Array<number>) => {
     selectedIds.value = selectedItems;
 };
+
+const searchByText = () => {
+    console.log("Test");
+}
 </script>

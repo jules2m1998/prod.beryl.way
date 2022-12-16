@@ -25,8 +25,7 @@
                     <span class="svg-icon svg-icon-1 position-absolute ms-6">
                         <inline-svg src="/media/icons/duotune/general/gen021.svg" />
                     </span>
-                    <input type="text" v-model="search" @input="emit('searchItems', search)"
-                        class="form-control form-control-solid w-250px ps-15" placeholder="Search request..." />
+                    <input type="text" v-model="search" @input="searchByText" class="form-control form-control-solid w-250px ps-15" placeholder="Search request..." />
                 </div>
                 <!--end::Search-->
             </div>
@@ -86,7 +85,7 @@ import type { IChart } from '@/types';
 interface Props {
     charts?: IChart[],
     value: Array<any>,
-        selectedIds: Array<number>;
+    selectedIds: Array<number>;
 }
 
 const props = defineProps<Props>()
@@ -99,6 +98,9 @@ const emit = defineEmits<{
 
 
 const search = ref<string>("")
+const searchByText = () => {
+    emit("searchItems", search.value);
+}
 </script>
 
 <style scoped lang="scss">

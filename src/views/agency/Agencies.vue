@@ -1,6 +1,6 @@
 <template>
-    <page-with-table :value="tableData" :table-header="tableHeader" :selected-ids="selectedIds">
-        <Datatable @on-sort="sort" @on-items-select="onItemSelect" :data="tableData" :header="tableHeader"
+    <page-with-table @search-items="searchByText" :value="tableData" :table-header="tableHeader" :selected-ids="selectedIds">
+        <Datatable @on-sort="sort" @on-items-select="onItemSelect" :data="arrayFind" :header="tableHeader"
             :enable-items-per-page-dropdown="true" :checkbox-enabled="true" checkbox-label="id">
 
             <template v-slot:name="{ row: customer }">
@@ -47,14 +47,17 @@
 
 <script setup lang="ts">
 import PageWithTable from '@/components/PageWithTable.vue';
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import type { IUnboarding } from "@/core/data/Unboarding";
 import unboarding from "@/core/data/Unboarding";
 import Datatable from "@/components/kt-datatable/KTDataTable.vue";
 import arraySort from "array-sort";
 import type { Sort } from "@/components/kt-datatable//table-partials/models";
+import { searchByName } from "@/core/helpers/array";
 
 const tableData = ref<Array<IUnboarding>>(unboarding);
+
+const searchValue = ref<string>('')
 
 const tableHeader = ref([
     {
@@ -90,6 +93,14 @@ const tableHeader = ref([
 ]);
 
 const selectedIds = ref<Array<number>>([]);
+
+const arrayFind = computed(
+    () => searchByName(tableData.value, searchValue.value, ["id"])
+)
+
+const searchByText = (e: string) => {
+    searchValue.value = e;
+}
 
 
 const sort = (sort: Sort) => {
