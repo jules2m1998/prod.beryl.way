@@ -45,102 +45,20 @@ import arraySort from "array-sort";
 import type { Sort } from "@/components/kt-datatable//table-partials/models";
 import { searchByName } from "@/core/helpers/array";
 import { highlightDetectedText } from "@/core/helpers/dom";
-import ApiService from "@/core/services/ApiService";
-import type { IHttpResponse } from "@/types/https";
+import { getAllTypeZone } from "@/core/services";
 
 const getData = async () => {
   isLoading.value = true;
-  try {
-    ApiService.setHeader();
-    const data = await ApiService.get("zone-type");
-    const requests = data.data as IHttpResponse<IZoneType>;
-    console.log(requests);
-    tableData.value = requests.data as IZoneType[];
-  } catch (error) {
-    console.error(error);
-  } finally {
-    isLoading.value = false;
-  }
+  const allTypeZones = await getAllTypeZone();
+  if (allTypeZones) tableData.value = allTypeZones;
+  else console.error("Error when fetch types zone !");
+  isLoading.value = false;
 };
 
 onMounted(async () => {
   await getData();
 });
 
-const charts = ref<IChart[]>([
-  {
-    type: "bar",
-    series: [
-      {
-        name: "Non traité",
-        data: [30, 40, 45, 50, 49, 60, 70, 91],
-      },
-      {
-        name: "Traité",
-        data: [10, 20, 50, 20, 60, 10, 20, 40],
-      },
-    ],
-    options: {
-      title: {
-        text: "Status",
-      },
-    },
-  },
-  {
-    type: "area",
-    options: {
-      title: {
-        text: "Demography",
-      },
-    },
-    series: [
-      {
-        name: "Non traité",
-        data: [30, 40, 45, 50, 49, 60, 70, 91],
-      },
-      {
-        name: "Traité",
-        data: [10, 20, 50, 20, 60, 10, 20, 40],
-      },
-    ],
-  },
-  {
-    type: "area",
-    options: {
-      title: {
-        text: "Age",
-      },
-    },
-    series: [
-      {
-        name: "Non traité",
-        data: [30, 40, 45, 50, 49, 60, 70, 91],
-      },
-      {
-        name: "Traité",
-        data: [10, 20, 50, 20, 60, 10, 20, 40],
-      },
-    ],
-  },
-  {
-    type: "area",
-    options: {
-      title: {
-        text: "Geography",
-      },
-    },
-    series: [
-      {
-        name: "Non traité",
-        data: [30, 40, 45, 50, 49, 60, 70, 91],
-      },
-      {
-        name: "Traité",
-        data: [10, 20, 50, 20, 60, 10, 20, 40],
-      },
-    ],
-  },
-]);
 const tableData = ref<Array<IZoneType>>([]);
 const isLoading = ref<boolean>(false);
 

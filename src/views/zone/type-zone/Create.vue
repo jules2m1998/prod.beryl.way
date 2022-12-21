@@ -129,8 +129,9 @@ import Swal from "sweetalert2";
 import * as Yup from "yup";
 import { useI18n } from "vue-i18n";
 import ApiService from "@/core/services/ApiService";
-import type { IZoneRequest } from "@/types";
+import type { IZoneTypeRequest } from "@/types";
 import { useRouter } from "vue-router";
+import { createTypeZone } from "@/core/services";
 
 export default defineComponent({
   name: "account-settings",
@@ -148,17 +149,15 @@ export default defineComponent({
       type: Yup.string().required().label("Type"),
     });
 
-    const profileDetails = ref<IZoneRequest>({
+    const profileDetails = ref<IZoneTypeRequest>({
       name: "Max",
       level: 1,
     });
     const router = useRouter();
 
     const send = async () => {
-      try {
-        ApiService.setHeader();
-        const data = await ApiService.post("zone-type", profileDetails.value);
-        console.info(data);
+      const data = await createTypeZone(profileDetails.value);
+      if (data) {
         Swal.fire({
           text: "Type zone was successfully created !",
           icon: "success",
@@ -172,10 +171,9 @@ export default defineComponent({
           // Go to page after successfully login
           router.push({ name: "zone-type" });
         });
-      } catch (e: any) {
-        console.error(e);
+      } else {
         Swal.fire({
-          text: e.response.data.message,
+          text: "Les informations soumises ne sont pas correctes verifier les et essayez de nouveau",
           icon: "error",
           buttonsStyling: false,
           confirmButtonText: "Ok, got it!",
