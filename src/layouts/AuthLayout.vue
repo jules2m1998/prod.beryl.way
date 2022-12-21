@@ -14,20 +14,6 @@
         <!--end::Wrapper-->
       </div>
       <!--end::Form-->
-
-      <!--begin::Footer-->
-      <div class="d-flex flex-center flex-wrap px-5">
-        <!--begin::Links-->
-        <div class="d-flex fw-semibold text-primary fs-base">
-          <a href="#" class="px-5" target="_blank">Terms</a>
-
-          <a href="#" class="px-5" target="_blank">Plans</a>
-
-          <a href="#" class="px-5" target="_blank">Contact Us</a>
-        </div>
-        <!--end::Links-->
-      </div>
-      <!--end::Footer-->
     </div>
     <!--end::Body-->
 
@@ -44,7 +30,7 @@
         <router-link to="/" class="mb-0 mb-lg-12">
           <img
             alt="Logo"
-            src="/media/logos/custom-1.png"
+            src="/media/logos/logo_beryl.png"
             class="h-60px h-lg-75px"
           />
         </router-link>
@@ -68,19 +54,7 @@
 
         <!--begin::Text-->
         <div class="d-none d-lg-block text-white fs-base text-center">
-          In this kind of post,
-          <a href="#" class="opacity-75-hover text-warning fw-bold me-1"
-            >the blogger</a
-          >
-
-          introduces a person they’ve interviewed <br />
-          and provides some background information about
-
-          <a href="#" class="opacity-75-hover text-warning fw-bold me-1"
-            >the interviewee</a
-          >
-          and their <br />
-          work following this is a transcript of the interview.
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat suscipit nisi fuga dolor impedit consequatur quasi sed. Nisi consequuntur, facere hic facilis, fugiat optio voluptates similique non aliquam, a architecto.
         </div>
         <!--end::Text-->
       </div>

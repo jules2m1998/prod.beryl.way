@@ -92,7 +92,7 @@ const messages = {
     adminZone: "Administratives zones",
     adminZoneCreate: "Create an administrative zone",
     adminZoneType: "Administratives zones types",
-    adminZoneTypeCreate: "Add new administrative zone type",
+    adminZoneTypeCreate: "Add new zone type",
   },
   fr: {
     dashboard: "Tableau de bord",
@@ -179,7 +179,7 @@ const messages = {
     adminZone: "Zones administratives",
     adminZoneCreate: "Creation d'une zone administrative",
     adminZoneType: "Types de zones administratives",
-    adminZoneTypeCreate: "Creation d'un type de zone administrative",
+    adminZoneTypeCreate: "Creation d'un type de zone",
   },
 };
 

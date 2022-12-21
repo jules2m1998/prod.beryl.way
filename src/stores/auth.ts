@@ -2,6 +2,8 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 import ApiService from "@/core/services/ApiService";
 import JwtService from "@/core/services/JwtService";
+import type { IUser, IUserLogin, IUserResponse } from "@/types";
+
 
 export interface User {
   name: string;
@@ -12,35 +14,37 @@ export interface User {
 }
 
 export const useAuthStore = defineStore("auth", () => {
-  const errors = ref({});
-  const user = ref<User>({} as User);
+  const errors = ref<string | null>(null);
+  const user = ref<IUser>({} as IUser);
   const isAuthenticated = ref(!!JwtService.getToken());
 
-  function setAuth(authUser: User) {
+  function setAuth(authUser: IUserResponse) {
     isAuthenticated.value = true;
-    user.value = authUser;
-    errors.value = {};
-    JwtService.saveToken(user.value.api_token);
+    user.value = authUser.data;
+    errors.value = null;
+    JwtService.saveToken(authUser.token);
   }
 
-  function setError(error: any) {
-    errors.value = { ...error };
+  function setError(error?: string) {
+    errors.value = error ?? null;
   }
 
   function purgeAuth() {
     isAuthenticated.value = false;
-    user.value = {} as User;
-    errors.value = [];
+    user.value = {} as IUser;
+    errors.value = null;
     JwtService.destroyToken();
   }
 
-  function login(credentials: User) {
-    return ApiService.post("login", credentials)
+  function login(credentials: IUserLogin) {
+    return ApiService.post("sign-in", credentials)
       .then(({ data }) => {
+        console.info(data);
         setAuth(data);
       })
       .catch(({ response }) => {
-        setError(response.data.errors);
+        setError(response.data.message);
+        console.error(response);
       });
   }
 
@@ -61,7 +65,7 @@ export const useAuthStore = defineStore("auth", () => {
   function forgotPassword(email: string) {
     return ApiService.post("forgot_password", email)
       .then(() => {
-        setError({});
+        setError();
       })
       .catch(({ response }) => {
         setError(response.data.errors);

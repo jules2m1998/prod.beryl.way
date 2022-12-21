@@ -50,7 +50,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           pageTitle: "agency",
           breadcrumbs: ["agency"],
-          addPathName: "agenciesAdd"
+          addPathName: "agenciesAdd",
         },
       },
       {
@@ -78,7 +78,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           pageTitle: "user",
           breadcrumbs: ["user"],
-          addPathName: "user-add"
+          addPathName: "user-add",
         },
       },
       {
@@ -124,7 +124,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           pageTitle: "adminZone",
           breadcrumbs: ["Zone"],
-          addPathName: "create-zone"
+          addPathName: "create-zone",
         },
       },
       {
@@ -143,6 +143,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           pageTitle: "adminZoneType",
           breadcrumbs: ["Zone", "Type"],
+          addPathName: "zone-type-create",
         },
       },
       {
@@ -152,6 +153,15 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           pageTitle: "adminZoneTypeCreate",
           breadcrumbs: ["Zone", "Type", "Create"],
+        },
+      },
+      {
+        path: "/calendar",
+        name: "calendar",
+        component: () => import("@/views/apps/Calendar.vue"),
+        meta: {
+          pageTitle: "Calendar",
+          breadcrumbs: ["Calendar"],
         },
       },
     ],
@@ -226,16 +236,17 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   const configStore = useConfigStore();
-  
 
   // current page view title
-  document.title = `${i18n.global.t(to.meta.pageTitle as string)} - ${import.meta.env.VITE_APP_NAME}`;
+  document.title = `${i18n.global.t(to.meta.pageTitle as string)} - ${
+    import.meta.env.VITE_APP_NAME
+  }`;
 
   // reset config to initial state
   configStore.resetLayoutConfig();
 
   // verify auth token before each page change
-  authStore.verifyAuth();
+  // authStore.verifyAuth();
 
   // before page access check if page requires authentication
   if (to.meta.middleware == "auth") {

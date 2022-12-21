@@ -37,9 +37,9 @@ const events: Array<EventInput> = [
   },
   {
     title: "Dinner",
-    start: YM + "-12",
+    start: YM + "-14T13:30:00",
     description: "Lorem ipsum dolor sit amet, conse ctetur",
-    end: YM + "-10",
+    end: YM + "-14T13:35:00",
   },
   {
     id: "999",

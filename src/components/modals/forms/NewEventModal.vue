@@ -15,9 +15,10 @@
           :model="targetData"
           :rules="rules"
           ref="formRef"
+          label-position="top"
         >
           <div class="modal-header">
-            <h2 class="fw-bold">Add a New Event</h2>
+            <h2 class="fw-bold">Add slots</h2>
             <div
               class="btn btn-icon btn-sm btn-active-icon-primary"
               id="kt_modal_add_event_close"
@@ -31,119 +32,102 @@
           <!--end::Modal header-->
           <!--begin::Modal body-->
           <div class="modal-body py-10 px-lg-17">
-            <!--begin::Input group-->
-            <div class="fv-row mb-9 fv-plugins-icon-container">
-              <!--begin::Label-->
-              <label class="fs-6 fw-semobold required mb-2">Event Name</label>
-              <!--end::Label-->
-              <!--begin::Input-->
-              <el-form-item prop="eventName">
-                <el-input
-                  v-model="targetData.eventName"
-                  type="text"
-                  name="eventName"
-                />
+            <div class="row mb-9">
+              <el-form-item label="Type de période">
+                <el-select
+                  v-model="selectedPeriodType"
+                  placeholder="please select your period"
+                  @change="onSelectChange"
+                >
+                  <el-option
+                    v-for="(p, k) in typePeriod"
+                    :key="k"
+                    :label="p.label"
+                    :value="p.value"
+                  />
+                </el-select>
               </el-form-item>
-              <!--end::Input-->
-              <div class="fv-plugins-message-container invalid-feedback"></div>
             </div>
-            <!--end::Input group-->
             <!--begin::Input group-->
-            <div class="fv-row mb-9">
-              <!--begin::Label-->
-              <label class="fs-6 fw-semobold mb-2">Event Description</label>
-              <!--end::Label-->
-              <!--begin::Input-->
-              <el-input
-                v-model="targetData.eventDescription"
-                type="text"
-                placeholder=""
-                name="eventDescription"
-              />
-              <!--end::Input-->
-            </div>
-            <!--end::Input group-->
-            <!--begin::Input group-->
-            <div class="fv-row mb-9">
-              <!--begin::Label-->
-              <label class="fs-6 fw-semobold mb-2">Event Location</label>
-              <!--end::Label-->
-              <!--begin::Input-->
-              <el-input
-                v-model="targetData.eventLocation"
-                type="text"
-                placeholder=""
-                name="eventLocation"
-              />
-              <!--end::Input-->
-            </div>
-            <!--end::Input group-->
-            <!--begin::Input group-->
-            <div class="fv-row mb-9">
-              <!--begin::Checkbox-->
-              <label class="form-check form-check-custom form-check-solid">
-                <el-checkbox v-model="targetData.allDay" type="checkbox" />
-                <span class="form-check-label fw-semobold">All Day</span>
-              </label>
-              <!--end::Checkbox-->
-            </div>
-            <!--end::Input group-->
-            <!--begin::Input group-->
-            <div class="row row-cols-lg-2 g-10">
-              <div class="col">
+            <div v-for="(v, k) in form" :key="k">
+              <h3 class="row">Slot {{ k + 1 }}</h3>
+              <div class="row">
                 <div
-                  class="fv-row mb-9 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid"
+                  class="fv-row fv-plugins-icon-container fv-plugins-bootstrap5-row-valid"
                 >
-                  <!--begin::Label-->
-                  <label class="fs-6 fw-semobold mb-2 required"
-                    >Event Start Date</label
-                  >
-                  <!--end::Label-->
                   <!--begin::Input-->
-                  <el-date-picker
-                    v-model="targetData.eventStartDate"
-                    type="date"
-                    :teleported="false"
-                    name="eventStartDate"
-                  />
+                  <el-form-item label="Date" required>
+                    <el-date-picker
+                      :type="compDateType"
+                      :teleported="false"
+                      v-model="form[k].date"
+                      start-placeholder="Start date"
+                      end-placeholder="End date"
+                      placeholder="Enter date"
+                    />
+                  </el-form-item>
                   <!--end::Input-->
                   <div
                     class="fv-plugins-message-container invalid-feedback"
                   ></div>
                 </div>
               </div>
-            </div>
-            <!--end::Input group-->
-            <!--begin::Input group-->
-            <div class="row row-cols-lg-2 g-10">
-              <div class="col">
-                <div
-                  class="fv-row mb-9 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid"
-                >
-                  <!--begin::Label-->
-                  <label class="fs-6 fw-semobold mb-2 required"
-                    >Event End Date</label
-                  >
-                  <!--end::Label-->
-                  <!--begin::Input-->
-                  <el-date-picker
-                    v-model="targetData.eventEndDate"
-                    type="date"
-                    :teleported="false"
-                    name="eventName"
-                  />
-                  <!--end::Input-->
+              <div class="row" v-for="(p, i) in v.slots" :key="i">
+                <div class="col-lg-6 col-md-6 col-sm-6">
                   <div
-                    class="fv-plugins-message-container invalid-feedback"
-                  ></div>
+                    class="fv-row mb-9 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid"
+                  >
+                    <!--begin::Input-->
+                    <el-form-item label="Start hour" required>
+                      <el-time-picker
+                        v-model="v.slots[i].start"
+                        type="time"
+                        :teleported="false"
+                        name="startTime"
+                      />
+                    </el-form-item>
+                    <!--end::Input-->
+                    <div
+                      class="fv-plugins-message-container invalid-feedback"
+                    ></div>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                  <div
+                    class="fv-row mb-9 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid"
+                  >
+                    <!--begin::Input-->
+                    <el-form-item label="End hour" required>
+                      <el-time-picker
+                        v-model="v.slots[i].end"
+                        type="time"
+                        :teleported="false"
+                        name="startTime"
+                      />
+                    </el-form-item>
+                    <!--end::Input-->
+                    <div
+                      class="fv-plugins-message-container invalid-feedback"
+                    ></div>
+                  </div>
                 </div>
               </div>
+              <button
+                type="button"
+                class="btn btn-sm btn-link"
+                @click="addPeriod(k)"
+              >
+                Add slot
+              </button>
             </div>
             <!--end::Input group-->
           </div>
           <!--end::Modal body-->
           <!--begin::Modal footer-->
           <div class="modal-footer flex-center">
+            <button type="button" class="btn me-3 btn-link" @click="addSlot">
+              Add slot
+            </button>
             <!--begin::Button-->
             <button
               data-bs-dismiss="modal"
@@ -185,50 +169,146 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import { hideModal } from "@/core/helpers/dom";
 import Swal from "sweetalert2";
+import { isValidDate } from "@fullcalendar/vue3";
+import type { EventInput } from "@fullcalendar/vue3";
+import type { FormRules } from "element-plus";
+import type { ISlot } from "@/types";
 
 interface NewAddressData {
-  eventName: string;
-  eventDescription: string;
-  eventLocation: string;
-  allDay: boolean;
-  eventStartDate: string;
-  eventEndDate: string;
+  startDate: string;
+  startTime: string;
+  endDate: string;
+  endTime: string;
+}
+
+interface TypePeriod {
+  label: string;
+  value: number;
+}
+
+interface Props {
+  selectedDate: EventInput | null;
 }
 
 export default defineComponent({
   name: "new-event-modal",
   components: {},
-  setup() {
+  setup(props: Props) {
     const formRef = ref<null | HTMLFormElement>(null);
     const newTargetModalRef = ref<null | HTMLElement>(null);
     const loading = ref<boolean>(false);
 
     const targetData = ref<NewAddressData>({
-      eventName: "",
-      eventDescription: "",
-      eventLocation: "",
-      allDay: true,
-      eventStartDate: "",
-      eventEndDate: "",
+      startDate: "",
+      startTime: "",
+      endDate: "",
+      endTime: "",
     });
 
-    const rules = ref({
-      eventName: [
+    const form = ref<ISlot[]>([
+      {
+        date: "",
+        slots: [
+          {
+            start: "",
+            end: "",
+          },
+        ],
+      },
+    ]);
+
+    const typePeriod = ref<TypePeriod[]>([
+      {
+        label: "Période",
+        value: 1,
+      },
+      {
+        label: "Jour",
+        value: 2,
+      },
+    ]);
+
+    const selectedPeriodType = ref<number>(typePeriod.value[1].value);
+
+    const compDateType = computed(() =>
+      selectedPeriodType.value === 1 ? "daterange" : "date"
+    );
+
+    const addSlot = () => {
+      form.value.push({
+        date: "",
+        slots: [
+          {
+            start: "",
+            end: "",
+          },
+        ],
+      });
+    };
+
+    const addPeriod = (id: number) => {
+      form.value[id]?.slots.push({
+        start: "",
+        end: "",
+      });
+    };
+
+    const resetForm = () => {
+      form.value = [
+        {
+          date: "",
+          slots: [
+            {
+              start: "",
+              end: "",
+            },
+          ],
+        },
+      ];
+    };
+    const onSelectChange = () => {
+      resetForm();
+    };
+
+    const rules = ref<FormRules>({
+      startDate: [
         {
           required: true,
-          message: "Please input event name",
+          message: "Please input a valid start date",
+          trigger: "blur",
+        },
+      ],
+      startTime: [
+        {
+          type: "date",
+          required: true,
+          message: "Please input a valid start time",
+          trigger: "blur",
+        },
+      ],
+      endDate: [
+        {
+          type: "date",
+          required: true,
+          message: "Please input a valid end date",
+          trigger: "blur",
+        },
+      ],
+      endTime: [
+        {
+          type: "date",
+          required: true,
+          message: "Please input a valid end time",
           trigger: "blur",
         },
       ],
     });
 
     const submit = () => {
-      if (!formRef.value) {
-        return;
-      }
+      if (!formRef.value) return;
 
       formRef.value.validate((valid: boolean) => {
         if (valid) {
@@ -273,6 +353,14 @@ export default defineComponent({
       targetData,
       rules,
       submit,
+      form,
+      addSlot,
+      addPeriod,
+      typePeriod,
+      selectedPeriodType,
+      compDateType,
+      onSelectChange,
+      props,
     };
   },
 });
