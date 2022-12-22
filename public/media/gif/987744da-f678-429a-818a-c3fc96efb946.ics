@@ -1,0 +1,25 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Calendly//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+DTSTAMP:20221222T103558Z
+UID:calendly-612861256
+DTSTART:20221227T140000Z
+DTEND:20221227T144500Z
+CLASS:PRIVATE
+DESCRIPTION:Nom de l'événement: Entrevue  - Développeur FullStack\nDate 
+ et heure: 15:00 - 15:45 (Heure d'Afrique de l'Ouest) le mardi\, 27 décemb
+ re 2022\nLieu: Ceci est une conférence en ligne Google Meet.\nVous pouvez
+  rejoindre cette réunion à partir de votre ordinateur\, tablette ou smar
+ tphone.\nhttps://calendly.com/events/188e0ca2-a07b-445c-b235-41505e24e435/
+ google_meet\n\nSouhaitez-vous apporter des modifications à cet événemen
+ t?\nAnnuler: https://calendly.com/cancellations/987744da-f678-429a-818a-c3
+ fc96efb946\nReplanifier: https://calendly.com/reschedulings/987744da-f678-
+ 429a-818a-c3fc96efb946\n
+LOCATION:Google Meet (instructions dans la description)
+SUMMARY:Entrevue  - Développeur FullStack avec MH VENTURE OR
+TRANSP:OPAQUE
+END:VEVENT
+END:VCALENDAR

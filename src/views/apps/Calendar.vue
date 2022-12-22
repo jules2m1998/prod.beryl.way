@@ -1,6 +1,5 @@
-
 <template>
-  <div class="card rounded-0">
+  <div class="card rounded-0" v-if="!isLoading">
     <div class="card-header">
       <h2 class="card-title fw-bold">Calendar</h2>
       <div class="card-toolbar">
@@ -18,6 +17,8 @@
     </div>
   </div>
 
+  <my-loader v-else></my-loader>
+
   <new-event-modal :selected-date="selectedPeriod"></new-event-modal>
 </template>
 
@@ -26,6 +27,7 @@ import FullCalendar from "@fullcalendar/vue3";
 import type { CalendarOptions, EventInput } from "@fullcalendar/vue3";
 
 import NewEventModal from "@/components/modals/forms/NewEventModal.vue";
+import MyLoader from "@/components/Loader.vue";
 
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -34,9 +36,14 @@ import moment from "moment";
 
 import { ON_PROGESS_COLOR } from "@/core/data/const";
 import { Modal } from "bootstrap";
-import { ref } from "vue";
+import { ref, onMounted, computed } from "vue";
+import type { IAppointment } from "@/types";
+import { getAllAppointment } from "@/core/services/AppointmentService";
 
 const selectedPeriod = ref<EventInput | null>(null);
+const isLoading = ref<boolean>(false);
+
+const appointments = ref<IAppointment[]>([]);
 
 // Calender
 
@@ -50,6 +57,20 @@ const date = new Date();
 const d = date.getDate();
 const m = date.getMonth();
 const y = date.getFullYear();
+
+const e = computed<EventInput[]>(() =>
+  appointments.value.map((e, k) => {
+    const date = new Date(e.time);
+    return {
+      id: e.id.toString(),
+      title: `Rendez-vous de ${e.agent.user.name} avec ${e.client.user.name}`,
+      start: TODAY + `T1${k}:30:00`,
+      description: e.reason,
+      end: TODAY + `T1${k + 1}:30:00`,
+      className: "fc-event-success",
+    };
+  })
+);
 
 const events: EventInput[] = [
   {
@@ -167,7 +188,14 @@ const onClickToEvent = ({ event: e }: { event: EventInput }) => {
   console.log(e.start, e.end, e.id);
 };
 
-const calendarOptions: CalendarOptions = {
+const addHour = (date: Date, hours: number) => {
+  const copy = new Date(date);
+  copy.setHours(date.getHours() + hours);
+
+  return copy;
+};
+
+const calendarOptions = computed<CalendarOptions>(() => ({
   plugins: [dayGridPlugin, timeGridPlugin, listPlugin],
   headerToolbar: {
     left: "prev,next today",
@@ -195,9 +223,18 @@ const calendarOptions: CalendarOptions = {
   editable: true,
   dayMaxEvents: true, // allow "more" link when too many events
   navLinks: true,
-  events,
-  eventClick: onClickToEvent,
-};
+  events: appointments.value.map((e) => {
+    const date = new Date(e.time);
+    return {
+      id: e.id.toString(),
+      title: `Rendez-vous de ${e.agent.user.name} avec ${e.client.user.name}`,
+      start: date,
+      description: e.reason,
+      end: addHour(date, 1),
+      className: "fc-event-success",
+    };
+  }),
+}));
 
 // Actions
 const addEvent = () => {
@@ -210,6 +247,15 @@ const addEvent = () => {
     console.error("Model not exist");
   }
 };
+
+// OnMounted
+onMounted(async () => {
+  isLoading.value = true;
+  const ap = await getAllAppointment();
+  if (ap) appointments.value = ap;
+  console.log(ap);
+  isLoading.value = false;
+});
 </script>
 
 <style scoped>

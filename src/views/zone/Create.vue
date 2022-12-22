@@ -303,7 +303,6 @@ export default defineComponent({
             "Echec lors de la creation de la zone verifiez vos informations et reessayez !"
           );
         }
-        console.log();
         submitButton.value?.removeAttribute("data-kt-indicator");
       }
     };
