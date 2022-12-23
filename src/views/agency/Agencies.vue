@@ -40,45 +40,32 @@
         <span class="badge badge-danger" v-else>Deactivate</span>
       </template>
       <template v-slot:created_at="{ row: customer }">
-        <span
-          v-html="highlightDetectedText(customer.created_at, searchValue)"
-        ></span>
+        {{ getDateFormated(customer.created_at) }}
       </template>
       <template v-slot:actions="{ row: customer }">
-        <a
-          href="#"
-          class="btn btn-sm btn-light btn-active-light-primary"
-          data-kt-menu-trigger="click"
-          data-kt-menu-placement="bottom-end"
-          data-kt-menu-flip="top-end"
-          >Actions
-          <span class="svg-icon svg-icon-5 m-0">
-            <inline-svg src="/media/icons/duotune/arrows/arr072.svg" />
-          </span>
-        </a>
-        <!--begin::Menu-->
-        <div
-          class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semobold fs-7 w-125px py-4"
-          data-kt-menu="true"
-        >
-          <!--begin::Menu item-->
-          <div class="menu-item px-3">
-            <router-link to="#" class="menu-link px-3">View</router-link>
-          </div>
-          <!--end::Menu item-->
-          <!--begin::Menu item-->
-          <div class="menu-item px-3">
-            <a @click="searchItems(customer.id)" class="menu-link px-3"
-              >Delete</a
+        <drop-down-menu name="Actions" :menu="menu">
+          <template v-slot:update>
+            <a @click="showDetail(customer.id)" class="menu-link px-3"
+              >Détail</a
             >
-          </div>
-          <!--end::Menu item-->
-        </div>
-        <!--end::Menu-->
+          </template>
+          <template v-slot:view>
+            <router-link
+              :to="{ name: 'update-zone', params: { id: customer.id } }"
+              class="menu-link px-3"
+              >Modifier</router-link
+            >
+          </template>
+        </drop-down-menu>
       </template>
     </Datatable>
   </page-with-table>
   <my-loader v-else></my-loader>
+
+  <agence-detail-modal
+    :selector="selector"
+    :agence="selectedItem"
+  ></agence-detail-modal>
 </template>
 
 <script setup lang="ts">
@@ -93,9 +80,16 @@ import MyLoader from "@/components/Loader.vue";
 import type { IAgence } from "@/types";
 import { getAllAgence } from "@/core/services";
 import { RouterLink } from "vue-router";
+import { getDateFormated, openModal } from "@/core/helpers";
+import AgenceDetailModal from "@/components/modals/general/AgenceDetailModal.vue";
+import DropDownMenu from "@/components/dropdown/DropDownMenu.vue";
+
+const selector = "detail-zone-modal";
 
 const isLoading = ref<boolean>(false);
 const tableData = ref<Array<IAgence>>([]);
+const menu = ref<string[]>(["view", "update"]);
+const selectedItem = ref<IAgence | undefined>(undefined);
 
 const tableHeader = ref([
   {
@@ -159,6 +153,10 @@ const searchItems = (selectedItems: Array<number>) => {
   selectedIds.value = selectedItems;
 };
 
+const showDetail = (id: number) => {
+  selectedItem.value = tableData.value.find((v) => id === v.id);
+  if (selectedItem.value) openModal(selector);
+};
 // Filter logic
 const searchValue = ref<string>("");
 

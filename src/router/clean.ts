@@ -63,6 +63,15 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/agency/:id",
+        name: "update-agency",
+        component: () => import("@/views/agency/AddAgence.vue"),
+        meta: {
+          pageTitle: "addAgence",
+          breadcrumbs: ["agency", "new"],
+        },
+      },
+      {
         path: "/complaints",
         name: "complaints",
         component: () => import("@/views/Complaints.vue"),
