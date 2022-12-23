@@ -175,7 +175,7 @@ import Swal from "sweetalert2";
 import { isValidDate } from "@fullcalendar/vue3";
 import type { EventInput } from "@fullcalendar/vue3";
 import type { FormRules } from "element-plus";
-import type { ISlot } from "@/types";
+import type { IAppointment, ISlot } from "@/types";
 
 interface NewAddressData {
   startDate: string;
@@ -190,7 +190,7 @@ interface TypePeriod {
 }
 
 interface Props {
-  selectedDate: EventInput | null;
+  selectedDate: IAppointment | undefined;
 }
 
 export default defineComponent({

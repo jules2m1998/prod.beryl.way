@@ -168,7 +168,7 @@ const messages = {
     openAccount: "Ouvertures de compte",
     credit: "Crédits",
     agency: "Agences",
-    complaint: "Plaintes",
+    complaint: "Réclamations",
     user: "Utiliateurs",
     question: "Questions",
     creditApplications: "Demandes de crédit",

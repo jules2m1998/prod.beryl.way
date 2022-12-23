@@ -25,10 +25,10 @@ interface IZone {
   country_code: number;
   parent_id: number;
   zone_type_id: number;
-  created_at: number;
+  created_at: Date;
   type: IZoneType;
-  children: IZone;
-  mother: IZone;
+  children: IZone[];
+  mother?: IZone;
 }
 
 export type { IZoneTypeRequest, IZoneType, IZone, IZoneRequest };

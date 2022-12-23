@@ -137,6 +137,15 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/zone/:id",
+        name: "update-zone",
+        component: () => import("@/views/zone/Create.vue"),
+        meta: {
+          pageTitle: "adminZoneCreate",
+          breadcrumbs: ["Zone", "new"],
+        },
+      },
+      {
         path: "/zone/type",
         name: "zone-type",
         component: () => import("@/views/zone/type-zone/Index.vue"),
@@ -153,6 +162,15 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           pageTitle: "adminZoneTypeCreate",
           breadcrumbs: ["Zone", "Type", "Create"],
+        },
+      },
+      {
+        path: "/zone/type/:id",
+        name: "zone-type-update",
+        component: () => import("@/views/zone/type-zone/Create.vue"),
+        meta: {
+          pageTitle: "adminZoneTypeUpdate",
+          breadcrumbs: ["Zone", "Type", "Update"],
         },
       },
       {

@@ -36,61 +36,52 @@
         ></span>
       </template>
       <template v-slot:created_at="{ row: customer }">
-        <span
-          v-html="highlightDetectedText(customer.created_at, searchValue)"
-        ></span>
+        {{ getI18nDate(customer.created_at).calendar() }}
       </template>
       <template v-slot:actions="{ row: customer }">
-        <a
-          href="#"
-          class="btn btn-sm btn-light btn-active-light-primary"
-          data-kt-menu-trigger="click"
-          data-kt-menu-placement="bottom-end"
-          data-kt-menu-flip="top-end"
-          >Actions
-          <span class="svg-icon svg-icon-5 m-0">
-            <inline-svg src="/media/icons/duotune/arrows/arr072.svg" />
-          </span>
-        </a>
-        <!--begin::Menu-->
-        <div
-          class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semobold fs-7 w-125px py-4"
-          data-kt-menu="true"
-        >
-          <!--begin::Menu item-->
-          <div class="menu-item px-3">
-            <router-link to="#" class="menu-link px-3">View</router-link>
-          </div>
-          <!--end::Menu item-->
-          <!--begin::Menu item-->
-          <div class="menu-item px-3">
-            <a @click="searchItems(customer.id)" class="menu-link px-3"
-              >Delete</a
+        <drop-down-menu name="Actions" :menu="menu">
+          <template v-slot:update>
+            <a @click="showDetail(customer.id)" class="menu-link px-3"
+              >Détail</a
             >
-          </div>
-          <!--end::Menu item-->
-        </div>
-        <!--end::Menu-->
+          </template>
+          <template v-slot:view>
+            <router-link
+              :to="{ name: 'update-zone', params: { id: customer.id } }"
+              class="menu-link px-3"
+              >Modifier</router-link
+            >
+          </template>
+        </drop-down-menu>
       </template>
     </Datatable>
   </page-with-table>
   <my-loader v-else></my-loader>
+  <zone-detail-modal
+    :selector="selector"
+    :zone="selectedItem"
+  ></zone-detail-modal>
 </template>
 
 <script setup lang="ts">
 import PageWithTable from "@/components/PageWithTable.vue";
 import { ref, computed, onMounted } from "vue";
 import Datatable from "@/components/kt-datatable/KTDataTable.vue";
+import ZoneDetailModal from "@/components/modals/general/ZoneDetailModal.vue";
 import arraySort from "array-sort";
 import type { Sort } from "@/components/kt-datatable//table-partials/models";
+import DropDownMenu from "@/components/dropdown/DropDownMenu.vue";
 import { searchByName } from "@/core/helpers/array";
 import { highlightDetectedText } from "@/core/helpers/dom";
 import type { IZone } from "@/types";
 import { getAllZone } from "@/core/services";
-import MyLoader from "@/components/Loader.vue"
+import MyLoader from "@/components/Loader.vue";
+import { getI18nDate, openModal } from "@/core/helpers";
 
 const tableData = ref<Array<IZone>>([]);
 const isLoading = ref<boolean>(false);
+const menu = ref<string[]>(["view", "update"]);
+const selector = "detail-zone-modal";
 
 const tableHeader = ref([
   {
@@ -126,6 +117,12 @@ const tableHeader = ref([
 ]);
 
 const selectedIds = ref<Array<number>>([]);
+const selectedItem = ref<IZone | undefined>(undefined);
+
+const showDetail = (id: number) => {
+  selectedItem.value = tableData.value.find((v) => id === v.id);
+  if (selectedItem.value) openModal(selector);
+};
 
 onMounted(async () => {
   isLoading.value = true;
