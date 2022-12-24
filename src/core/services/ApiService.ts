@@ -65,6 +65,23 @@ class ApiService {
   }
 
   /**
+   * @description set the POST HTTP request
+   * @param resource: string
+   * @param params: AxiosRequestConfig
+   * @returns Promise<AxiosResponse>
+   */
+  public static postForm(
+    resource: string,
+    params: FormData
+  ): Promise<AxiosResponse> {
+    return ApiService.vueInstance.axios.post(`${resource}`, params, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }
+
+  /**
    * @description send the UPDATE HTTP request
    * @param resource: string
    * @param slug: string

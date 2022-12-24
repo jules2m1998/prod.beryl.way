@@ -1,13 +1,16 @@
+import type { IModel } from "./model";
+
 interface IAgenceRequest {
+  name: string;
   location: string;
   longitude: number;
   latitude: number;
   zone_id: number;
-  active: boolean;
+  active: number;
+  file: File | null;
 }
 
-interface IAgence {
-  id: number;
+interface IAgence extends IModel {
   name: string;
   zone_id: number;
   longitude: number;
@@ -15,7 +18,6 @@ interface IAgence {
   path: string;
   location: string;
   active: boolean;
-  created_at: Date;
 }
 
 export type { IAgenceRequest, IAgence };

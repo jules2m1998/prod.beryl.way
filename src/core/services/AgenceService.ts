@@ -1,9 +1,9 @@
-import type { IAgence, IAgenceRequest } from "@/types";
-import { createOne, getAll } from "./generic-service";
+import type { IAgence } from "@/types";
+import { createWithFormData, getAll } from "./generic-service";
 
 const getAllAgence = (): Promise<IAgence[] | null> => getAll<IAgence>("agency");
 
-const createAgence = (request: IAgenceRequest): Promise<IAgence | null> =>
-  createOne<IAgence, IAgenceRequest>("agency", request);
+const createAgence = (request: FormData): Promise<IAgence | null> =>
+  createWithFormData<IAgence>("agency", request);
 
 export { getAllAgence, createAgence };

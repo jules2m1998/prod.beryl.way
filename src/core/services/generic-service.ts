@@ -23,6 +23,21 @@ const createOne = async <T, P>(path: string, request: P): Promise<T | null> => {
   } catch (e: any) {
     return null;
   }
-}
+};
 
-export { getAll, createOne };
+const createWithFormData = async <T>(
+  path: string,
+  request: FormData
+): Promise<T | null> => {
+  try {
+    ApiService.setHeader();
+    const response = await ApiService.postForm(path, request);
+    const data = response.data.data as T;
+
+    return data;
+  } catch (e: any) {
+    return null;
+  }
+};
+
+export { getAll, createOne, createWithFormData };

@@ -25,6 +25,12 @@ export const useAuthStore = defineStore("auth", () => {
     JwtService.saveToken(authUser.token);
   }
 
+  function setAuthProfile(authUser: IUser) {
+    isAuthenticated.value = true;
+    user.value = authUser;
+    errors.value = null;
+  }
+
   function setError(error?: string) {
     errors.value = error ?? null;
   }
@@ -75,9 +81,10 @@ export const useAuthStore = defineStore("auth", () => {
   function verifyAuth() {
     if (JwtService.getToken()) {
       ApiService.setHeader();
-      ApiService.post("verify_token", { api_token: JwtService.getToken() })
+      ApiService.get("profile")
         .then(({ data }) => {
-          setAuth(data);
+          console.log(data);
+          setAuthProfile(data);
         })
         .catch(({ response }) => {
           setError(response.data.errors);
