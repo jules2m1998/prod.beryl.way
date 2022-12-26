@@ -58,6 +58,7 @@
                     <el-date-picker
                       :type="compDateType"
                       :teleported="false"
+                      :disabled-date="disabledDate"
                       start-placeholder="Start date"
                       end-placeholder="End date"
                       placeholder="Enter date"
@@ -217,6 +218,10 @@ export default defineComponent({
     const loading = ref<boolean>(false);
     const authStore = useAuthStore();
 
+    const disabledDate = (time: Date) => {
+      return time.getTime() < Date.now();
+    };
+
     const targetData = ref<NewAddressData>({
       startDate: "",
       startTime: "",
@@ -356,6 +361,7 @@ export default defineComponent({
       isValid,
       compDateType,
       removeThis,
+      disabledDate,
       onSelectChange,
       props,
     };
