@@ -267,7 +267,7 @@ const saveChange = async (values: IAgenceRequest) => {
     data.append(key, value);
   }
 
-  data.append("path", file.value as Blob);
+  if (file.value) data.append("path", file.value as Blob);
 
   const response = await createAgence(data);
   if (response) {

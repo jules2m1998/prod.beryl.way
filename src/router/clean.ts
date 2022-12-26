@@ -263,6 +263,8 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   const configStore = useConfigStore();
+  console.log("djhsdgjchhfdcdc");
+  
 
   // current page view title
   document.title = `${i18n.global.t(to.meta.pageTitle as string)} - ${

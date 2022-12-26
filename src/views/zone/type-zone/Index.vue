@@ -68,11 +68,13 @@ import { getAllTypeZone } from "@/core/services";
 import { getI18nDate, openModal } from "@/core/helpers";
 import DropDownMenu from "@/components/dropdown/DropDownMenu.vue";
 import ZoneTypeDetailModal from "@/components/modals/general/ZoneTypeDetailModal.vue";
+import type { IHttpError } from "@/types/https";
 
 const getData = async () => {
   isLoading.value = true;
   const allTypeZones = await getAllTypeZone();
-  if (allTypeZones) tableData.value = allTypeZones;
+  if (!(allTypeZones as IHttpError).success)
+    tableData.value = allTypeZones as IZoneType[];
   else console.error("Error when fetch types zone !");
   isLoading.value = false;
 };

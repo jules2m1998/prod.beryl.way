@@ -5,8 +5,9 @@ interface IHttpResponse<T> {
 }
 
 interface IHttpError {
-    errors: any;
-    message: string;
+  errors: any;
+  message: string;
+  success: boolean;
 }
 
 export type { IHttpResponse, IHttpError };

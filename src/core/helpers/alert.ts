@@ -1,4 +1,5 @@
 import Swal, { type SweetAlertResult } from "sweetalert2";
+import Router from "../../router/clean";
 
 const successAlert = (msg: string): Promise<SweetAlertResult<any>> =>
   Swal.fire({
@@ -23,4 +24,22 @@ const errorAlert = (msg: string): Promise<SweetAlertResult<any>> =>
       confirmButton: "btn fw-semobold btn-light-primary",
     },
   });
-export { successAlert, errorAlert };
+
+const makeRequestAndAlert = async (
+  successMsg: string,
+  errorMsg: string,
+  to: string,
+  request: () => Promise<any>
+) => {
+  const response = await request();
+  if (response) {
+    successAlert(successMsg).then(() => {
+      Router.push({
+        name: to,
+      });
+    });
+  } else {
+    errorAlert(errorMsg);
+  }
+};
+export { successAlert, errorAlert, makeRequestAndAlert };
