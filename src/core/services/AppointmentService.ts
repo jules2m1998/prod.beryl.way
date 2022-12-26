@@ -1,7 +1,12 @@
-import type { IAppointment } from "@/types";
-import { getAll } from "./generic-service";
+import type { IAppointment, IAppointmentRequest } from "@/types";
+import { getAll, createOne } from "./generic-service";
 
 const getAllAppointment = (): Promise<IAppointment[] | null> =>
   getAll<IAppointment>("appointment");
 
-export { getAllAppointment };
+const createAppointment = (
+  request: IAppointmentRequest
+): Promise<IAppointment | null> => 
+  createOne<IAppointment, IAppointmentRequest>("slot", request);
+
+export { getAllAppointment, createAppointment };

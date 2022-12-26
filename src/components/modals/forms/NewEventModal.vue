@@ -12,8 +12,6 @@
           class="form fv-plugins-bootstrap5 fv-plugins-framework"
           id="kt_modal_add_event_form"
           @submit.prevent="submit()"
-          :model="targetData"
-          :rules="rules"
           ref="formRef"
           label-position="top"
         >
@@ -49,8 +47,8 @@
               </el-form-item>
             </div>
             <!--begin::Input group-->
-            <div v-for="(v, k) in form" :key="k">
-              <h3 class="row">Slot {{ k + 1 }}</h3>
+            <div>
+              <h3 class="row">Slot</h3>
               <div class="row">
                 <div
                   class="fv-row fv-plugins-icon-container fv-plugins-bootstrap5-row-valid"
@@ -60,10 +58,10 @@
                     <el-date-picker
                       :type="compDateType"
                       :teleported="false"
-                      v-model="form[k].date"
                       start-placeholder="Start date"
                       end-placeholder="End date"
                       placeholder="Enter date"
+                      v-model="form.date"
                     />
                   </el-form-item>
                   <!--end::Input-->
@@ -72,7 +70,7 @@
                   ></div>
                 </div>
               </div>
-              <div class="row" v-for="(p, i) in v.slots" :key="i">
+              <div class="row" v-for="(p, i) in form.slots" :key="i">
                 <div class="col-lg-6 col-md-6 col-sm-6">
                   <div
                     class="fv-row mb-9 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid"
@@ -80,7 +78,7 @@
                     <!--begin::Input-->
                     <el-form-item label="Start hour" required>
                       <el-time-picker
-                        v-model="v.slots[i].start"
+                        v-model="form.slots[i].start"
                         type="time"
                         :teleported="false"
                         name="startTime"
@@ -92,14 +90,14 @@
                     ></div>
                   </div>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="col-lg-5 col-md-5 col-sm-5">
                   <div
                     class="fv-row mb-9 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid"
                   >
                     <!--begin::Input-->
                     <el-form-item label="End hour" required>
                       <el-time-picker
-                        v-model="v.slots[i].end"
+                        v-model="form.slots[i].end"
                         type="time"
                         :teleported="false"
                         name="startTime"
@@ -111,24 +109,37 @@
                     ></div>
                   </div>
                 </div>
+                <div
+                  class="col-lg-1 col-md-1 col-sm-1 d-flex justify-content-center align-items-center"
+                >
+                  <!--end::Input group-->
+                  <span
+                    type="button"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Delete this slot"
+                    @click="removeThis(i)"
+                  >
+                    <inline-svg
+                      color="red"
+                      src="media/icons/duotune/general/gen040.svg"
+                    />
+                  </span>
+                </div>
               </div>
-              <button
-                type="button"
-                class="btn btn-sm btn-link"
-                @click="addPeriod(k)"
-              >
-                Add slot
-              </button>
             </div>
             <!--end::Input group-->
+            <button
+              type="button"
+              class="btn btn-sm btn-link"
+              @click="addPeriod"
+            >
+              Add slot
+            </button>
           </div>
           <!--end::Modal body-->
           <!--begin::Modal footer-->
           <div class="modal-footer flex-center">
-            <button type="button" class="btn me-3 btn-link" @click="addSlot">
-              Add slot
-            </button>
-            <!--begin::Button-->
             <button
               data-bs-dismiss="modal"
               type="reset"
@@ -141,6 +152,7 @@
             <!--begin::Button-->
             <button
               :data-kt-indicator="loading ? 'on' : null"
+              :disabled="!isValid"
               class="btn btn-lg btn-primary"
               type="submit"
             >
@@ -171,11 +183,14 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import { hideModal } from "@/core/helpers/dom";
+import { useAuthStore } from "@/stores/auth";
+import { formatDate, formatTime } from "@/core/helpers";
 import Swal from "sweetalert2";
 import { isValidDate } from "@fullcalendar/vue3";
 import type { EventInput } from "@fullcalendar/vue3";
 import type { FormRules } from "element-plus";
-import type { IAppointment, ISlot } from "@/types";
+import type { IAppointment, IAppointmentRequest, ISlot } from "@/types";
+import { createAppointment } from "@/core/services";
 
 interface NewAddressData {
   startDate: string;
@@ -200,6 +215,7 @@ export default defineComponent({
     const formRef = ref<null | HTMLFormElement>(null);
     const newTargetModalRef = ref<null | HTMLElement>(null);
     const loading = ref<boolean>(false);
+    const authStore = useAuthStore();
 
     const targetData = ref<NewAddressData>({
       startDate: "",
@@ -208,17 +224,15 @@ export default defineComponent({
       endTime: "",
     });
 
-    const form = ref<ISlot[]>([
-      {
-        date: "",
-        slots: [
-          {
-            start: "",
-            end: "",
-          },
-        ],
-      },
-    ]);
+    const form = ref<ISlot>({
+      date: "",
+      slots: [
+        {
+          start: "",
+          end: "",
+        },
+      ],
+    });
 
     const typePeriod = ref<TypePeriod[]>([
       {
@@ -237,8 +251,23 @@ export default defineComponent({
       selectedPeriodType.value === 1 ? "daterange" : "date"
     );
 
-    const addSlot = () => {
-      form.value.push({
+    const isValid = computed<boolean>(
+      () => !!form.value.date && form.value.slots.every((e) => e.end && e.start)
+    );
+
+    const addPeriod = () => {
+      form.value.slots.push({
+        start: "",
+        end: "",
+      });
+    };
+    const removeThis = (pos: number) => {
+      if (form.value.slots.length > 1)
+        form.value.slots = form.value.slots.filter((_, k) => k !== pos);
+    };
+
+    const resetForm = () => {
+      form.value = {
         date: "",
         slots: [
           {
@@ -246,28 +275,7 @@ export default defineComponent({
             end: "",
           },
         ],
-      });
-    };
-
-    const addPeriod = (id: number) => {
-      form.value[id]?.slots.push({
-        start: "",
-        end: "",
-      });
-    };
-
-    const resetForm = () => {
-      form.value = [
-        {
-          date: "",
-          slots: [
-            {
-              start: "",
-              end: "",
-            },
-          ],
-        },
-      ];
+      };
     };
     const onSelectChange = () => {
       resetForm();
@@ -307,43 +315,31 @@ export default defineComponent({
       ],
     });
 
-    const submit = () => {
-      if (!formRef.value) return;
+    const submit = async () => {
+      loading.value = true;
+      const currentUser = authStore.user;
+      const d = form.value.date;
+      console.log(d instanceof Date, d);
+      const date: string | string[] =
+        d instanceof Date
+          ? formatDate(d)
+          : JSON.stringify((d as string[]).map((d) => formatDate(d)));
 
-      formRef.value.validate((valid: boolean) => {
-        if (valid) {
-          loading.value = true;
-
-          setTimeout(() => {
-            loading.value = false;
-
-            Swal.fire({
-              text: "Form has been successfully submitted!",
-              icon: "success",
-              buttonsStyling: false,
-              confirmButtonText: "Ok, got it!",
-              heightAuto: false,
-              customClass: {
-                confirmButton: "btn btn-primary",
-              },
-            }).then(() => {
-              hideModal(newTargetModalRef.value);
-            });
-          }, 2000);
-        } else {
-          Swal.fire({
-            text: "Sorry, looks like there are some errors detected, please try again.",
-            icon: "error",
-            buttonsStyling: false,
-            confirmButtonText: "Ok, got it!",
-            heightAuto: false,
-            customClass: {
-              confirmButton: "btn btn-primary",
-            },
-          });
-          return false;
-        }
-      });
+      const ap: IAppointmentRequest = {
+        date,
+        values: JSON.stringify(
+          form.value.slots.map((s) => ({
+            start: formatTime(s.start),
+            end: formatTime(s.end),
+            available: true,
+          }))
+        ),
+        user_agency_id: currentUser.id,
+      };
+      console.log(ap);
+      const result = await createAppointment(ap);
+      console.log(result);
+      loading.value = false;
     };
 
     return {
@@ -354,11 +350,12 @@ export default defineComponent({
       rules,
       submit,
       form,
-      addSlot,
       addPeriod,
       typePeriod,
       selectedPeriodType,
+      isValid,
       compDateType,
+      removeThis,
       onSelectChange,
       props,
     };

@@ -4,7 +4,7 @@ interface ITime {
 }
 
 interface ISlot {
-  date: string;
+  date: string | string[];
   slots: ITime[];
 }
 

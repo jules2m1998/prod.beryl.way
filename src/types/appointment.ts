@@ -12,4 +12,16 @@ interface IAppointment extends IModel {
   agent: IUserAgency;
 }
 
-export type { IAppointment };
+interface ISlot {
+  start: string;
+  end: string;
+  available: boolean;
+}
+
+interface IAppointmentRequest {
+  user_agency_id: number;
+  date: string | string[];
+  values: string;
+}
+
+export type { IAppointment, IAppointmentRequest };

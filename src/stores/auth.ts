@@ -84,7 +84,7 @@ export const useAuthStore = defineStore("auth", () => {
       ApiService.get("profile")
         .then(({ data }) => {
           console.log(data);
-          setAuthProfile(data);
+          setAuthProfile(data.data);
         })
         .catch(({ response }) => {
           setError(response.data.errors);

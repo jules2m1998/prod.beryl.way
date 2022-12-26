@@ -84,3 +84,11 @@ export const getDateFormated = (date?: Date): string => {
 
   return moment(date).format("LLLL");
 };
+
+export function formatDate(date: Date | string) {
+  return moment(new Date(date)).format("YYYY-MM-DD");
+}
+
+export function formatTime(date: Date | string) {
+  return moment(new Date(date)).format("HH:MM");
+}
