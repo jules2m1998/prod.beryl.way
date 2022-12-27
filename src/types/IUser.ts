@@ -1,3 +1,5 @@
+import type { IUserAgency } from "./user-agency";
+
 interface IUser {
   id: number;
   name: string;
@@ -14,6 +16,7 @@ interface IUser {
   updated_at: Date;
   deleted_at: Date;
   role_id: number;
+  user_agency: IUserAgency[];
 }
 
 interface IUserLogin {

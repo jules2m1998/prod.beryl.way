@@ -182,13 +182,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, defineEmits } from "vue";
-import { hideModal } from "@/core/helpers/dom";
+import { defineComponent, ref, computed } from "vue";
 import { useAuthStore } from "@/stores/auth";
-import { formatDate, formatTime } from "@/core/helpers";
-import Swal from "sweetalert2";
-import { isValidDate } from "@fullcalendar/vue3";
-import type { EventInput } from "@fullcalendar/vue3";
+import {
+  formatDate,
+  formatTime,
+  successAlert,
+  errorAlert,
+} from "@/core/helpers";
 import type { FormRules } from "element-plus";
 import type { IAppointment, IAppointmentRequest, ISlot } from "@/types";
 import { createAppointment } from "@/core/services";
@@ -220,7 +221,7 @@ export default defineComponent({
     const authStore = useAuthStore();
 
     const disabledDate = (time: Date) => {
-      return time.getTime() < Date.now();
+      return time.getTime() <= Date.now();
     };
 
     const targetData = ref<NewAddressData>({
@@ -344,12 +345,20 @@ export default defineComponent({
             available: true,
           }))
         ),
-        user_agency_id: currentUser.id,
+        user_agency_id: currentUser.user_agency[0].id,
       };
       if (!is_date) ap.is_period = 1;
       console.log(ap);
       const result = await createAppointment(ap);
-      if (result) emit("refresh");
+      if (result) {
+        emit("refresh");
+        successAlert("Enregistrement effectué avec success");
+        resetForm();
+      } else {
+        errorAlert(
+          "Impossible d'effectuer cette enregistrement veillez verifier les informations soumises !"
+        );
+      }
       console.log(result);
       loading.value = false;
     };

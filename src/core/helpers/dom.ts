@@ -32,6 +32,7 @@ const highlightDetectedText = (
   search: string,
   className: string = "text-primary"
 ): string => {
+  if (!value) return "";
   if (
     !search ||
     !value.toLocaleLowerCase().includes(search.toLocaleLowerCase())

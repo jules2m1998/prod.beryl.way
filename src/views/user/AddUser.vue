@@ -355,11 +355,11 @@ export default defineComponent({
           name: "Account manager",
         },
         {
-          id: 2,
+          id: 4,
           name: "Director",
         },
         {
-          id: 2,
+          id: 5,
           name: "On board",
         },
       ];

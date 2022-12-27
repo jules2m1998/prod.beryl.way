@@ -19,7 +19,10 @@
 
   <my-loader v-else></my-loader>
 
-  <new-event-modal @refresh="refresh" :selected-date="selectedAppointment"></new-event-modal>
+  <new-event-modal
+    @refresh="refresh"
+    :selected-date="selectedAppointment"
+  ></new-event-modal>
 
   <calendar-detail-model
     :current="selectedAppointment"
@@ -102,7 +105,7 @@ const calendarOptions = computed<CalendarOptions>(() => ({
       const date = new Date(e.time);
       return {
         id: e.id.toString(),
-        title: `Rendez-vous de ${e.agent.user.name} avec ${e.client.user.name}`,
+        title: `Rendez-vous de ${e.agent.user.name} avec ${e.client?.user?.name}`,
         start: date,
         description: e.reason,
         end: addHour(date, 1),
@@ -206,12 +209,12 @@ const loadData = async () => {
 
   console.log(ap);
   isLoading.value = false;
-}
+};
 
 const refresh = async () => {
   closeModal();
   await loadData();
-}
+};
 </script>
 
 <style scoped>

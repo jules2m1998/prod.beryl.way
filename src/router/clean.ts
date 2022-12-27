@@ -28,7 +28,16 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/unboarding-request",
         name: "unboarding-request",
-        component: () => import("@/views/UnboardingRequest.vue"),
+        component: () => import("@/views/onboarding/UnboardingRequest.vue"),
+        meta: {
+          pageTitle: "unboardingRequest",
+          breadcrumbs: ["unboardingRequest"],
+        },
+      },
+      {
+        path: "/unboarding-request/:id",
+        name: "unboarding-detail",
+        component: () => import("@/views/onboarding/OnboardingDetail.vue"),
         meta: {
           pageTitle: "unboardingRequest",
           breadcrumbs: ["unboardingRequest"],
