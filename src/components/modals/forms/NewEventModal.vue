@@ -71,7 +71,7 @@
                   ></div>
                 </div>
               </div>
-              <div class="row" v-for="(p, i) in form.slots" :key="i">
+              <div class="row" v-for="(p, i) in form.values" :key="i">
                 <div class="col-lg-6 col-md-6 col-sm-6">
                   <div
                     class="fv-row mb-9 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid"
@@ -79,7 +79,7 @@
                     <!--begin::Input-->
                     <el-form-item label="Start hour" required>
                       <el-time-picker
-                        v-model="form.slots[i].start"
+                        v-model="form.values[i].start"
                         type="time"
                         :teleported="false"
                         name="startTime"
@@ -98,7 +98,7 @@
                     <!--begin::Input-->
                     <el-form-item label="End hour" required>
                       <el-time-picker
-                        v-model="form.slots[i].end"
+                        v-model="form.values[i].end"
                         type="time"
                         :teleported="false"
                         name="startTime"
@@ -182,7 +182,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, defineEmits } from "vue";
 import { hideModal } from "@/core/helpers/dom";
 import { useAuthStore } from "@/stores/auth";
 import { formatDate, formatTime } from "@/core/helpers";
@@ -212,7 +212,8 @@ interface Props {
 export default defineComponent({
   name: "new-event-modal",
   components: {},
-  setup(props: Props) {
+  emits: ["refresh"],
+  setup(props: Props, { emit }) {
     const formRef = ref<null | HTMLFormElement>(null);
     const newTargetModalRef = ref<null | HTMLElement>(null);
     const loading = ref<boolean>(false);
@@ -230,8 +231,10 @@ export default defineComponent({
     });
 
     const form = ref<ISlot>({
+      id: 1,
+      created_at: "",
       date: "",
-      slots: [
+      values: [
         {
           start: "",
           end: "",
@@ -257,24 +260,27 @@ export default defineComponent({
     );
 
     const isValid = computed<boolean>(
-      () => !!form.value.date && form.value.slots.every((e) => e.end && e.start)
+      () =>
+        !!form.value.date && form.value.values.every((e) => e.end && e.start)
     );
 
     const addPeriod = () => {
-      form.value.slots.push({
+      form.value.values.push({
         start: "",
         end: "",
       });
     };
     const removeThis = (pos: number) => {
-      if (form.value.slots.length > 1)
-        form.value.slots = form.value.slots.filter((_, k) => k !== pos);
+      if (form.value.values.length > 1)
+        form.value.values = form.value.values.filter((_, k) => k !== pos);
     };
 
     const resetForm = () => {
       form.value = {
+        id: 1,
+        created_at: "",
         date: "",
-        slots: [
+        values: [
           {
             start: "",
             end: "",
@@ -324,16 +330,15 @@ export default defineComponent({
       loading.value = true;
       const currentUser = authStore.user;
       const d = form.value.date;
-      console.log(d instanceof Date, d);
-      const date: string | string[] =
-        d instanceof Date
-          ? formatDate(d)
-          : JSON.stringify((d as string[]).map((d) => formatDate(d)));
+      const is_date = d instanceof Date;
+      const date: string | string[] = is_date
+        ? formatDate(d)
+        : JSON.stringify((d as string[]).map((d) => formatDate(d)));
 
       const ap: IAppointmentRequest = {
         date,
         values: JSON.stringify(
-          form.value.slots.map((s) => ({
+          form.value.values.map((s) => ({
             start: formatTime(s.start),
             end: formatTime(s.end),
             available: true,
@@ -341,8 +346,10 @@ export default defineComponent({
         ),
         user_agency_id: currentUser.id,
       };
+      if (!is_date) ap.is_period = 1;
       console.log(ap);
       const result = await createAppointment(ap);
+      if (result) emit("refresh");
       console.log(result);
       loading.value = false;
     };
@@ -354,6 +361,7 @@ export default defineComponent({
       targetData,
       rules,
       submit,
+      emit,
       form,
       addPeriod,
       typePeriod,

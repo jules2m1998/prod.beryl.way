@@ -5,7 +5,7 @@ interface IUserRequest {
   email: string;
   is_client: 0 | 1;
   password: string;
-  agence_id: number;
+  agency_id: number;
   interaction_type_id: number;
 }
 

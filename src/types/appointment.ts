@@ -12,16 +12,25 @@ interface IAppointment extends IModel {
   agent: IUserAgency;
 }
 
-interface ISlot {
+interface ISlotPeriod {
   start: string;
   end: string;
-  available: boolean;
+  available?: string;
 }
 
 interface IAppointmentRequest {
   user_agency_id: number;
   date: string | string[];
   values: string;
+  is_period?: 1 | 0;
 }
 
-export type { IAppointment, IAppointmentRequest };
+interface ISlotWithString extends IModel, IAppointmentRequest {}
+
+interface ISlot extends IModel {
+  user_agency_id?: number;
+  values: ISlotPeriod[];
+  date: string | string[];
+}
+
+export type { IAppointment, IAppointmentRequest, ISlot, ISlotWithString };

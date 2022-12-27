@@ -19,7 +19,7 @@
 
   <my-loader v-else></my-loader>
 
-  <new-event-modal :selected-date="selectedAppointment"></new-event-modal>
+  <new-event-modal @refresh="refresh" :selected-date="selectedAppointment"></new-event-modal>
 
   <calendar-detail-model
     :current="selectedAppointment"
@@ -31,7 +31,11 @@
 <script setup lang="ts">
 import "@fullcalendar/core/vdom";
 import FullCalendar from "@fullcalendar/vue3";
-import type { CalendarOptions, EventClickArg } from "@fullcalendar/vue3";
+import type {
+  CalendarOptions,
+  EventClickArg,
+  EventInput,
+} from "@fullcalendar/vue3";
 
 import NewEventModal from "@/components/modals/forms/NewEventModal.vue";
 import MyLoader from "@/components/Loader.vue";
@@ -44,12 +48,16 @@ import listPlugin from "@fullcalendar/list";
 import { ON_PROGESS_COLOR } from "@/core/data/const";
 import { Modal } from "bootstrap";
 import { ref, onMounted, computed } from "vue";
-import type { IAppointment } from "@/types";
-import { getAllAppointment } from "@/core/services/AppointmentService";
+import type { IAppointment, ISlot } from "@/types";
+import {
+  getAllAppointment,
+  getAllSlots,
+} from "@/core/services/AppointmentService";
 
 const isLoading = ref<boolean>(false);
 
 const appointments = ref<IAppointment[]>([]);
+const slots = ref<ISlot[]>([]);
 const selectedAppointment = ref<IAppointment | undefined>(undefined);
 
 // Calender
@@ -89,17 +97,20 @@ const calendarOptions = computed<CalendarOptions>(() => ({
   editable: true,
   dayMaxEvents: true, // allow "more" link when too many events
   navLinks: true,
-  events: appointments.value.map((e) => {
-    const date = new Date(e.time);
-    return {
-      id: e.id.toString(),
-      title: `Rendez-vous de ${e.agent.user.name} avec ${e.client.user.name}`,
-      start: date,
-      description: e.reason,
-      end: addHour(date, 1),
-      className: "fc-event-success",
-    };
-  }),
+  events: [
+    ...appointments.value.map((e) => {
+      const date = new Date(e.time);
+      return {
+        id: e.id.toString(),
+        title: `Rendez-vous de ${e.agent.user.name} avec ${e.client.user.name}`,
+        start: date,
+        description: e.reason,
+        end: addHour(date, 1),
+        className: "fc-event-success",
+      };
+    }),
+    ...getSlotLikePeriod(slots.value),
+  ],
   eventClick: onOneClick,
 }));
 
@@ -110,6 +121,18 @@ const addEvent = () => {
   if (elt) {
     const modal = new Modal(elt);
     modal.show();
+  } else {
+    console.error("Model not exist");
+  }
+};
+
+const closeModal = () => {
+  const elt = document.getElementById("kt_modal_add_event") as Element;
+  console.log(elt);
+
+  if (elt) {
+    const modal = new Modal(elt);
+    modal.hide();
   } else {
     console.error("Model not exist");
   }
@@ -143,14 +166,52 @@ const resetCurrentAppointment = () => {
   selectedAppointment.value = undefined;
 };
 
+const getSlotLikePeriod = (list: ISlot[]): EventInput[] => {
+  const result: EventInput[] = list.reduce((acc, current) => {
+    return [
+      ...acc,
+      ...current.values
+        .map((v) => ({
+          id: "s" + current.id.toString(),
+          title: "Libre",
+          start: new Date(current.date + " " + v.start),
+          end: new Date(current.date + " " + v.end),
+          className: "fc-event-success",
+          color: ON_PROGESS_COLOR,
+          availaible: v.available === "true",
+        }))
+        .filter((v) => !v.availaible),
+    ];
+  }, [] as EventInput[]);
+
+  return result;
+};
+
 // OnMounted
 onMounted(async () => {
+  await loadData();
+});
+
+const loadData = async () => {
   isLoading.value = true;
   const ap = await getAllAppointment();
   if (ap) appointments.value = ap;
+
+  const sl = await getAllSlots();
+  if (sl)
+    slots.value = sl.map((s) => ({
+      ...s,
+      values: JSON.parse(s.values),
+    }));
+
   console.log(ap);
   isLoading.value = false;
-});
+}
+
+const refresh = async () => {
+  closeModal();
+  await loadData();
+}
 </script>
 
 <style scoped>

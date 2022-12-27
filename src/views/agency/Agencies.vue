@@ -36,7 +36,7 @@
         ></span>
       </template>
       <template v-slot:active="{ row: customer }">
-        <span class="badge badge-success" v-if="customer.active">Active</span>
+        <span class="badge badge-success" v-if="+customer.active">Active</span>
         <span class="badge badge-danger" v-else>Deactivate</span>
       </template>
       <template v-slot:created_at="{ row: customer }">

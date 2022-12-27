@@ -141,7 +141,7 @@
               <Field
                 type="password"
                 class="form-control form-control-lg form-control-solid fw-semobold fs-6"
-                name="currentpassword"
+                name="password"
                 id="currentpassword"
               />
               <div class="fv-plugins-message-container">
@@ -191,7 +191,7 @@
             <div class="col-lg-8 fv-row">
               <Field
                 as="select"
-                name="agence_id"
+                name="agency_id"
                 class="form-select form-select-solid form-select-lg fw-semobold"
               >
                 <option :value="v.id" v-for="(v, k) in agences" :key="k">
@@ -200,7 +200,7 @@
               </Field>
               <div class="fv-plugins-message-container">
                 <div class="fv-help-block">
-                  <ErrorMessage name="agence_id" />
+                  <ErrorMessage name="agency_id" />
                 </div>
               </div>
             </div>
@@ -223,8 +223,8 @@
                 name="interaction_type_id"
                 class="form-select form-select-solid form-select-lg fw-semobold"
               >
-                <option :value="v" v-for="(v, k) in interact" :key="k">
-                  {{ v }}
+                <option :value="v.id" v-for="(v, k) in interact" :key="k">
+                  {{ v.name }}
                 </option>
               </Field>
               <div class="fv-plugins-message-container">
@@ -277,12 +277,17 @@
 import { defineComponent, ref, onMounted } from "vue";
 import { ErrorMessage, Field, Form as VForm } from "vee-validate";
 import * as Yup from "yup";
-import type { IAgence, IUser, IUserRequest } from "@/types";
+import type { IAgence, IUserRequest } from "@/types";
 import { objectToFormData } from "@/core/helpers";
 import FormImage from "@/components/files/FormImage.vue";
 import { createUser, getAllAgence } from "@/core/services";
 import { makeRequestAndAlert } from "@/core/helpers";
 import MyLoader from "@/components/Loader.vue";
+
+interface ITypesInteraction {
+  id: number;
+  name: string;
+}
 
 export default defineComponent({
   name: "account-settings",
@@ -308,7 +313,7 @@ export default defineComponent({
       phone: Yup.string().required().label("Contact phone"),
       email: Yup.string().email().required().label("Email"),
       password: Yup.string().label("Password"),
-      agence_id: Yup.string().required().label("Agence"),
+      agency_id: Yup.string().required().label("Agence"),
       interaction_type_id: Yup.string().required().label("Role"),
     });
 
@@ -340,7 +345,24 @@ export default defineComponent({
 
     onMounted(async () => {
       const agencies = await getAllAgence();
-      const interaction = [0];
+      const interaction: ITypesInteraction[] = [
+        {
+          id: 2,
+          name: "Customer care",
+        },
+        {
+          id: 3,
+          name: "Account manager",
+        },
+        {
+          id: 2,
+          name: "Director",
+        },
+        {
+          id: 2,
+          name: "On board",
+        },
+      ];
 
       if (agencies) agences.value = agencies;
       if (interaction) interact.value = interaction;
