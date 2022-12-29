@@ -23,22 +23,12 @@ class ApiService {
     axios.defaults.headers.common["Accept"] = "application/json";
     axios.interceptors.response.use(
       function (response) {
-        // Any status code that lie within the range of 2xx cause this function to trigger
-        // Do something with response data
-        console.clear();
-        console.info(response);
         return response;
       },
       function (error: AxiosError) {
-        // Any status codes that falls outside the range of 2xx cause this function to trigger
-        // Do something with response error
-        console.clear();
-
         if (navigator.onLine) {
           const { status, data } = error.response!;
           const text = (data as IHttpError).message;
-          console.error(error, status, text);
-
           const title =
             status === 422
               ? '<h1 style="color:black !important;">Informations incorrectes !</h1>'
