@@ -326,16 +326,9 @@ export default defineComponent({
         if (file.value) data.path = file.value;
 
         const formData = objectToFormData(data);
-        await makeRequestAndAlert(
-          "Utilisateur créé avec succes",
-          "Erreure lors de la creation de cet utilisateur",
-          "users",
-          async () => await createUser(formData)
-        );
+        await createUser(formData);
         console.log(data);
-        setTimeout(() => {
-          submitButton1.value?.removeAttribute("data-kt-indicator");
-        }, 2000);
+        submitButton1.value?.removeAttribute("data-kt-indicator");
       }
     };
 

@@ -2,7 +2,9 @@ import type { App } from "vue";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import JwtService from "@/core/services/JwtService";
-import type { AxiosResponse } from "axios";
+import type { AxiosResponse, AxiosError } from "axios";
+import type { IHttpError } from "@/types/https";
+import { customAlert } from "@/core/helpers";
 
 /**
  * @description service to call HTTP request via Axios
@@ -12,6 +14,49 @@ class ApiService {
    * @description property to share vue instance
    */
   public static vueInstance: App;
+
+  static {
+    console.log("ssss");
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${JwtService.getToken()}`;
+    axios.defaults.headers.common["Accept"] = "application/json";
+    axios.interceptors.response.use(
+      function (response) {
+        // Any status code that lie within the range of 2xx cause this function to trigger
+        // Do something with response data
+        console.clear();
+        console.info(response);
+        return response;
+      },
+      function (error: AxiosError) {
+        // Any status codes that falls outside the range of 2xx cause this function to trigger
+        // Do something with response error
+        console.clear();
+
+        if (navigator.onLine) {
+          const { status, data } = error.response!;
+          const text = (data as IHttpError).message;
+          console.error(error, status, text);
+
+          const title =
+            status === 422
+              ? '<h1 style="color:black !important;">Informations incorrectes !</h1>'
+              : "";
+
+          customAlert(title, text, "error");
+        } else {
+          customAlert(
+            '<h1 style="color:black !important;">Oops..</h1>',
+            "Vous n'etes plus connecté à internet !",
+            "error"
+          );
+        }
+
+        return Promise.reject(error);
+      }
+    );
+  }
 
   /**
    * @description initialize vue axios
@@ -26,13 +71,7 @@ class ApiService {
   /**
    * @description set the default HTTP request headers
    */
-  public static setHeader(): void {
-    ApiService.vueInstance.axios.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${JwtService.getToken()}`;
-    ApiService.vueInstance.axios.defaults.headers.common["Accept"] =
-      "application/json";
-  }
+  public static setHeader(): void {}
 
   /**
    * @description send the GET HTTP request
