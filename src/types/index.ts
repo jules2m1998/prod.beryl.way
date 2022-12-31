@@ -7,3 +7,4 @@ export * from "./appointment";
 export * from "./model";
 export * from "./user";
 export * from "./onboard";
+export * from "./service";

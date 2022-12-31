@@ -9,21 +9,21 @@
       <div class="menu-content d-flex align-items-center px-3">
         <!--begin::Avatar-->
         <div class="symbol symbol-50px me-5">
-          <img alt="Logo" src="/media/avatars/300-1.jpg" />
+          <img alt="Logo" :src="userAvatar" />
         </div>
         <!--end::Avatar-->
 
         <!--begin::Username-->
         <div class="d-flex flex-column">
           <div class="fw-bold d-flex align-items-center fs-5">
-            Max Smith
+            {{ store.user.name }}
             <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2"
               >Pro</span
             >
           </div>
-          <a href="#" class="fw-semobold text-muted text-hover-primary fs-7"
-            >max@kt.com</a
-          >
+          <a href="#" class="fw-semobold text-muted text-hover-primary fs-7">{{
+            store.user.email
+          }}</a>
         </div>
         <!--end::Username-->
       </div>
@@ -36,7 +36,7 @@
 
     <!--begin::Menu item-->
     <div class="menu-item px-5">
-      <router-link to="/pages/profile/overview" class="menu-link px-5">
+      <router-link :to="{ name: 'account-settings' }" class="menu-link px-5">
         My Profile
       </router-link>
     </div>
@@ -241,6 +241,7 @@
 import { defineComponent, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useAuthStore } from "@/stores/auth";
+import { getImagePathToServer } from "@/core/helpers";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
@@ -259,18 +260,6 @@ export default defineComponent({
       en: {
         flag: "/media/flags/united-states.svg",
         name: "English",
-      },
-      es: {
-        flag: "/media/flags/spain.svg",
-        name: "Spanish",
-      },
-      de: {
-        flag: "/media/flags/germany.svg",
-        name: "German",
-      },
-      ja: {
-        flag: "/media/flags/japan.svg",
-        name: "Japanese",
       },
       fr: {
         flag: "/media/flags/france.svg",
@@ -292,6 +281,10 @@ export default defineComponent({
       return i18n.locale.value;
     });
 
+    const userAvatar = computed(() => {
+      return getImagePathToServer(store.user.avatar);
+    });
+
     const currentLangugeLocale = computed(() => {
       return countries[i18n.locale.value as keyof typeof countries];
     });
@@ -302,6 +295,8 @@ export default defineComponent({
       currentLanguage,
       currentLangugeLocale,
       countries,
+      store,
+      userAvatar,
     };
   },
 });

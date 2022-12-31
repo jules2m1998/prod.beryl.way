@@ -78,6 +78,12 @@ const MainMenuConfig: Array<MenuItem> = [
         ],
       },
       {
+        heading: "serviceTitle",
+        route: "/services",
+        svgIcon: "/media/icons/duotune/medicine/med010.svg",
+        fontIcon: "bi-layers",
+      },
+      {
         heading: "calendar",
         route: "/calendar",
         svgIcon: "/media/icons/duotune/general/gen014.svg",

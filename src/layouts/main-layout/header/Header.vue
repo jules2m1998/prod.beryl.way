@@ -59,7 +59,6 @@ import {
 export default defineComponent({
   name: "layout-header",
   components: {
-    KTHeaderMenu,
     KTHeaderNavbar,
   },
   setup() {

@@ -1,3 +1,9 @@
+export type Difference = {
+  changed: string[];
+  unchanged: string[];
+  isDifferent: boolean;
+}
+
 const objectToFormData = (obj: object): FormData => {
   const data = new FormData();
 
@@ -6,6 +12,35 @@ const objectToFormData = (obj: object): FormData => {
   }
 
   return data;
+};
+
+export const objectToFormDataAndExclude = (
+  obj: object,
+  exluded: string[] = []
+): FormData => {
+  exluded.forEach((str) => {
+    if (Object.hasOwn(obj, str)) delete obj[str];
+  });
+
+  return objectToFormData(obj);
+};
+
+export const differentsPropValue = <T extends object>(
+  toObj: T,
+  withObj: T
+): Difference => {
+  const keys = Object.keys(toObj);
+  const changed: string[] = [];
+  const unchanged: string[] = [];
+  keys.forEach((v) => {
+    if (toObj[v] !== withObj[v]) changed.push(v);
+    else unchanged.push(v);
+  });
+  return {
+    changed,
+    unchanged,
+    isDifferent: changed.length > 0,
+  };
 };
 
 export { objectToFormData };

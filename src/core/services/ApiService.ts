@@ -16,7 +16,6 @@ class ApiService {
   public static vueInstance: App;
 
   static {
-    console.log("ssss");
     axios.defaults.headers.common[
       "Authorization"
     ] = `Bearer ${JwtService.getToken()}`;
@@ -26,8 +25,8 @@ class ApiService {
         return response;
       },
       function (error: AxiosError) {
+        const { status, data } = error.response!;
         if (navigator.onLine) {
-          const { status, data } = error.response!;
           const text = (data as IHttpError).message;
           const title =
             status === 422
@@ -43,7 +42,7 @@ class ApiService {
           );
         }
 
-        return Promise.reject(error);
+        return Promise.reject(data);
       }
     );
   }

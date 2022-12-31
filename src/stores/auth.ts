@@ -4,7 +4,6 @@ import ApiService from "@/core/services/ApiService";
 import JwtService from "@/core/services/JwtService";
 import type { IUser, IUserLogin, IUserResponse } from "@/types";
 
-
 export interface User {
   name: string;
   surname: string;

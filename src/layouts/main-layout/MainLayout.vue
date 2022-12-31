@@ -59,10 +59,7 @@ export default defineComponent({
     KTContent,
     KTToolbar,
     KTFooter,
-    KTDrawers,
     KTScrollTop,
-    KTModals,
-    KTCustomize,
   },
   setup() {
     const route = useRoute();

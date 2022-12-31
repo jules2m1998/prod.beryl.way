@@ -51,7 +51,7 @@
         data-kt-menu-attach="parent"
         data-kt-menu-placement="bottom-end"
       >
-        <img src="/media/avatars/300-1.jpg" alt="user" />
+        <img :src="userAvatar" alt="user" />
       </div>
       <KTUserMenu />
       <!--end::Menu wrapper-->
@@ -75,31 +75,34 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import KTSearch from "@/layouts/main-layout/search/Search.vue";
-import KTNotificationMenu from "@/layouts/main-layout/menus/NotificationsMenu.vue";
-import KTQuickLinksMenu from "@/layouts/main-layout/menus/QuickLinksMenu.vue";
 import KTUserMenu from "@/layouts/main-layout/menus/UserAccountMenu.vue";
 import KTThemeModeSwitcher from "@/layouts/main-layout/theme-mode/ThemeModeSwitcher.vue";
 import { useThemeStore } from "@/stores/theme";
+import { getImagePathToServer } from "@/core/helpers";
+import { useAuthStore } from "@/stores/auth";
 
 export default defineComponent({
   name: "header-navbar",
   components: {
-    KTSearch,
-    KTNotificationMenu,
-    KTQuickLinksMenu,
     KTUserMenu,
     KTThemeModeSwitcher,
   },
   setup() {
     const store = useThemeStore();
+    const authStore = useAuthStore();
 
     const themeMode = computed(() => {
       return store.mode;
     });
 
+
+    const userAvatar = computed(() => {
+      return getImagePathToServer(authStore.user.avatar);
+    });
+
     return {
       themeMode,
+      userAvatar,
     };
   },
 });

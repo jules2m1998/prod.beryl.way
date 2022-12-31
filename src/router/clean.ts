@@ -17,6 +17,32 @@ const routes: Array<RouteRecordRaw> = [
     },
     children: [
       {
+        path: "/crafted/account",
+        name: "account",
+        component: () => import("@/views/crafted/account/Account.vue"),
+        meta: {
+          breadcrumbs: ["Crafted", "Account"],
+        },
+        children: [
+          {
+            path: "overview",
+            name: "account-overview",
+            component: () => import("@/views/crafted/account/Overview.vue"),
+            meta: {
+              pageTitle: "Overview",
+            },
+          },
+          {
+            path: "settings",
+            name: "account-settings",
+            component: () => import("@/views/crafted/account/Settings.vue"),
+            meta: {
+              pageTitle: "Settings",
+            },
+          },
+        ],
+      },
+      {
         path: "/dashboard",
         name: "dashboard",
         component: () => import("@/views/Dashboard.vue"),
@@ -50,6 +76,34 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           pageTitle: "credit",
           breadcrumbs: ["credit"],
+        },
+      },
+      {
+        path: "/services",
+        name: "services",
+        component: () => import("@/views/service/index.vue"),
+        meta: {
+          pageTitle: "serviceTitle",
+          breadcrumbs: ["serviceTitle"],
+          addPathName: "service_add",
+        },
+      },
+      {
+        path: "/service",
+        name: "service_add",
+        component: () => import("@/views/service/form.vue"),
+        meta: {
+          pageTitle: "serviceTitle",
+          breadcrumbs: ["serviceTitle"],
+        },
+      },
+      {
+        path: "/service/:id",
+        name: "service_update",
+        component: () => import("@/views/service/form.vue"),
+        meta: {
+          pageTitle: "serviceTitle",
+          breadcrumbs: ["serviceTitle"],
         },
       },
       {
@@ -198,6 +252,14 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           pageTitle: "Calendar",
           breadcrumbs: ["Calendar"],
+        },
+      },
+      {
+        path: "/crafted/pages/profile",
+        name: "profile",
+        component: () => import("@/components/page-layouts/Profile.vue"),
+        meta: {
+          breadcrumbs: ["Pages", "Profile"],
         },
       },
     ],

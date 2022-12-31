@@ -16,6 +16,7 @@ interface IUser {
   updated_at: Date;
   deleted_at: Date;
   role_id: number;
+  role: any;
   user_agency: IUserAgency[];
 }
 
