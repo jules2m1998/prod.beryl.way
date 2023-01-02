@@ -57,4 +57,20 @@ const makeRequestAndAlert = async (
     errorAlert(errorMsg);
   }
 };
+
+export const alertWithOkCancel = (
+  title: string,
+  text: string,
+  confirmButtonText: string,
+  denyButtonText: string = "Annuler",
+  icon: SweetAlertIcon = "warning"
+): Promise<SweetAlertResult<boolean>> =>
+  Swal.fire({
+    title,
+    text,
+    icon,
+    showDenyButton: true,
+    confirmButtonText,
+    denyButtonText,
+  });
 export { successAlert, errorAlert, makeRequestAndAlert };

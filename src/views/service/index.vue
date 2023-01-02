@@ -40,11 +40,22 @@
               >Modifier</router-link
             >
           </template>
+          <template v-slot:delete>
+            <div
+              class="menu-link text-danger px-3"
+              @click="deleteService(customer.id)"
+            >
+              Delete
+            </div>
+          </template>
         </drop-down-menu>
       </template>
     </Datatable>
   </page-with-table>
   <my-loader v-else></my-loader>
+
+  <service-detail-modal :selector="selector" :service="selectedItem">
+  </service-detail-modal>
 </template>
 
 <script setup lang="ts">
@@ -57,16 +68,17 @@ import { searchByName } from "@/core/helpers/array";
 import { highlightDetectedText } from "@/core/helpers/dom";
 import MyLoader from "@/components/Loader.vue";
 import type { IService } from "@/types";
-import { getALlServices } from "@/core/services";
+import { getALlServices, deleteOneService } from "@/core/services";
 import { RouterLink } from "vue-router";
-import { getDateFormated, openModal } from "@/core/helpers";
+import { getDateFormated, openModal, successAlert } from "@/core/helpers";
 import DropDownMenu from "@/components/dropdown/DropDownMenu.vue";
+import ServiceDetailModal from "@/components/modals/general/ServiceDetailModal.vue";
 
 const selector = "detail-zone-modal";
 
 const isLoading = ref<boolean>(false);
 const tableData = ref<Array<IService>>([]);
-const menu = ref<string[]>(["view", "update"]);
+const menu = ref<string[]>(["view", "update", "delete"]);
 const selectedItem = ref<IService | undefined>(undefined);
 
 const tableHeader = ref([
@@ -128,11 +140,28 @@ const searchByText = (e: string) => {
   searchValue.value = e;
 };
 
+const loadData = async () => {
+  tableData.value = [];
+  const a = await getALlServices();
+  if (a) tableData.value = a;
+};
+
+const deleteService = async (id: number) => {
+  isLoading.value = true;
+  console.log(id);
+  try {
+    await deleteOneService(id);
+  } catch (error) {
+    successAlert("Suppression effectuée avec succes !");
+    await loadData();
+  }
+  isLoading.value = false;
+};
+
 // On mounted
 onMounted(async () => {
   isLoading.value = true;
-  const a = await getALlServices();
-  if (a) tableData.value = a;
+  await loadData();
   isLoading.value = false;
 });
 </script>

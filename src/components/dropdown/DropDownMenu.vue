@@ -11,7 +11,7 @@
     </button>
     <!--begin::Menu-->
     <div
-      class="my-dropdown-menu menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semobold fs-7 w-125px py-4"
+      class="my-dropdown-menu menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary"
       :class="{ show: isOpen }"
     >
       <template v-for="(m, j) in props.menu" :key="j">
@@ -53,10 +53,9 @@ onMounted(() => {
   position: relative;
 
   &-menu {
-    z-index: 105;
     position: absolute;
-    inset: auto 0px 0px auto;
     margin: 0px;
+    top: calc(100% + 5px);
   }
 }
 </style>

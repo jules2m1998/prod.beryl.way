@@ -49,6 +49,20 @@ export const putOne = async <T, P>(
   }
 };
 
+export const putWithParams = async <T, P>(
+  path: string,
+  params: P
+): Promise<T | IHttpError> => {
+  try {
+    const response = await ApiService.putWithParams(path, null, params);
+    const data = response.data.data as T;
+
+    return data;
+  } catch (e: any) {
+    return e as IHttpError;
+  }
+};
+
 export const getOne = async <T>(path: string): Promise<T | IHttpError> => {
   try {
     const response = await ApiService.get(path);

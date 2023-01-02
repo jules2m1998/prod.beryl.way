@@ -8,3 +8,4 @@ export * from "./model";
 export * from "./user";
 export * from "./onboard";
 export * from "./service";
+export * from "./complaint";

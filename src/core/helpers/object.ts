@@ -2,7 +2,7 @@ export type Difference = {
   changed: string[];
   unchanged: string[];
   isDifferent: boolean;
-}
+};
 
 const objectToFormData = (obj: object): FormData => {
   const data = new FormData();
@@ -16,13 +16,17 @@ const objectToFormData = (obj: object): FormData => {
 
 export const objectToFormDataAndExclude = (
   obj: object,
-  exluded: string[] = []
-): FormData => {
-  exluded.forEach((str) => {
+  excluded: string[] = []
+): FormData => objectToFormData(excludeParamsToObject(obj, excluded));
+
+export const excludeParamsToObject = <T extends object>(
+  obj: T,
+  excluded: string[] = []
+): Partial<T> => {
+  excluded.forEach((str) => {
     if (Object.hasOwn(obj, str)) delete obj[str];
   });
-
-  return objectToFormData(obj);
+  return obj;
 };
 
 export const differentsPropValue = <T extends object>(

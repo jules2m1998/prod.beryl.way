@@ -1,11 +1,11 @@
-import type { IService } from "@/types";
+import type { IService, IServiceRequest } from "@/types";
 import type { IHttpError } from "@/types/https";
 import {
   createWithFormData,
   deleteOne,
   getAll,
   getOne,
-  putOne,
+  putWithParams,
 } from "./generic-service";
 
 const route = "service";
@@ -23,6 +23,6 @@ export const createService = (request: FormData): Promise<IService | null> =>
   createWithFormData<IService>(route, request);
 
 export const updateService = (
-  request: FormData,
+  request: Partial<IServiceRequest>,
   id: number
-): Promise<IService | IHttpError> => putOne(`${route}/${id}`, request);
+): Promise<IService | IHttpError> => putWithParams(`${route}/${id}`, request);

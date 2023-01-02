@@ -4,7 +4,7 @@ import VueAxios from "vue-axios";
 import JwtService from "@/core/services/JwtService";
 import type { AxiosResponse, AxiosError } from "axios";
 import type { IHttpError } from "@/types/https";
-import { customAlert } from "@/core/helpers";
+import { customAlert, alertWithOkCancel } from "@/core/helpers";
 
 /**
  * @description service to call HTTP request via Axios
@@ -43,6 +43,25 @@ class ApiService {
         }
 
         return Promise.reject(data);
+      }
+    );
+    axios.interceptors.request.use(
+      async function (config) {
+        // Do something before request is sent
+        if (config.method === "delete") {
+          const alertResult = await alertWithOkCancel(
+            "Voulez-vous vraiment supprimer cette élément ?",
+            "Cette suppression sera définitive",
+            "Supprimer"
+          );
+          if (!alertResult.isConfirmed)
+            throw new axios.Cancel("Operation canceled by the user.");
+        }
+        return config;
+      },
+      function (error) {
+        // Do something with request error
+        return Promise.reject(error);
       }
     );
   }
@@ -132,6 +151,20 @@ class ApiService {
    */
   public static put(resource: string, params: any): Promise<AxiosResponse> {
     return ApiService.vueInstance.axios.put(`${resource}`, params);
+  }
+
+  /**
+   * @description Send the PUT HTTP request
+   * @param resource: string
+   * @param params: AxiosRequestConfig
+   * @returns Promise<AxiosResponse>
+   */
+  public static putWithParams(
+    resource: string,
+    params: any,
+    data: any
+  ): Promise<AxiosResponse> {
+    return ApiService.vueInstance.axios.put(`${resource}`, data, { params });
   }
 
   /**

@@ -145,7 +145,7 @@ import {
 } from "@/core/services";
 import type { IService, IServiceRequest } from "@/types";
 import { ErrorMessage, Field, Form as VForm } from "vee-validate";
-import { ref, onMounted, computed, type Ref } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import * as Yup from "yup";
 import MyLoader from "@/components/Loader.vue";
@@ -153,6 +153,7 @@ import {
   successAlert,
   objectToFormDataAndExclude,
   differentsPropValue,
+  excludeParamsToObject,
 } from "@/core/helpers";
 import { useRouter, useRoute } from "vue-router";
 import type { IHttpError } from "@/types/https";
@@ -191,14 +192,13 @@ const create = async (values: IServiceRequest) => {
 };
 
 const update = async (values: IServiceRequest) => {
-  console.log(values);
   const diff = differentsPropValue<IServiceRequest>(
     values,
     current.value as IServiceRequest
   );
-  const formData = objectToFormDataAndExclude(values, diff.unchanged);
-  const result = await updateService(formData, +current.value!.id);
-  if ((result as IHttpError).success === false)
+  const objExcluded = excludeParamsToObject(values, diff.unchanged);
+  const result = await updateService(objExcluded, +current.value!.id);
+  if ((result as IHttpError)?.success !== false)
     successAlert("Service modifier avec success !").then(() => {
       router.push({
         name: "services",
@@ -222,9 +222,8 @@ onMounted(async () => {
     const cur = await getOneService(+route.params.id);
     if (!(cur as IHttpError).success) current.value = cur as IService;
   }
-  console.log(route.params.id);
   const s = await getALlServices();
-  if (s) zone.value = s;
+  if (s) zone.value = s.filter((s) => s.id !== +route.params.id);
   isLoading.value = false;
 });
 </script>
