@@ -250,16 +250,19 @@ const { t } = useI18n();
 const router = useRouter();
 
 const agenceValidator = Yup.object().shape({
-  location: Yup.string().required().label("Location"),
-  name: Yup.string().required().label("Location"),
-  longitude: Yup.string().required().label("Longitude"),
-  latitude: Yup.string().required().label("Latitude"),
-  zone_id: Yup.string().required().label("Zone"),
+  location: Yup.string().required("La localisation est obligatoire."),
+  name: Yup.string().required().required("Le nom est obligatoire."),
+  longitude: Yup.number()
+    .required("La longitude est obligatoire.")
+    .typeError("La longitude doit être un nombre"),
+  latitude: Yup.number()
+    .required("La latitude est obligatoire.")
+    .typeError("La latitude doit être un nombre"),
+  zone_id: Yup.number().required("La zone est obligatoire."),
 });
 
 const saveChange = async (values: IAgenceRequest) => {
   submitButton?.value?.setAttribute("data-kt-indicator", "on");
-  console.log(values);
   values.active = !values.active ? 1 : 0;
   const data = new FormData();
 
@@ -276,10 +279,6 @@ const saveChange = async (values: IAgenceRequest) => {
         name: "agencies",
       });
     });
-  } else {
-    errorAlert(
-      "Echec lors de la creation de l'agence verifiez vos informations et reessayez !"
-    );
   }
   submitButton?.value?.removeAttribute("data-kt-indicator");
 };

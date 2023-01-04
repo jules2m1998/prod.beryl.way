@@ -5,6 +5,7 @@ import JwtService from "@/core/services/JwtService";
 import type { AxiosResponse, AxiosError } from "axios";
 import type { IHttpError } from "@/types/https";
 import { customAlert, alertWithOkCancel } from "@/core/helpers";
+import router from "@/router/clean";
 
 /**
  * @description service to call HTTP request via Axios
@@ -34,6 +35,9 @@ class ApiService {
               : "";
 
           customAlert(title, text, "error");
+          // .then((_) => {
+          //   if (status === 422) router.push({ name: "sign-in" });
+          // });
         } else {
           customAlert(
             '<h1 style="color:black !important;">Oops..</h1>',
@@ -79,7 +83,11 @@ class ApiService {
   /**
    * @description set the default HTTP request headers
    */
-  public static setHeader(): void {}
+  public static setHeader(): void {
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${JwtService.getToken()}`;
+  }
 
   /**
    * @description send the GET HTTP request

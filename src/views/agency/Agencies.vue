@@ -12,7 +12,6 @@
       :data="arrayFind"
       :header="tableHeader"
       :enable-items-per-page-dropdown="true"
-      :checkbox-enabled="true"
       checkbox-label="id"
     >
       <template v-slot:name="{ row: customer }">

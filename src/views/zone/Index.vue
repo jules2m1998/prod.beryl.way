@@ -12,7 +12,6 @@
       :data="arrayFind"
       :header="tableHeader"
       :enable-items-per-page-dropdown="true"
-      :checkbox-enabled="true"
       checkbox-label="id"
     >
       <template v-slot:name="{ row: customer }">
@@ -31,12 +30,10 @@
         ></span>
       </template>
       <template v-slot:country_code="{ row: customer }">
-        <span
-          v-html="highlightDetectedText(customer.country_code, searchValue)"
-        ></span>
+        <span class="badge badge-primary">{{ customer.country_code }}</span>
       </template>
       <template v-slot:created_at="{ row: customer }">
-        {{ getI18nDate(customer.created_at).calendar() }}
+        {{ getI18nDate(customer.created_at).format("LLLL") }}
       </template>
       <template v-slot:actions="{ row: customer }">
         <drop-down-menu name="Actions" :menu="menu">

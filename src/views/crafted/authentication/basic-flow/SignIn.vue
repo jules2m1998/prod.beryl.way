@@ -2,11 +2,16 @@
   <!--begin::Wrapper-->
   <div class="w-lg-500px p-10">
     <!--begin::Form-->
-    <VForm class="form w-100" id="kt_login_signin_form" @submit="onSubmitLogin" :validation-schema="login"
+    <VForm
+      class="form w-100"
+      id="kt_login_signin_form"
+      @submit="onSubmitLogin"
+      :validation-schema="login"
       :initial-values="{
         identifier: 'poupock.company@gmail.com',
         password: 'Password',
-      }">
+      }"
+    >
       <!--begin::Heading-->
       <div class="text-center mb-10">
         <!--begin::Title-->
@@ -21,8 +26,13 @@
         <!--end::Label-->
 
         <!--begin::Input-->
-        <Field tabindex="1" class="form-control form-control-lg form-control-solid" type="text" name="identifier"
-          autocomplete="off" />
+        <Field
+          tabindex="1"
+          class="form-control form-control-lg form-control-solid"
+          type="text"
+          name="identifier"
+          autocomplete="off"
+        />
         <!--end::Input-->
         <div class="fv-plugins-message-container">
           <div class="fv-help-block">
@@ -43,8 +53,13 @@
         <!--end::Wrapper-->
 
         <!--begin::Input-->
-        <Field tabindex="2" class="form-control form-control-lg form-control-solid" type="password" name="password"
-          autocomplete="off" />
+        <Field
+          tabindex="2"
+          class="form-control form-control-lg form-control-solid"
+          type="password"
+          name="password"
+          autocomplete="off"
+        />
         <!--end::Input-->
         <div class="fv-plugins-message-container">
           <div class="fv-help-block">
@@ -57,13 +72,20 @@
       <!--begin::Actions-->
       <div class="text-center">
         <!--begin::Submit button-->
-        <button tabindex="3" type="submit" ref="submitButton" id="kt_sign_in_submit"
-          class="btn btn-lg btn-primary w-100 mb-5">
+        <button
+          tabindex="3"
+          type="submit"
+          ref="submitButton"
+          id="kt_sign_in_submit"
+          class="btn btn-lg btn-primary w-100 mb-5"
+        >
           <span class="indicator-label"> Continue </span>
 
           <span class="indicator-progress">
             Please wait...
-            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+            <span
+              class="spinner-border spinner-border-sm align-middle ms-2"
+            ></span>
           </span>
         </button>
         <!--end::Submit button-->
@@ -152,6 +174,7 @@ export default defineComponent({
       submitButton.value?.removeAttribute("data-kt-indicator");
       // eslint-disable-next-line
       submitButton.value!.disabled = false;
+      console.log(submitButton.value);
     };
 
     return {

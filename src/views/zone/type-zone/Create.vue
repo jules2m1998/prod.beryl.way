@@ -128,7 +128,6 @@ import { ErrorMessage, Field, Form as VForm } from "vee-validate";
 import Swal from "sweetalert2";
 import * as Yup from "yup";
 import { useI18n } from "vue-i18n";
-import ApiService from "@/core/services/ApiService";
 import type { IZoneTypeRequest } from "@/types";
 import { useRouter } from "vue-router";
 import { createTypeZone } from "@/core/services";
@@ -150,7 +149,7 @@ export default defineComponent({
     });
 
     const profileDetails = ref<IZoneTypeRequest>({
-      name: "Max",
+      name: "",
       level: 1,
     });
     const router = useRouter();

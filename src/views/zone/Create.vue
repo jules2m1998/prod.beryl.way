@@ -138,13 +138,6 @@
                 </div>
               </div>
               <!--end::Input-->
-
-              <!--begin::Hint-->
-              <div class="form-text">
-                Please select a preferred language, including date, time, and
-                number formatting.
-              </div>
-              <!--end::Hint-->
             </div>
             <!--end::Col-->
           </div>
@@ -177,13 +170,6 @@
                 </div>
               </div>
               <!--end::Input-->
-
-              <!--begin::Hint-->
-              <div class="form-text">
-                Please select a preferred language, including date, time, and
-                number formatting.
-              </div>
-              <!--end::Hint-->
             </div>
             <!--end::Col-->
           </div>
@@ -229,7 +215,6 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
 import { ErrorMessage, Field, Form as VForm } from "vee-validate";
-import Swal from "sweetalert2";
 import * as Yup from "yup";
 import { useI18n } from "vue-i18n";
 import type { IZone, IZoneRequest, IZoneType } from "@/types";
@@ -296,12 +281,8 @@ export default defineComponent({
 
         if (response) {
           successAlert("Zone créée avec success !").then(() => {
-            router.push("zone");
+            router.push({ name: "zone" });
           });
-        } else {
-          errorAlert(
-            "Echec lors de la creation de la zone verifiez vos informations et reessayez !"
-          );
         }
         submitButton.value?.removeAttribute("data-kt-indicator");
       }

@@ -44,11 +44,10 @@ export const useAuthStore = defineStore("auth", () => {
   function login(credentials: IUserLogin) {
     return ApiService.post("sign-in", credentials)
       .then(({ data }) => {
-        console.info(data);
         setAuth(data);
       })
-      .catch(({ response }) => {
-        setError(response.data.message);
+      .catch((response) => {
+        setError(response.message);
         console.error(response);
       });
   }

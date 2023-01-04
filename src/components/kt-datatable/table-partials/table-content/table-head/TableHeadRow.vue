@@ -19,6 +19,7 @@
             'text-end': i === header.length - 1,
           }"
           @click="onSort(column.columnLabel, column.sortEnabled)"
+          style="color: black"
           :style="{
             minWidth: column.columnWidth ? `${column.columnWidth}px` : '0',
             width: 'auto',

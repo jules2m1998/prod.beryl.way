@@ -12,7 +12,6 @@
       :data="arrayFind"
       :header="tableHeader"
       :enable-items-per-page-dropdown="true"
-      :checkbox-enabled="true"
       checkbox-label="id"
     >
       <template v-slot:name="{ row: customer }">
@@ -58,7 +57,7 @@
 import PageWithTable from "@/components/PageWithTable.vue";
 import MyLoader from "@/components/Loader.vue";
 import { ref, computed, onMounted } from "vue";
-import type { IChart, IZoneType } from "@/types";
+import type {  IZoneType } from "@/types";
 import Datatable from "@/components/kt-datatable/KTDataTable.vue";
 import arraySort from "array-sort";
 import type { Sort } from "@/components/kt-datatable//table-partials/models";
@@ -68,13 +67,11 @@ import { getAllTypeZone } from "@/core/services";
 import { getI18nDate, openModal } from "@/core/helpers";
 import DropDownMenu from "@/components/dropdown/DropDownMenu.vue";
 import ZoneTypeDetailModal from "@/components/modals/general/ZoneTypeDetailModal.vue";
-import type { IHttpError } from "@/types/https";
 
 const getData = async () => {
   isLoading.value = true;
   const allTypeZones = await getAllTypeZone();
-  if (!(allTypeZones as IHttpError).success)
-    tableData.value = allTypeZones as IZoneType[];
+  if (allTypeZones) tableData.value = allTypeZones as IZoneType[];
   else console.error("Error when fetch types zone !");
   isLoading.value = false;
 };

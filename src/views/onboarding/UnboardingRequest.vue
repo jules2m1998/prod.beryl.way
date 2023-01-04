@@ -13,7 +13,6 @@
       :data="arrayFind"
       :header="tableHeader"
       :enable-items-per-page-dropdown="true"
-      :checkbox-enabled="true"
       checkbox-label="id"
     >
       <template v-slot:full_name="{ row: onboard }">
@@ -123,6 +122,8 @@ import { getAllOnboard } from "@/core/services";
 import { highlightDetectedText } from "@/core/helpers/dom";
 import DropDownMenu from "@/components/dropdown/DropDownMenu.vue";
 import MyLoader from "@/components/Loader.vue";
+import { successErrorColor } from "@/core/helpers";
+import { RouterLink } from "vue-router";
 
 const menu = ref<string[]>(["view"]);
 const isLoading = ref<boolean>(false);
@@ -144,6 +145,7 @@ const charts = ref<IChart[]>([
       title: {
         text: "Status",
       },
+      colors: successErrorColor,
     },
   },
   {
@@ -152,6 +154,7 @@ const charts = ref<IChart[]>([
       title: {
         text: "Demography",
       },
+      colors: successErrorColor,
     },
     series: [
       {
@@ -170,6 +173,7 @@ const charts = ref<IChart[]>([
       title: {
         text: "Age",
       },
+      colors: successErrorColor,
     },
     series: [
       {
@@ -188,6 +192,7 @@ const charts = ref<IChart[]>([
       title: {
         text: "Geography",
       },
+      colors: successErrorColor,
     },
     series: [
       {
