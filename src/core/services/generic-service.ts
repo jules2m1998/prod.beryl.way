@@ -1,4 +1,4 @@
-import type { IHttpResponse, IHttpError } from "@/types/https";
+import type {IHttpError, IHttpResponse} from "@/types/https";
 import ApiService from "./ApiService";
 
 /**
@@ -55,9 +55,8 @@ export const putWithParams = async <T, P>(
 ): Promise<T | IHttpError> => {
   try {
     const response = await ApiService.putWithParams(path, null, params);
-    const data = response.data.data as T;
-
-    return data;
+    console.log(response);
+    return response.data as T;
   } catch (e: any) {
     return e as IHttpError;
   }

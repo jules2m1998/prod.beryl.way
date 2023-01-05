@@ -8,13 +8,13 @@
     <div id="kt_account_profile_details" class="collapse show">
       <!--begin::Form-->
       <VForm
-        id="kt_account_profile_details_form"
-        class="form"
-        novalidate
-        :initial-values="initialValue"
-        :validation-schema="agenceValidator"
-        @submit="saveChange($event as unknown as IServiceRequest)"
-        @invalid-submit="onInvalidSubmit"
+          id="kt_account_profile_details_form"
+          class="form"
+          novalidate
+          :initial-values="initialValue"
+          :validation-schema="agenceValidator"
+          @submit="saveChange($event)"
+          @invalid-submit="onInvalidSubmit"
       >
         <!--begin::Card body-->
         <div class="card-body border-top p-9">
@@ -137,33 +137,23 @@
 </template>
 
 <script setup lang="ts">
-import {
-  getALlServices,
-  createService,
-  getOneService,
-  updateService,
-} from "@/core/services";
-import type { IService, IServiceRequest } from "@/types";
-import { ErrorMessage, Field, Form as VForm } from "vee-validate";
-import { ref, onMounted, computed } from "vue";
-import { useI18n } from "vue-i18n";
+import {createService, getALlServices, getOneService, updateService,} from "@/core/services";
+import type {IService, IServiceRequest} from "@/types";
+import {ErrorMessage, Field, Form as VForm} from "vee-validate";
+import {computed, onMounted, ref} from "vue";
+import {useI18n} from "vue-i18n";
 import * as Yup from "yup";
 import MyLoader from "@/components/Loader.vue";
-import {
-  successAlert,
-  objectToFormDataAndExclude,
-  differentsPropValue,
-  excludeParamsToObject,
-} from "@/core/helpers";
-import { useRouter, useRoute } from "vue-router";
-import type { IHttpError } from "@/types/https";
+import {differentsPropValue, excludeParamsToObject, objectToFormDataAndExclude, successAlert,} from "@/core/helpers";
+import {useRoute, useRouter} from "vue-router";
+import type {IHttpError} from "@/types/https";
 
 const isLoading = ref<boolean>(false);
 const zone = ref<IService[]>([]);
 const current = ref<IService | null>(null);
 const submitButton = ref<HTMLElement | null>(null);
 
-const { t } = useI18n();
+const {t} = useI18n();
 const router = useRouter();
 const route = useRoute();
 
@@ -196,6 +186,7 @@ const update = async (values: IServiceRequest) => {
     values,
     current.value as IServiceRequest
   );
+  if (!diff.isDifferent) return;
   const objExcluded = excludeParamsToObject(values, diff.unchanged);
   const result = await updateService(objExcluded, +current.value!.id);
   if ((result as IHttpError)?.success !== false)

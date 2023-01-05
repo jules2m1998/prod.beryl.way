@@ -1,17 +1,29 @@
-import type { IZoneTypeRequest, IZoneType, IZone, IZoneRequest } from "@/types";
-import { createOne, getAll } from "./generic-service";
+import type {IZone, IZoneRequest, IZoneType, IZoneTypeRequest} from "@/types";
+import {createOne, getAll, getOne, putWithParams} from "./generic-service";
+import type {IHttpError} from "@/types/https";
 
 // **************** Type zone services ************************** //
 const getAllTypeZone = (): Promise<IZoneType[] | null> =>
-  getAll<IZoneType>("zone-type");
+    getAll<IZoneType>("zone-type");
 
 const createTypeZone = (request: IZoneTypeRequest): Promise<IZoneType | null> =>
-  createOne<IZoneType, IZoneTypeRequest>("zone-type", request);
+    createOne<IZoneType, IZoneTypeRequest>("zone-type", request);
 
 // **************** Zone services **************** //
-const getAllZone = (): Promise<IZone[] | null> => getAll<IZone>("zone");
+
+const ZONE = "zone";
+const getAllZone = (): Promise<IZone[] | null> => getAll<IZone>(ZONE);
 
 const createZone = (request: IZoneRequest): Promise<IZone | null> =>
-  createOne<IZone, IZoneRequest>("zone", request);
+    createOne<IZone, IZoneRequest>("zone", request);
 
-export { getAllZone, getAllTypeZone, createTypeZone, createZone };
+export const getOneZone = (id: number): Promise<IZone | IHttpError> =>
+    getOne<IZone>(`${ZONE}/${id}`);
+
+export const updateZone = (
+    id: number,
+    data: Partial<IZone>
+): Promise<IZone | IHttpError> =>
+    putWithParams<IZone, Partial<IZone>>(`${ZONE}/${id}`, data);
+
+export {getAllZone, getAllTypeZone, createTypeZone, createZone};

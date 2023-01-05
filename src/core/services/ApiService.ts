@@ -1,10 +1,10 @@
-import type { App } from "vue";
+import type {App} from "vue";
+import type {AxiosError, AxiosResponse} from "axios";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import JwtService from "@/core/services/JwtService";
-import type { AxiosResponse, AxiosError } from "axios";
-import type { IHttpError } from "@/types/https";
-import { customAlert, alertWithOkCancel } from "@/core/helpers";
+import type {IHttpError} from "@/types/https";
+import {alertWithOkCancel, customAlert} from "@/core/helpers";
 import router from "@/router/clean";
 
 /**
@@ -25,25 +25,36 @@ class ApiService {
       function (response) {
         return response;
       },
-      function (error: AxiosError) {
-        const { status, data } = error.response!;
-        if (navigator.onLine) {
-          const text = (data as IHttpError).message;
-          const title =
-            status === 422
-              ? '<h1 style="color:black !important;">Informations incorrectes !</h1>'
-              : "";
+        async function (error: AxiosError) {
+          const {status, data} = error.response!;
+          if (navigator.onLine) {
+            const text = (data as IHttpError).message;
+            let title: string;
 
-          customAlert(title, text, "error");
-          // .then((_) => {
-          //   if (status === 422) router.push({ name: "sign-in" });
-          // });
-        } else {
-          customAlert(
-            '<h1 style="color:black !important;">Oops..</h1>',
-            "Vous n'etes plus connecté à internet !",
-            "error"
-          );
+            switch (status) {
+              case 422:
+                title =
+                    '<h1 style="color:black !important;">Informations incorrectes !</h1>';
+                break;
+              case 404:
+                title =
+                    '<h1 style="color:black !important;">Element inexistant !</h1>';
+                break;
+              default:
+                title =
+                    '<h1 style="color:black !important;">Something went wrong !</h1>';
+            }
+            if (status === 404) {
+              await router.push({name: "404"});
+            }
+
+            await customAlert(title, text, "error");
+          } else {
+            await customAlert(
+                '<h1 style="color:black !important;">Oops..</h1>',
+                "Vous n'etes plus connecté à internet !",
+                "error"
+            );
         }
 
         return Promise.reject(data);

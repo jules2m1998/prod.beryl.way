@@ -18,13 +18,8 @@ interface IZoneType {
   created_at: Date;
 }
 
-interface IZone {
+interface IZone extends IZoneRequest {
   id: number;
-  name: string;
-  short_name: string;
-  country_code: number;
-  parent_id: number;
-  zone_type_id: number;
   created_at: Date;
   type: IZoneType;
   children: IZone[];

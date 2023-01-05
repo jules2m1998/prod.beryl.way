@@ -123,14 +123,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { ErrorMessage, Field, Form as VForm } from "vee-validate";
+import {defineComponent, onMounted, ref} from "vue";
+import {ErrorMessage, Field, Form as VForm} from "vee-validate";
 import Swal from "sweetalert2";
 import * as Yup from "yup";
-import { useI18n } from "vue-i18n";
-import type { IZoneTypeRequest } from "@/types";
-import { useRouter } from "vue-router";
-import { createTypeZone } from "@/core/services";
+import {useI18n} from "vue-i18n";
+import type {IZoneTypeRequest} from "@/types";
+import {useRoute, useRouter} from "vue-router";
+import {createTypeZone} from "@/core/services";
 
 export default defineComponent({
   name: "account-settings",
@@ -140,7 +140,7 @@ export default defineComponent({
     VForm,
   },
   setup() {
-    const { t } = useI18n();
+    const {t} = useI18n();
     const submitButton = ref<HTMLElement | null>(null);
 
     const profileDetailsValidator = Yup.object().shape({
@@ -153,6 +153,7 @@ export default defineComponent({
       level: 1,
     });
     const router = useRouter();
+    const route = useRoute();
 
     const send = async () => {
       const data = await createTypeZone(profileDetails.value);
@@ -196,6 +197,10 @@ export default defineComponent({
         submitButton.value?.removeAttribute("data-kt-indicator");
       }
     };
+
+    onMounted(() => {
+      console.log(route.params.id);
+    });
 
     return {
       profileDetails,

@@ -22,11 +22,12 @@
     <div id="kt_account_profile_details" class="collapse show">
       <!--begin::Form-->
       <VForm
-        id="kt_account_profile_details_form"
-        class="form"
-        novalidate
-        @submit="saveChanges()"
-        :validation-schema="profileDetailsValidator"
+          id="kt_account_profile_details_form"
+          class="form"
+          novalidate
+          :initial-values="initialValue"
+          @submit="saveChanges($event)"
+          :validation-schema="profileDetailsValidator"
       >
         <!--begin::Card body-->
         <div class="card-body border-top p-9">
@@ -34,7 +35,7 @@
           <div class="row mb-6">
             <!--begin::Label-->
             <label class="col-lg-4 col-form-label required fw-semobold fs-6"
-              >Name</label
+            >Name</label
             >
             <!--end::Label-->
 
@@ -213,18 +214,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
-import { ErrorMessage, Field, Form as VForm } from "vee-validate";
+import {computed, defineComponent, onMounted, ref} from "vue";
+import {ErrorMessage, Field, Form as VForm} from "vee-validate";
 import * as Yup from "yup";
-import { useI18n } from "vue-i18n";
-import type { IZone, IZoneRequest, IZoneType } from "@/types";
-import { getAllTypeZone, getAllZone, createZone } from "@/core/services";
+import {useI18n} from "vue-i18n";
+import type {IZone, IZoneRequest, IZoneType} from "@/types";
+import {createZone, getAllTypeZone, getAllZone, getOneZone, updateZone,} from "@/core/services";
 import MyLoader from "@/components/Loader.vue";
-import { successAlert, errorAlert } from "@/core/helpers";
-import { useRouter } from "vue-router";
+import {differentsPropValue, excludeParamsToObject, successAlert,} from "@/core/helpers";
+import {useRoute, useRouter} from "vue-router";
+import type {IHttpError} from "@/types/https";
 
 export default defineComponent({
-  name: "account-settings",
+  name: "create-zone-form",
   components: {
     ErrorMessage,
     Field,
@@ -232,13 +234,27 @@ export default defineComponent({
     VForm,
   },
   setup() {
-    const { t } = useI18n();
+    const {t} = useI18n();
     const submitButton = ref<HTMLElement | null>(null);
     const zoneTypes = ref<IZoneType[]>([]);
     const parentTypes = ref<IZone[]>([]);
     const isLoading = ref<boolean>(false);
+    const currentZone = ref<IZone | null>(null);
 
     const router = useRouter();
+    const route = useRoute();
+
+    const id = computed<number | undefined>(() => +route.params.id);
+    const initialValue = computed<IZoneRequest>(
+        () =>
+            ({
+              name: currentZone.value?.name || "",
+              short_name: currentZone.value?.short_name || "",
+              country_code: currentZone.value?.country_code || "",
+              parent_id: currentZone.value?.parent_id || 0,
+              zone_type_id: currentZone.value?.zone_type_id || 0,
+            } as IZoneRequest)
+    );
 
     const emailFormDisplay = ref(false);
     const passwordFormDisplay = ref(false);
@@ -252,39 +268,63 @@ export default defineComponent({
 
     onMounted(async () => {
       isLoading.value = true;
+      await loadZoneForUpdate();
 
       const zT = await getAllTypeZone();
       if (zT) zoneTypes.value = zT;
-      else console.error("Error when fetch zone type !");
 
       const z = await getAllZone();
-      console.log(z);
-      if (z) parentTypes.value = z;
-      else console.error("Error when fetch zone type !");
+      if (z) parentTypes.value = z.filter((z) => z.id !== id.value);
 
       isLoading.value = false;
     });
 
     const profileDetails = ref<IZoneRequest>({
-      country_code: "",
-      short_name: "",
-      zone_type_id: 0,
-      name: "",
-      parent_id: null,
+      name: currentZone.value?.name || "",
+      short_name: currentZone.value?.short_name || "",
+      country_code: currentZone.value?.country_code || "",
+      parent_id: currentZone.value?.parent_id || null,
+      zone_type_id: currentZone.value?.zone_type_id || 0,
     });
 
-    const saveChanges = async () => {
+    const saveChanges = async (data: IZoneRequest) => {
       if (submitButton.value) {
         // Activate indicator
         submitButton.value.setAttribute("data-kt-indicator", "on");
-        const response = await createZone(profileDetails.value);
-
-        if (response) {
-          successAlert("Zone créée avec success !").then(() => {
-            router.push({ name: "zone" });
-          });
-        }
+        if (!id.value) await create();
+        else await update(data);
         submitButton.value?.removeAttribute("data-kt-indicator");
+      }
+    };
+
+    const create = async () => {
+      if (id.value) return;
+      const response = await createZone(profileDetails.value);
+      if (response) {
+        successAlert("Zone créée avec success !").then(() => {
+          router.push({name: "zone"});
+        });
+      }
+    };
+    const update = async (data: IZoneRequest) => {
+      if (!id.value) return;
+      const diff = differentsPropValue<IZoneRequest>(data, {
+        ...currentZone.value,
+      } as IZoneRequest);
+      if (!diff.isDifferent) return;
+      const objExcluded = excludeParamsToObject(data, diff.unchanged);
+      const result = await updateZone(id.value, objExcluded);
+      if ((result as IHttpError)?.success !== false) {
+        successAlert("Zone modifiée avec success !").then(() => {
+          router.push({name: "zone"});
+        });
+      }
+    };
+
+    const loadZoneForUpdate = async () => {
+      if (id.value) {
+        const zone = await getOneZone(id.value);
+        if (!(zone as IHttpError).message) currentZone.value = zone as IZone;
       }
     };
 
@@ -298,6 +338,8 @@ export default defineComponent({
       zoneTypes,
       parentTypes,
       isLoading,
+      currentZone,
+      initialValue,
       t,
     };
   },
