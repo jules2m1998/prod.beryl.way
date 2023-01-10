@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-  DataUtil,
-  getObjectPropertyValueByKey,
-  stringSnakeToCamel,
-  getAttributeValueByBreakpoint,
-  getViewPort,
-  isVisibleElement,
-  throttle,
-  getCSS,
-  ElementStyleUtil,
+    DataUtil,
+    ElementStyleUtil,
+    getAttributeValueByBreakpoint,
+    getCSS,
+    getObjectPropertyValueByKey,
+    getViewPort,
+    isVisibleElement,
+    stringSnakeToCamel,
+    throttle,
 } from "../_utils/index";
-import { CookieComponent } from "./_CookieComponent";
+import {CookieComponent} from "./_CookieComponent";
 
 export interface ScrollOptions {
   saveState?: boolean;

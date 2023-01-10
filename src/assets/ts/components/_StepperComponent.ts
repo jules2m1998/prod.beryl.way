@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-  getElementIndex,
-  getUniqueIdWithPrefix,
-  ElementAnimateUtil,
-  EventHandlerUtil,
-  DataUtil,
-  DOMEventHandlerUtil,
-  ElementStyleUtil,
+    DataUtil,
+    DOMEventHandlerUtil,
+    ElementAnimateUtil,
+    ElementStyleUtil,
+    EventHandlerUtil,
+    getElementIndex,
+    getUniqueIdWithPrefix,
 } from "../_utils/index";
 
 export interface IStepperOptions {

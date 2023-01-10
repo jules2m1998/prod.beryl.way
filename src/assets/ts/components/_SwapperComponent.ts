@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-  getAttributeValueByBreakpoint,
-  stringSnakeToCamel,
-  getObjectPropertyValueByKey,
-  EventHandlerUtil,
-  throttle,
+    EventHandlerUtil,
+    getAttributeValueByBreakpoint,
+    getObjectPropertyValueByKey,
+    stringSnakeToCamel,
+    throttle,
 } from "../_utils/index";
 
 export class SwapperStore {

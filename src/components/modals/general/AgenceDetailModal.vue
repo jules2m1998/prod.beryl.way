@@ -81,7 +81,8 @@
                   <span class="svg-icon svg-icon-4 me-1">
                     <inline-svg src="/media/icons/duotune/general/gen014.svg" />
                   </span>
-                  Create {{ getI18nDate(agence?.created_at).fromNow() }}
+                  Create
+                  {{ getI18nDate(new Date(agence?.created_at || '')).fromNow() }}
                 </a>
               </div>
               <!--end::Info-->
@@ -98,10 +99,10 @@
 </template>
 
 <script setup lang="ts">
-import { getI18nDate } from "@/core/helpers";
-import type { IAgence } from "@/types";
+import {getI18nDate} from "@/core/helpers";
+import type {IAgence} from "@/types";
 import DetailModalTemplate from "./DetailModalTemplate.vue";
-import { useRouter } from "vue-router";
+import {useRouter} from "vue-router";
 
 interface Props {
   agence?: IAgence;

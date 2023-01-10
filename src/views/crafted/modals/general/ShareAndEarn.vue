@@ -11,10 +11,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import KTModalsCard from "@/components/cards/Card.vue";
 import KTShareAndEarnModal from "@/components/modals/general/ShareAndEarnModal.vue";
-import { getIllustrationsPath } from "@/core/helpers/assets";
+import {getIllustrationsPath} from "@/core/helpers/assets";
 
 export default defineComponent({
   name: "share-and-earn",

@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import KTWidget1 from "@/components/widgets/feeds/Widget1.vue";
 import KTWidget2 from "@/components/widgets/feeds/Widget2.vue";
 import KTWidget3 from "@/components/widgets/feeds/Widget3.vue";

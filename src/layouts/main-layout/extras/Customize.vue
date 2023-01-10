@@ -536,10 +536,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { config, layout, themeMode } from "@/core/helpers/config";
-import { useConfigStore, LS_CONFIG_NAME_KEY } from "@/stores/config";
-import { useThemeStore } from "@/stores/theme";
+import {defineComponent, ref} from "vue";
+import {config, layout, themeMode} from "@/core/helpers/config";
+import {LS_CONFIG_NAME_KEY, useConfigStore} from "@/stores/config";
+import {useThemeStore} from "@/stores/theme";
 
 export default defineComponent({
   name: "customize-layout",

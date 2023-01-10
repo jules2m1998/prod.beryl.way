@@ -239,8 +239,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { themeName, demo } from "@/core/helpers/documentation";
+import {defineComponent} from "vue";
+import {demo, themeName} from "@/core/helpers/documentation";
 
 export default defineComponent({
   name: "kt-explore",

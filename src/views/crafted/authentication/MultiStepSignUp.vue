@@ -284,19 +284,19 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from "vue";
+import {computed, defineComponent, onMounted, ref} from "vue";
 import LayoutService from "@/core/services/LayoutService";
-import { getIllustrationsPath } from "@/core/helpers/assets";
+import {getIllustrationsPath} from "@/core/helpers/assets";
 import Step1 from "@/components/wizard/steps/Step1.vue";
 import Step2 from "@/components/wizard/steps/Step2.vue";
 import Step3 from "@/components/wizard/steps/Step3.vue";
 import Step4 from "@/components/wizard/steps/Step4.vue";
 import Step5 from "@/components/wizard/steps/Step5.vue";
-import { StepperComponent } from "@/assets/ts/components";
+import {StepperComponent} from "@/assets/ts/components";
 import * as Yup from "yup";
-import { useForm } from "vee-validate";
+import {useForm} from "vee-validate";
 import Swal from "sweetalert2";
-import { useBodyStore } from "@/stores/body";
+import {useBodyStore} from "@/stores/body";
 
 interface IStep1 {
   accountType: string;

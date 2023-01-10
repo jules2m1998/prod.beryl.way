@@ -1,12 +1,12 @@
 import {
-  MenuComponent,
-  ScrollComponent,
-  StickyComponent,
-  ToggleComponent,
-  DrawerComponent,
-  SwapperComponent,
+    DrawerComponent,
+    MenuComponent,
+    ScrollComponent,
+    StickyComponent,
+    SwapperComponent,
+    ToggleComponent,
 } from "@/assets/ts/components";
-import { ThemeModeComponent } from "@/assets/ts/layout";
+import {ThemeModeComponent} from "@/assets/ts/layout";
 
 /**
  * @description Initialize KeenThemes custom components

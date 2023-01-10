@@ -192,7 +192,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import UserMenu from "@/layouts/main-layout/menus/UserAccountMenu.vue";
 
 export default defineComponent({

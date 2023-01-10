@@ -1,15 +1,15 @@
 import {
-  getElementOffset,
-  getScrollTop,
-  getAttributeValueByBreakpoint,
-  getUniqueIdWithPrefix,
-  getObjectPropertyValueByKey,
-  stringSnakeToCamel,
-  getCSS,
-  DataUtil,
-  ElementAnimateUtil,
-  ElementStyleUtil,
-  EventHandlerUtil,
+    DataUtil,
+    ElementAnimateUtil,
+    ElementStyleUtil,
+    EventHandlerUtil,
+    getAttributeValueByBreakpoint,
+    getCSS,
+    getElementOffset,
+    getObjectPropertyValueByKey,
+    getScrollTop,
+    getUniqueIdWithPrefix,
+    stringSnakeToCamel,
 } from "../_utils/index";
 
 export interface StickyOptions {

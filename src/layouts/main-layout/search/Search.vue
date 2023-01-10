@@ -453,7 +453,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import {defineComponent, ref} from "vue";
 import Results from "@/layouts/main-layout/search/partials/Results.vue";
 import PartialMain from "@/layouts/main-layout/search/partials/Main.vue";
 import Empty from "@/layouts/main-layout/search/partials/Empty.vue";

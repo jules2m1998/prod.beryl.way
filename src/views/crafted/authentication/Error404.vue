@@ -43,11 +43,11 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted } from "vue";
+import {computed, defineComponent, onMounted} from "vue";
 import LayoutService from "@/core/services/LayoutService";
-import { useBodyStore } from "@/stores/body";
-import { getIllustrationsPath } from "@/core/helpers/assets";
-import { useThemeStore } from "@/stores/theme";
+import {useBodyStore} from "@/stores/body";
+import {getIllustrationsPath} from "@/core/helpers/assets";
+import {useThemeStore} from "@/stores/theme";
 
 export default defineComponent({
   name: "error-404",

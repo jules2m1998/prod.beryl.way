@@ -39,7 +39,6 @@
 
     <!--begin::Card body-->
     <div class="card-body pt-2 pb-4 d-flex flex-wrap align-items-center">
-
       <!--begin::Labels-->
       <div class="d-flex flex-column content-justify-center flex-row-fluid">
         <!--begin::Label-->
@@ -81,16 +80,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
-import { getCSSVariableValue } from "@/assets/ts/_utils";
+import {defineComponent, onMounted} from "vue";
 
 export default defineComponent({
   name: "default-dashboard-widget-2",
   components: {},
   props: {
-    className: { type: String, required: false },
+    className: {type: String, required: false},
   },
-  setup(props, { expose }) {
+  setup() {
     onMounted(() => {
     });
   },

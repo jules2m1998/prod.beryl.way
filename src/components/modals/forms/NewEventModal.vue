@@ -182,17 +182,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
-import { useAuthStore } from "@/stores/auth";
-import {
-  formatDate,
-  formatTime,
-  successAlert,
-  errorAlert,
-} from "@/core/helpers";
-import type { FormRules } from "element-plus";
-import type { IAppointment, IAppointmentRequest, ISlot } from "@/types";
-import { createAppointment } from "@/core/services";
+import {computed, defineComponent, ref} from "vue";
+import {useAuthStore} from "@/stores/auth";
+import {errorAlert, formatDate, formatTime, successAlert,} from "@/core/helpers";
+import type {FormRules} from "element-plus";
+import type {IAppointment, IAppointmentRequest, ISlot} from "@/types";
+import {createAppointment} from "@/core/services";
 
 interface NewAddressData {
   startDate: string;
@@ -207,7 +202,7 @@ interface TypePeriod {
 }
 
 interface Props {
-  selectedDate: IAppointment | undefined;
+  selectedDate?: IAppointment;
 }
 
 export default defineComponent({

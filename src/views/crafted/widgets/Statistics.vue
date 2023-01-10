@@ -261,7 +261,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import StatisticsWidget1 from "@/components/widgets/statsistics/Widget1.vue";
 import StatisticsWidget2 from "@/components/widgets/statsistics/Widget2.vue";
 import StatisticsWidget3 from "@/components/widgets/statsistics/Widget3.vue";

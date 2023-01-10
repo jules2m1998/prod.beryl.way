@@ -153,12 +153,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch, onMounted } from "vue";
+import {computed, defineComponent, onMounted, ref, watch} from "vue";
 import Dropdown3 from "@/components/dropdown/Dropdown3.vue";
-import { getCSSVariableValue } from "@/assets/ts/_utils";
-import type { ApexOptions } from "apexcharts";
+import {getCSSVariableValue} from "@/assets/ts/_utils";
+import type {ApexOptions} from "apexcharts";
 import type VueApexCharts from "vue3-apexcharts";
-import { useThemeStore } from "@/stores/theme";
+import {useThemeStore} from "@/stores/theme";
 
 export default defineComponent({
   name: "widget-7",

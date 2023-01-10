@@ -49,14 +49,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
-import {
-  pageTitleDisplay,
-  pageTitleBreadcrumbDisplay,
-  pageTitleDirection,
-} from "@/core/helpers/config";
-import { useRoute } from "vue-router";
-import { useI18n } from "vue-i18n";
+import {computed, defineComponent} from "vue";
+import {pageTitleBreadcrumbDisplay, pageTitleDirection, pageTitleDisplay,} from "@/core/helpers/config";
+import {useRoute} from "vue-router";
+import {useI18n} from "vue-i18n";
 
 export default defineComponent({
   name: "layout-page-title",
@@ -64,7 +60,7 @@ export default defineComponent({
   setup() {
     const route = useRoute();
 
-    const { t } = useI18n();
+    const {t} = useI18n();
 
     const pageTitle = computed((): string => {
       return route.meta.pageTitle as string;
@@ -80,7 +76,7 @@ export default defineComponent({
       pageTitleDisplay,
       pageTitleBreadcrumbDisplay,
       pageTitleDirection,
-      t
+      t,
     };
   },
 });

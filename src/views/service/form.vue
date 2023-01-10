@@ -9,10 +9,10 @@
       <!--begin::Form-->
       <VForm
           id="kt_account_profile_details_form"
-          class="form"
-          novalidate
           :initial-values="initialValue"
           :validation-schema="agenceValidator"
+          class="form"
+          novalidate
           @submit="saveChange($event)"
           @invalid-submit="onInvalidSubmit"
       >
@@ -22,7 +22,7 @@
           <div class="row mb-6">
             <!--begin::Label-->
             <label class="col-lg-4 col-form-label required fw-semobold fs-6"
-              >Name</label
+            >Name</label
             >
             <!--end::Label-->
 
@@ -197,9 +197,9 @@ const update = async (values: IServiceRequest) => {
     });
 };
 
-const saveChange = async (values: IServiceRequest) => {
+const saveChange = async (values: any) => {
   submitButton?.value?.setAttribute("data-kt-indicator", "on");
-  if (!current.value) await create(values);
+  if (!current.value) await create(values as IServiceRequest);
   else await update(values);
   submitButton?.value?.removeAttribute("data-kt-indicator");
 };

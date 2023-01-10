@@ -51,7 +51,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import ChartsWidget1 from "@/components/widgets/charts/Widget1.vue";
 import ChartsWidget2 from "@/components/widgets/charts/Widget2.vue";
 import ChartsWidget3 from "@/components/widgets/charts/Widget3.vue";

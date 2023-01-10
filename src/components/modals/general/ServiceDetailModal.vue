@@ -75,7 +75,7 @@
               <!--begin::Col-->
               <div class="col-lg-8 fv-row">
                 <span class="fw-semibold text-gray-800 fs-6">{{
-                  getDateFormated(new Date(service?.created_at || ""))
+                    getDateFormated(new Date(service?.created_at || ""))
                   }}</span>
               </div>
               <!--end::Col-->
@@ -158,13 +158,13 @@
 </template>
 
 <script setup lang="ts">
-import { getDateFormated, getI18nDate } from "@/core/helpers";
-import type { IService } from "@/types";
+import {getDateFormated, getI18nDate} from "@/core/helpers";
+import type {IService} from "@/types";
 import DetailModalTemplate from "./DetailModalTemplate.vue";
-import { useRouter } from "vue-router";
-import { ref, watch } from "vue";
-import { getOneService } from "@/core/services";
-import type { IHttpError } from "@/types/https";
+import {useRouter} from "vue-router";
+import {ref, watch} from "vue";
+import {getOneService} from "@/core/services";
+import type {IHttpError} from "@/types/https";
 
 interface Props {
   service?: IService;

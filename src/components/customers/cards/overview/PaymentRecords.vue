@@ -95,7 +95,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import {defineComponent, ref} from "vue";
 import Datatable from "@/components/kt-datatable/KTDataTable.vue";
 
 export default defineComponent({

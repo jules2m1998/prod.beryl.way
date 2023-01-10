@@ -23,9 +23,7 @@
     <!--begin::Card body-->
     <div class="card-body d-flex flex-column justify-content-end pe-0">
       <!--begin::Title-->
-      <span class="fs-6 fw-bolder text-gray-800 d-block mb-2"
-        >Lorem ipsum</span
-      >
+      <span class="fs-6 fw-bolder text-gray-800 d-block mb-2">Lorem ipsum</span>
       <!--end::Title-->
     </div>
     <!--end::Card body-->
@@ -33,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 
 export default defineComponent({
   name: "default-dashboard-widget-3",

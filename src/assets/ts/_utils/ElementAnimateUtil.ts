@@ -1,16 +1,16 @@
-import { DOMEventHandlerUtil } from "./_DOMEventHandlerUtil";
-import { ElementStyleUtil } from "./_ElementStyleUtil";
-import { getElementOffset } from "./DomHelpers";
+import {DOMEventHandlerUtil} from "./_DOMEventHandlerUtil";
+import {ElementStyleUtil} from "./_ElementStyleUtil";
+import {getElementOffset} from "./DomHelpers";
 
 export class ElementAnimateUtil {
-  public static animate(
-    from: number,
-    to: number,
-    duration: number,
-    update: Function,
-    complete?: Function
-  ) {
-    /**
+    public static animate(
+        from: number,
+        to: number,
+        duration: number,
+        update: Function,
+        complete?: Function
+    ) {
+        /**
      * TinyAnimate.easings
      *  Adapted from jQuery Easing
      */

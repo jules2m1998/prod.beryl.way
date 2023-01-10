@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import Customer from "@/components/subscriptions/add/Customer.vue";
 import Products from "@/components/subscriptions/add/Products.vue";
 import PaymentMethod from "@/components/subscriptions/add/PaymentMethod.vue";

@@ -1,12 +1,12 @@
 import {
-  getScrollTop,
-  getAttributeValueByBreakpoint,
-  throttle,
-  getObjectPropertyValueByKey,
-  stringSnakeToCamel,
-  getUniqueIdWithPrefix,
-  DataUtil,
-  ElementAnimateUtil,
+    DataUtil,
+    ElementAnimateUtil,
+    getAttributeValueByBreakpoint,
+    getObjectPropertyValueByKey,
+    getScrollTop,
+    getUniqueIdWithPrefix,
+    stringSnakeToCamel,
+    throttle,
 } from "../_utils/index";
 
 export interface IScrollTopOptions {

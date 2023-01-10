@@ -103,7 +103,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import KTFolder from "@/components/files/Folder.vue";
 import KTFile from "@/components/files/File.vue";
 

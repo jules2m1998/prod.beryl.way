@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import FeedsWidget1 from "@/components/widgets/feeds/Widget1.vue";
 import FeedsWidget2 from "@/components/widgets/feeds/Widget2.vue";
 import FeedsWidget3 from "@/components/widgets/feeds/Widget3.vue";

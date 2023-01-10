@@ -95,7 +95,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
+import {defineComponent, onMounted} from "vue";
 import Quill from "quill";
 import Dropdown2 from "@/components/dropdown/Dropdown2.vue";
 

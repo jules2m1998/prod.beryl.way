@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import ViewDetails from "@/components/subscriptions/view/Details.vue";
 import Events from "@/components/subscriptions/view/Events.vue";
 import Invoices from "@/components/subscriptions/view/Invoices.vue";

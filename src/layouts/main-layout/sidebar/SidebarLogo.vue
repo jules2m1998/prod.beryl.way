@@ -45,9 +45,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { layout, themeMode } from "@/core/helpers/config";
-import { sidebarToggleDisplay } from "@/core/helpers/config";
+import {defineComponent} from "vue";
+import {layout, sidebarToggleDisplay, themeMode} from "@/core/helpers/config";
 
 export default defineComponent({
   name: "sidebar-logo",

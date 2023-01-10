@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { createPopper, type VirtualElement } from "@popperjs/core";
+import {createPopper, type VirtualElement} from "@popperjs/core";
 import {
-  getElementChild,
-  getElementParents,
-  getAttributeValueByBreakpoint,
-  getUniqueIdWithPrefix,
-  DataUtil,
-  ElementStyleUtil,
-  EventHandlerUtil,
-  insertAfterElement,
-  slideUp,
-  slideDown,
-  DOMEventHandlerUtil,
-  throttle,
-  getHighestZindex,
+    DataUtil,
+    DOMEventHandlerUtil,
+    ElementStyleUtil,
+    EventHandlerUtil,
+    getAttributeValueByBreakpoint,
+    getElementChild,
+    getElementParents,
+    getHighestZindex,
+    getUniqueIdWithPrefix,
+    insertAfterElement,
+    slideDown,
+    slideUp,
+    throttle,
 } from "../_utils/index";
 
 export interface MenuOptions {

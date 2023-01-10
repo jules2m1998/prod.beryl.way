@@ -158,7 +158,7 @@
 </style>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, ref } from "vue";
+import {defineComponent, reactive, ref, toRefs} from "vue";
 import Swal from "sweetalert2";
 
 export default defineComponent({

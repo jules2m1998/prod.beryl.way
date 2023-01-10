@@ -203,7 +203,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import Card4 from "@/components/cards/Card4.vue";
 
 export default defineComponent({

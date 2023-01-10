@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import KTUpgradePlanModal from "@/components/modals/general/UpgradePlanModal.vue";
 import KTCreateAppModal from "@/components/modals/wizards/create-app-modal/CreateAppModal.vue";
 import KTNewTargetModal from "@/components/modals/forms/NewTargetModal.vue";

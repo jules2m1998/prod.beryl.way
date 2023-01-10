@@ -799,14 +799,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from "vue";
-import { StepperComponent } from "@/assets/ts/components";
+import {computed, defineComponent, onMounted, ref} from "vue";
+import {StepperComponent} from "@/assets/ts/components";
 import Swal from "sweetalert2";
-import { useForm } from "vee-validate";
-import { Field, ErrorMessage } from "vee-validate";
+import {ErrorMessage, Field, useForm} from "vee-validate";
 import * as Yup from "yup";
 
-import { getIllustrationsPath } from "@/core/helpers/assets";
+import {getIllustrationsPath} from "@/core/helpers/assets";
 
 interface Step1 {
   appName: string;

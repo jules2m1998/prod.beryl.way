@@ -15,9 +15,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
-import { ScrollTopComponent } from "@/assets/ts/components/_ScrollTopComponent";
-import { scrolltopDispaly } from "@/core/helpers/config";
+import {defineComponent, onMounted} from "vue";
+import {ScrollTopComponent} from "@/assets/ts/components/_ScrollTopComponent";
+import {scrolltopDispaly} from "@/core/helpers/config";
 
 export default defineComponent({
   name: "KTScrollTop",

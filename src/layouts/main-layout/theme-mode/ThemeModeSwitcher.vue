@@ -61,11 +61,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
-import { useThemeStore } from "@/stores/theme";
-import { useConfigStore } from "@/stores/config";
-import { useRoute } from "vue-router";
-import { ThemeModeComponent } from "@/assets/ts/layout";
+import {computed, defineComponent} from "vue";
+import {useThemeStore} from "@/stores/theme";
+import {useConfigStore} from "@/stores/config";
+import {useRoute} from "vue-router";
+import {ThemeModeComponent} from "@/assets/ts/layout";
 
 export default defineComponent({
   name: "kt-theme-switcher",

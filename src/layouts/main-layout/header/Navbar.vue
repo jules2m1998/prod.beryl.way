@@ -74,12 +74,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import {computed, defineComponent} from "vue";
 import KTUserMenu from "@/layouts/main-layout/menus/UserAccountMenu.vue";
 import KTThemeModeSwitcher from "@/layouts/main-layout/theme-mode/ThemeModeSwitcher.vue";
-import { useThemeStore } from "@/stores/theme";
-import { getImagePathToServer } from "@/core/helpers";
-import { useAuthStore } from "@/stores/auth";
+import {useThemeStore} from "@/stores/theme";
+import {getImagePathToServer} from "@/core/helpers";
+import {useAuthStore} from "@/stores/auth";
 
 export default defineComponent({
   name: "header-navbar",
@@ -94,7 +94,6 @@ export default defineComponent({
     const themeMode = computed(() => {
       return store.mode;
     });
-
 
     const userAvatar = computed(() => {
       return getImagePathToServer(authStore.user.avatar);

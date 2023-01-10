@@ -39,11 +39,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, onMounted } from "vue";
+import {defineComponent, onMounted, ref, watch} from "vue";
 import TableHeadRow from "@/components/kt-datatable/table-partials/table-content/table-head/TableHeadRow.vue";
 import TableBodyRow from "@/components/kt-datatable/table-partials/table-content/table-body/TableBodyRow.vue";
 import Loading from "@/components/kt-datatable/table-partials/Loading.vue";
-import type { Sort } from "@/components/kt-datatable/table-partials/models";
+import type {Sort} from "@/components/kt-datatable/table-partials/models";
 
 export default defineComponent({
   name: "table-body",

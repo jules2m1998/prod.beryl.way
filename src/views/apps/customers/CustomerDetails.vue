@@ -461,7 +461,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import Dropdown3 from "@/components/dropdown/Dropdown3.vue";
 import NewCardModal from "@/components/modals/forms/NewCardModal.vue";
 import PaymentRecords from "@/components/customers/cards/overview/PaymentRecords.vue";

@@ -83,7 +83,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import TablesWidget1 from "@/components/widgets/tables/Widget1.vue";
 import TablesWidget2 from "@/components/widgets/tables/Widget2.vue";
 import TablesWidget3 from "@/components/widgets/tables/Widget3.vue";

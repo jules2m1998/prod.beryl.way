@@ -1,20 +1,20 @@
 /*eslint no-empty: "off"*/
-import type { OffsetModel } from "./models/OffsetModel";
-import type { ViewPortModel } from "./models/ViewPortModel";
-import { ElementStyleUtil } from "./_ElementStyleUtil";
-import { DataUtil } from "./_DataUtil";
-import { ElementAnimateUtil } from "./ElementAnimateUtil";
-import { getObjectPropertyValueByKey, toJSON } from "./_TypesHelpers";
+import type {OffsetModel} from "./models/OffsetModel";
+import type {ViewPortModel} from "./models/ViewPortModel";
+import {ElementStyleUtil} from "./_ElementStyleUtil";
+import {DataUtil} from "./_DataUtil";
+import {ElementAnimateUtil} from "./ElementAnimateUtil";
+import {getObjectPropertyValueByKey, toJSON} from "./_TypesHelpers";
 
 function getCSS(el: HTMLElement, styleProp: string) {
-  const defaultView = (el.ownerDocument || document).defaultView;
+    const defaultView = (el.ownerDocument || document).defaultView;
 
-  if (!defaultView) {
-    return "";
-  }
+    if (!defaultView) {
+        return "";
+    }
 
-  // sanitize property name to css notation
-  // (hyphen separated words eg. font-Size)
+    // sanitize property name to css notation
+    // (hyphen separated words eg. font-Size)
   styleProp = styleProp.replace(/([A-Z])/g, "-$1").toLowerCase();
 
   return defaultView.getComputedStyle(el, null).getPropertyValue(styleProp);

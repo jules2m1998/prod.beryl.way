@@ -56,15 +56,15 @@
 <script setup lang="ts">
 import PageWithTable from "@/components/PageWithTable.vue";
 import MyLoader from "@/components/Loader.vue";
-import { ref, computed, onMounted } from "vue";
-import type {  IZoneType } from "@/types";
+import {computed, onMounted, ref} from "vue";
+import type {IZoneType} from "@/types";
 import Datatable from "@/components/kt-datatable/KTDataTable.vue";
 import arraySort from "array-sort";
-import type { Sort } from "@/components/kt-datatable//table-partials/models";
-import { searchByName } from "@/core/helpers/array";
-import { highlightDetectedText } from "@/core/helpers/dom";
-import { getAllTypeZone } from "@/core/services";
-import { getI18nDate, openModal } from "@/core/helpers";
+import type {Sort} from "@/components/kt-datatable//table-partials/models";
+import {searchByName} from "@/core/helpers/array";
+import {highlightDetectedText} from "@/core/helpers/dom";
+import {getAllTypeZone} from "@/core/services";
+import {getI18nDate, openModal} from "@/core/helpers";
 import DropDownMenu from "@/components/dropdown/DropDownMenu.vue";
 import ZoneTypeDetailModal from "@/components/modals/general/ZoneTypeDetailModal.vue";
 

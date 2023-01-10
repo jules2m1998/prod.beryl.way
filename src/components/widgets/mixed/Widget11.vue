@@ -84,11 +84,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onBeforeMount, computed, watch } from "vue";
-import { getCSSVariableValue } from "@/assets/ts/_utils";
+import {computed, defineComponent, onBeforeMount, ref, watch} from "vue";
+import {getCSSVariableValue} from "@/assets/ts/_utils";
 import type VueApexCharts from "vue3-apexcharts";
-import type { ApexOptions } from "apexcharts";
-import { useThemeStore } from "@/stores/theme";
+import type {ApexOptions} from "apexcharts";
+import {useThemeStore} from "@/stores/theme";
 import Dropdown3 from "@/components/dropdown/Dropdown3.vue";
 
 export default defineComponent({

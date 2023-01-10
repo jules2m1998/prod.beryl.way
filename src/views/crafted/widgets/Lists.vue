@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import ListsWidget1 from "@/components/widgets/lists/Widget1.vue";
 import ListsWidget2 from "@/components/widgets/lists/Widget2.vue";
 import ListsWidget3 from "@/components/widgets/lists/Widget3.vue";

@@ -151,7 +151,6 @@
             </div>
           </template>
         </template>
-
       </div>
       <!--end::Menu-->
     </div>
@@ -161,17 +160,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
+import {defineComponent, onMounted, ref} from "vue";
+import {useRoute} from "vue-router";
 import MainMenuConfig from "@/core/config/CleanMainMenuConfig";
-import { sidebarMenuIcons } from "@/core/helpers/config";
-import { useI18n } from "vue-i18n";
+import {sidebarMenuIcons} from "@/core/helpers/config";
+import {useI18n} from "vue-i18n";
 
 export default defineComponent({
   name: "sidebar-menu",
   components: {},
   setup() {
-    const { t, te } = useI18n();
+    const {t, te} = useI18n();
     const route = useRoute();
     const scrollElRef = ref<null | HTMLElement>(null);
 

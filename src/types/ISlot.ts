@@ -8,4 +8,4 @@ interface ISlot {
   slots: ITime[];
 }
 
-export type {  };
+export type {};

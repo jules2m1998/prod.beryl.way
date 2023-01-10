@@ -627,9 +627,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { ErrorMessage, Field, Form as VForm } from "vee-validate";
-import { hideModal } from "@/core/helpers/dom";
+import {defineComponent, ref} from "vue";
+import {ErrorMessage, Field, Form as VForm} from "vee-validate";
+import {hideModal} from "@/core/helpers/dom";
 import Swal from "sweetalert2";
 import * as Yup from "yup";
 

@@ -116,7 +116,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import Dropdown1 from "@/components/dropdown/Dropdown1.vue";
 
 export default defineComponent({

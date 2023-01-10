@@ -259,7 +259,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import {defineComponent, ref} from "vue";
 
 interface IPlans {
   title: string;

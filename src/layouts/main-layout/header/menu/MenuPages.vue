@@ -304,17 +304,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { useRoute } from "vue-router";
-import { useI18n } from "vue-i18n";
+import {defineComponent} from "vue";
+import {useRoute} from "vue-router";
+import {useI18n} from "vue-i18n";
 import MainMenuConfig from "@/core/config/MainMenuConfig";
-import { headerMenuIcons } from "@/core/helpers/config";
+import {headerMenuIcons} from "@/core/helpers/config";
 
 export default defineComponent({
   name: "KTMenu",
   components: {},
   setup() {
-    const { t, te } = useI18n();
+    const {t, te} = useI18n();
     const route = useRoute();
 
     const hasActiveChildren = (match: string) => {

@@ -19,13 +19,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  onMounted,
-  type WritableComputedRef,
-  computed,
-} from "vue";
+import {computed, defineComponent, onMounted, ref, type WritableComputedRef,} from "vue";
 
 export default defineComponent({
   name: "table-items-per-page-select",

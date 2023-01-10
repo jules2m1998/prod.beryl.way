@@ -1,5 +1,5 @@
 interface Question {
-    id:number;
+    id: number;
     title: string;
     nbrVue: number;
     steps: string[];
@@ -16,7 +16,7 @@ const exemple: Question[] = [
             "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus suscipit vero modi mollitia est eum facilis cum voluptate! Deserunt suscipit eveniet id numquam recusandae ad ea possimus saepe iusto amet?",
             "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus suscipit vero modi mollitia est eum facilis cum voluptate! Deserunt suscipit eveniet id numquam recusandae ad ea possimus saepe iusto amet?",
             "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus suscipit vero modi mollitia est eum facilis cum voluptate! Deserunt suscipit eveniet id numquam recusandae ad ea possimus saepe iusto amet?",
-        ]
+        ],
     },
     {
         id: 1,
@@ -25,7 +25,7 @@ const exemple: Question[] = [
         steps: [
             "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus suscipit vero modi mollitia est eum facilis cum voluptate! Deserunt suscipit eveniet id numquam recusandae ad ea possimus saepe iusto amet?",
             "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus suscipit vero modi mollitia est eum facilis cum voluptate! Deserunt suscipit eveniet id numquam recusandae ad ea possimus saepe iusto amet?",
-        ]
+        ],
     },
     {
         id: 1,
@@ -35,7 +35,7 @@ const exemple: Question[] = [
             "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus suscipit vero modi mollitia est eum facilis cum voluptate! Deserunt suscipit eveniet id numquam recusandae ad ea possimus saepe iusto amet?",
             "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus suscipit vero modi mollitia est eum facilis cum voluptate! Deserunt suscipit eveniet id numquam recusandae ad ea possimus saepe iusto amet?",
             "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus suscipit vero modi mollitia est eum facilis cum voluptate! Deserunt suscipit eveniet id numquam recusandae ad ea possimus saepe iusto amet?",
-        ]
+        ],
     },
     {
         id: 1,
@@ -45,7 +45,7 @@ const exemple: Question[] = [
             "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus suscipit vero modi mollitia est eum facilis cum voluptate! Deserunt suscipit eveniet id numquam recusandae ad ea possimus saepe iusto amet?",
             "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus suscipit vero modi mollitia est eum facilis cum voluptate! Deserunt suscipit eveniet id numquam recusandae ad ea possimus saepe iusto amet?",
             "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus suscipit vero modi mollitia est eum facilis cum voluptate! Deserunt suscipit eveniet id numquam recusandae ad ea possimus saepe iusto amet?",
-        ]
+        ],
     },
     {
         id: 1,
@@ -54,9 +54,9 @@ const exemple: Question[] = [
         steps: [
             "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus suscipit vero modi mollitia est eum facilis cum voluptate! Deserunt suscipit eveniet id numquam recusandae ad ea possimus saepe iusto amet?",
             "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus suscipit vero modi mollitia est eum facilis cum voluptate! Deserunt suscipit eveniet id numquam recusandae ad ea possimus saepe iusto amet?",
-        ]
+        ],
     },
-]
+];
 
-export type {Question}
+export type {Question};
 export default exemple;

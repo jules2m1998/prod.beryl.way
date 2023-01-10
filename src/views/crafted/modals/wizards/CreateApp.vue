@@ -9,9 +9,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import KTModalCard from "@/components/cards/Card.vue";
-import { getIllustrationsPath } from "@/core/helpers/assets";
+import {getIllustrationsPath} from "@/core/helpers/assets";
 
 export default defineComponent({
   name: "create-app",

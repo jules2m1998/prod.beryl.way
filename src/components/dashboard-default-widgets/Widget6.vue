@@ -340,18 +340,18 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, watch } from "vue";
+import {computed, defineComponent, onMounted, ref, watch} from "vue";
 import type VueApexCharts from "vue3-apexcharts";
-import type { ApexOptions } from "apexcharts";
-import { useThemeStore } from "@/stores/theme";
-import { getCSSVariableValue } from "@/assets/ts/_utils";
+import type {ApexOptions} from "apexcharts";
+import {useThemeStore} from "@/stores/theme";
+import {getCSSVariableValue} from "@/assets/ts/_utils";
 
 export default defineComponent({
   name: "default-dashboard-widget-6",
   components: {},
   props: {
-    className: { type: String, required: false },
-    height: { type: String, required: false, default: "425px" },
+    className: {type: String, required: false},
+    height: {type: String, required: false, default: "425px"},
   },
   setup(props) {
     const chartRef1 = ref<typeof VueApexCharts | null>(null);

@@ -286,8 +286,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { Field, ErrorMessage } from "vee-validate";
+import {defineComponent} from "vue";
+import {ErrorMessage, Field} from "vee-validate";
 
 export default defineComponent({
   name: "step-2",

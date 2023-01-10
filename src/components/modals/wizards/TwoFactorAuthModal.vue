@@ -297,9 +297,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import {defineComponent, ref} from "vue";
 import * as Yup from "yup";
-import { ErrorMessage, Field, Form as VForm } from "vee-validate";
+import {ErrorMessage, Field, Form as VForm} from "vee-validate";
 import Swal from "sweetalert2";
 
 export default defineComponent({

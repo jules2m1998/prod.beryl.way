@@ -16,16 +16,10 @@
 </template>
 
 <script lang="ts">
-import TableItemsPerPageSelect from "@/components/kt-datatable/table-partials/table-content/table-footer/TableItemsPerPageSelect.vue";
+import TableItemsPerPageSelect
+  from "@/components/kt-datatable/table-partials/table-content/table-footer/TableItemsPerPageSelect.vue";
 import TablePagination from "./table-content/table-footer/TablePagination.vue";
-import {
-  computed,
-  defineComponent,
-  onMounted,
-  ref,
-  type WritableComputedRef,
-  watch,
-} from "vue";
+import {computed, defineComponent, onMounted, ref, watch, type WritableComputedRef,} from "vue";
 
 export default defineComponent({
   name: "table-footer",

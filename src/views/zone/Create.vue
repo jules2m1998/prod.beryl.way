@@ -23,11 +23,11 @@
       <!--begin::Form-->
       <VForm
           id="kt_account_profile_details_form"
+          :initial-values="initialValue"
+          :validation-schema="profileDetailsValidator"
           class="form"
           novalidate
-          :initial-values="initialValue"
           @submit="saveChanges($event)"
-          :validation-schema="profileDetailsValidator"
       >
         <!--begin::Card body-->
         <div class="card-body border-top p-9">
@@ -287,12 +287,12 @@ export default defineComponent({
       zone_type_id: currentZone.value?.zone_type_id || 0,
     });
 
-    const saveChanges = async (data: IZoneRequest) => {
+    const saveChanges = async (data: any) => {
       if (submitButton.value) {
         // Activate indicator
         submitButton.value.setAttribute("data-kt-indicator", "on");
         if (!id.value) await create();
-        else await update(data);
+        else await update(data as IZoneRequest);
         submitButton.value?.removeAttribute("data-kt-indicator");
       }
     };

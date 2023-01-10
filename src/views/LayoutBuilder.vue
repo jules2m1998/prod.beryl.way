@@ -806,16 +806,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
-import { config } from "@/core/helpers/config";
+import {defineComponent, onMounted, ref} from "vue";
+import {config, layout, themeMode} from "@/core/helpers/config";
 import CodeHighlighter from "@/components/highlighters/CodeHighlighter.vue";
-import { themeName } from "@/core/helpers/documentation";
-import { themeMode, layout } from "@/core/helpers/config";
-import { useThemeStore } from "@/stores/theme";
-import { useConfigStore, LS_CONFIG_NAME_KEY } from "@/stores/config";
+import {themeName} from "@/core/helpers/documentation";
+import {useThemeStore} from "@/stores/theme";
+import {LS_CONFIG_NAME_KEY, useConfigStore} from "@/stores/config";
 
 const LS_BUILDER_TAB_NAME =
-  "layoutBuilderTabIndex_" + import.meta.env.VITE_APP_DEMO;
+    "layoutBuilderTabIndex_" + import.meta.env.VITE_APP_DEMO;
 
 export default defineComponent({
   name: "layout-builder",

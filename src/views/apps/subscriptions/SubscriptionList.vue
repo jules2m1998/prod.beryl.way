@@ -155,9 +155,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import {defineComponent, ref} from "vue";
 import KTDatatable from "@/components/kt-datatable/KTDataTable.vue";
-import type { Sort } from "@/components/kt-datatable/table-partials/models";
+import type {Sort} from "@/components/kt-datatable/table-partials/models";
 import arraySort from "array-sort";
 
 export default defineComponent({

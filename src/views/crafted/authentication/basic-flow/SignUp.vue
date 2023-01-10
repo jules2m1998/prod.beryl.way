@@ -219,12 +219,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, nextTick } from "vue";
-import { ErrorMessage, Field, Form as VForm } from "vee-validate";
+import {defineComponent, nextTick, onMounted, ref} from "vue";
+import {ErrorMessage, Field, Form as VForm} from "vee-validate";
 import * as Yup from "yup";
-import { useAuthStore, type User } from "@/stores/auth";
-import { useRouter } from "vue-router";
-import { PasswordMeterComponent } from "@/assets/ts/components";
+import {useAuthStore, type User} from "@/stores/auth";
+import {useRouter} from "vue-router";
+import {PasswordMeterComponent} from "@/assets/ts/components";
 import Swal from "sweetalert2";
 
 export default defineComponent({
@@ -272,9 +272,7 @@ export default defineComponent({
       // Send login request
       await store.register(values);
 
-      const error = Object.values(store.errors);
-
-      if (!error) {
+      if (!store.errors) {
         Swal.fire({
           text: "You have successfully logged in!",
           icon: "success",
@@ -290,7 +288,7 @@ export default defineComponent({
         });
       } else {
         Swal.fire({
-          text: error[0] as string,
+          text: store.errors,
           icon: "error",
           buttonsStyling: false,
           confirmButtonText: "Try again!",

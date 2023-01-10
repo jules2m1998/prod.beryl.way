@@ -27,10 +27,10 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from "vue";
+import {computed, defineComponent, ref, watch} from "vue";
 import TableContent from "@/components/kt-datatable/table-partials/table-content/TableContent.vue";
 import TableFooter from "@/components/kt-datatable/table-partials/TableFooter.vue";
-import type { Sort } from "@/components/kt-datatable/table-partials/models";
+import type {Sort} from "@/components/kt-datatable/table-partials/models";
 
 export default defineComponent({
   name: "kt-datatable",

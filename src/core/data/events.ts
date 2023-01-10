@@ -1,5 +1,5 @@
 import moment from "moment";
-import type { EventInput } from "@fullcalendar/core";
+import type {EventInput} from "@fullcalendar/core";
 
 const todayDate = moment().startOf("day");
 const YM = todayDate.format("YYYY-MM");

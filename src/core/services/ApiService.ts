@@ -22,40 +22,40 @@ class ApiService {
     ] = `Bearer ${JwtService.getToken()}`;
     axios.defaults.headers.common["Accept"] = "application/json";
     axios.interceptors.response.use(
-      function (response) {
-        return response;
-      },
+        function (response) {
+            return response;
+        },
         async function (error: AxiosError) {
-          const {status, data} = error.response!;
-          if (navigator.onLine) {
-            const text = (data as IHttpError).message;
-            let title: string;
+            const {status, data} = error.response!;
+            if (navigator.onLine) {
+                const text = (data as IHttpError).message;
+                let title: string;
 
-            switch (status) {
-              case 422:
-                title =
-                    '<h1 style="color:black !important;">Informations incorrectes !</h1>';
-                break;
-              case 404:
-                title =
-                    '<h1 style="color:black !important;">Element inexistant !</h1>';
-                break;
-              default:
-                title =
-                    '<h1 style="color:black !important;">Something went wrong !</h1>';
-            }
-            if (status === 404) {
-              await router.push({name: "404"});
-            }
+                switch (status) {
+                    case 422:
+                        title =
+                            '<h1 style="color:black !important;">Informations incorrectes !</h1>';
+                        break;
+                    case 404:
+                        title =
+                            '<h1 style="color:black !important;">Element inexistant !</h1>';
+                        break;
+                    default:
+                        title =
+                            '<h1 style="color:black !important;">Something went wrong !</h1>';
+                }
+                if (status === 404) {
+                    await router.push({name: "404"});
+                }
 
-            await customAlert(title, text, "error");
-          } else {
-            await customAlert(
-                '<h1 style="color:black !important;">Oops..</h1>',
-                "Vous n'etes plus connecté à internet !",
-                "error"
-            );
-        }
+                await customAlert(title, text, "error");
+            } else {
+                await customAlert(
+                    '<h1 style="color:black !important;">Oops..</h1>',
+                    "Vous n'etes plus connecté à internet !",
+                    "error"
+                );
+            }
 
         return Promise.reject(data);
       }

@@ -54,7 +54,10 @@
 
         <!--begin::Text-->
         <div class="d-none d-lg-block text-white fs-base text-center">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat suscipit nisi fuga dolor impedit consequatur quasi sed. Nisi consequuntur, facere hic facilis, fugiat optio voluptates similique non aliquam, a architecto.
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat
+          suscipit nisi fuga dolor impedit consequatur quasi sed. Nisi
+          consequuntur, facere hic facilis, fugiat optio voluptates similique
+          non aliquam, a architecto.
         </div>
         <!--end::Text-->
       </div>
@@ -66,9 +69,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
+import {defineComponent, onMounted} from "vue";
 import LayoutService from "@/core/services/LayoutService";
-import { useBodyStore } from "@/stores/body";
+import {useBodyStore} from "@/stores/body";
 
 export default defineComponent({
   name: "auth-layout",

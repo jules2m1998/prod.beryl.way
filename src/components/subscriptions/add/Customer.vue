@@ -92,7 +92,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import {defineComponent, ref} from "vue";
 import Notice from "@/components/Notice.vue";
 
 export default defineComponent({

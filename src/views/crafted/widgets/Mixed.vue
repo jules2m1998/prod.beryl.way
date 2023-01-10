@@ -498,7 +498,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import MixedWidget1 from "@/components/widgets/mixed/Widget1.vue";
 import MixedWidget2 from "@/components/widgets/mixed/Widget2.vue";
 import MixedWidget3 from "@/components/widgets/mixed/Widget3.vue";

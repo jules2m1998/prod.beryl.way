@@ -208,7 +208,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import KTCard from "@/components/cards/Card1.vue";
 
 export default defineComponent({

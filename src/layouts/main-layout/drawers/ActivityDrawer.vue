@@ -75,7 +75,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import Item1 from "@/components/activity-timeline-items/Item1.vue";
 import Item2 from "@/components/activity-timeline-items/Item2.vue";
 import Item3 from "@/components/activity-timeline-items/Item3.vue";

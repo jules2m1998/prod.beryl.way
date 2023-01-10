@@ -69,9 +69,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { ErrorMessage, Field, Form as VForm } from "vee-validate";
-import { useAuthStore } from "@/stores/auth";
+import {defineComponent, ref} from "vue";
+import {ErrorMessage, Field, Form as VForm} from "vee-validate";
+import {useAuthStore} from "@/stores/auth";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
 
@@ -105,7 +105,7 @@ export default defineComponent({
       // Send login request
       await store.forgotPassword(values);
 
-      const error = Object.values(store.errors);
+      const error = Object.values([]);
 
       if (!error) {
         Swal.fire({

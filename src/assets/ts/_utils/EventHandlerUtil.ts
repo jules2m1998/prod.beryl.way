@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { DataUtil } from "./_DataUtil";
-import { getUniqueIdWithPrefix } from "./_TypesHelpers";
+import {DataUtil} from "./_DataUtil";
+import {getUniqueIdWithPrefix} from "./_TypesHelpers";
 
 export interface EventMeta {
-  name: string;
-  callback: Function;
-  one: boolean;
-  fired: boolean;
+    name: string;
+    callback: Function;
+    one: boolean;
+    fired: boolean;
 }
 
 export class EventHandlerUtil {
-  static store: {
+    static store: {
     [name: string]: {
       [handlerId: string]: EventMeta;
     };

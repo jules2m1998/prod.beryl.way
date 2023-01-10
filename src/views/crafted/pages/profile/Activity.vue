@@ -162,7 +162,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import KTActivityItem1 from "@/components/activity-timeline-items/Item1.vue";
 import KTActivityItem2 from "@/components/activity-timeline-items/Item2.vue";
 import KTActivityItem3 from "@/components/activity-timeline-items/Item3.vue";

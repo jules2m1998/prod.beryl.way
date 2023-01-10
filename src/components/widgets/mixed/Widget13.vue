@@ -45,10 +45,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onBeforeMount, computed, watch } from "vue";
+import {computed, defineComponent, onBeforeMount, ref, watch} from "vue";
 import type VueApexCharts from "vue3-apexcharts";
-import type { ApexOptions } from "apexcharts";
-import { useThemeStore } from "@/stores/theme";
+import type {ApexOptions} from "apexcharts";
+import {useThemeStore} from "@/stores/theme";
 
 export default defineComponent({
   name: "widget-13",

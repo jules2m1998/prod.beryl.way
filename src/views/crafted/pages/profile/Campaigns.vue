@@ -216,7 +216,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import Card2 from "@/components/cards/Card2.vue";
 
 export default defineComponent({

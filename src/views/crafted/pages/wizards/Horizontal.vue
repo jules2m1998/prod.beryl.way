@@ -142,9 +142,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from "vue";
-import { StepperComponent } from "@/assets/ts/components";
-import { useForm } from "vee-validate";
+import {computed, defineComponent, onMounted, ref} from "vue";
+import {StepperComponent} from "@/assets/ts/components";
+import {useForm} from "vee-validate";
 import Swal from "sweetalert2";
 import * as Yup from "yup";
 import Step1 from "@/components/wizard/steps/Step1.vue";

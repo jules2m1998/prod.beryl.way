@@ -43,10 +43,10 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted } from "vue";
-import { useBodyStore } from "@/stores/body";
-import { useThemeStore } from "@/stores/theme";
-import { getIllustrationsPath } from "@/core/helpers/assets";
+import {computed, defineComponent, onMounted} from "vue";
+import {useBodyStore} from "@/stores/body";
+import {useThemeStore} from "@/stores/theme";
+import {getIllustrationsPath} from "@/core/helpers/assets";
 import LayoutService from "@/core/services/LayoutService";
 
 export default defineComponent({

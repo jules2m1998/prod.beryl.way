@@ -1,4 +1,4 @@
-import { computed } from "vue";
+import {computed} from "vue";
 import ClipboardJS from "clipboard";
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 

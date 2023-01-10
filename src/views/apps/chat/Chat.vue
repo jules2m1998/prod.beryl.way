@@ -285,8 +285,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
-import { useRoute } from "vue-router";
+import {computed, defineComponent, ref} from "vue";
+import {useRoute} from "vue-router";
 import Dropdown4 from "@/components/dropdown/Dropdown4.vue";
 import contacts from "@/core/data/contacts";
 import MessageIn from "@/components/messenger-parts/MessageIn.vue";
