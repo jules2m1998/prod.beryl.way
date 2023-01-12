@@ -99,7 +99,7 @@ const MainMenuConfig: Array<MenuItem> = [
           },
           {
             heading: "Appointment list",
-            route: "/crafted/pages/profile/projects",
+            route: "/appointment-list",
           },
         ],
       },
