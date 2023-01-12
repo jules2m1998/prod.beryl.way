@@ -277,24 +277,6 @@ const routes: Array<RouteRecordRaw> = [
           pageTitle: "Sign In",
         },
       },
-      {
-        path: "/sign-up",
-        name: "sign-up",
-        component: () =>
-          import("@/views/crafted/authentication/basic-flow/SignUp.vue"),
-        meta: {
-          pageTitle: "Sign Up",
-        },
-      },
-      {
-        path: "/password-reset",
-        name: "password-reset",
-        component: () =>
-          import("@/views/crafted/authentication/basic-flow/PasswordReset.vue"),
-        meta: {
-          pageTitle: "Password reset",
-        },
-      },
     ],
   },
   {
