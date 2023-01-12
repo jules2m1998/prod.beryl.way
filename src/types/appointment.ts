@@ -12,7 +12,7 @@ interface IAppointment extends IModel {
   agent: IUserAgency;
 }
 
-interface ISlotPeriod {
+export interface ISlotPeriod {
   start: string;
   end: string;
   available?: string;

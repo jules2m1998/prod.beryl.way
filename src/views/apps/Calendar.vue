@@ -33,12 +33,8 @@
 
 <script setup lang="ts">
 import "@fullcalendar/core/vdom";
+import type { CalendarOptions, EventClickArg, EventInput } from "@fullcalendar/vue3";
 import FullCalendar from "@fullcalendar/vue3";
-import type {
-  CalendarOptions,
-  EventClickArg,
-  EventInput,
-} from "@fullcalendar/vue3";
 
 import NewEventModal from "@/components/modals/forms/NewEventModal.vue";
 import MyLoader from "@/components/Loader.vue";
@@ -50,12 +46,9 @@ import listPlugin from "@fullcalendar/list";
 
 import { ON_PROGESS_COLOR } from "@/core/data/const";
 import { Modal } from "bootstrap";
-import { ref, onMounted, computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 import type { IAppointment, ISlot } from "@/types";
-import {
-  getAllAppointment,
-  getAllSlots,
-} from "@/core/services/AppointmentService";
+import { getAllAppointment, getAllSlots } from "@/core/services/AppointmentService";
 
 const isLoading = ref<boolean>(false);
 
@@ -170,7 +163,7 @@ const resetCurrentAppointment = () => {
 };
 
 const getSlotLikePeriod = (list: ISlot[]): EventInput[] => {
-  const result: EventInput[] = list.reduce((acc, current) => {
+  return list.reduce((acc, current) => {
     return [
       ...acc,
       ...current.values
@@ -186,8 +179,6 @@ const getSlotLikePeriod = (list: ISlot[]): EventInput[] => {
         .filter((v) => !v.availaible),
     ];
   }, [] as EventInput[]);
-
-  return result;
 };
 
 // OnMounted

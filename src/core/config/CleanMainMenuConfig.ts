@@ -84,10 +84,24 @@ const MainMenuConfig: Array<MenuItem> = [
         fontIcon: "bi-layers",
       },
       {
-        heading: "calendar",
+        sectionTitle: "Dates",
         route: "/calendar",
         svgIcon: "/media/icons/duotune/general/gen014.svg",
-        fontIcon: "bi-layers",
+        fontIcon: "bi-archive",
+        sub: [
+          {
+            heading: "calendar",
+            route: "/calendar",
+          },
+          {
+            heading: "Slots list",
+            route: "/slot-list",
+          },
+          {
+            heading: "Appointment list",
+            route: "/crafted/pages/profile/projects",
+          },
+        ],
       },
       {
         heading: "question",

@@ -255,6 +255,15 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/slot-list",
+        name: "slots",
+        component: () => import("@/views/dates/slot/SlotList.vue"),
+        meta: {
+          pageTitle: "Slots",
+          breadcrumbs: ["Slots"],
+        },
+      },
+      {
         path: "/crafted/pages/profile",
         name: "profile",
         component: () => import("@/components/page-layouts/Profile.vue"),

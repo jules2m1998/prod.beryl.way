@@ -13,13 +13,13 @@
     </div>
     <div class="card rounded-0">
       <div class="card-body">
-        <many-chart :charts="props.charts!"></many-chart>
+        <many-chart :charts="props.charts"></many-chart>
       </div>
     </div>
   </div>
   <div class="card rounded-0 pt-6">
     <div class="card-header border-0 pt-6">
-      <div class="card-title">
+      <div class="card-title" v-if="!isNotSearch">
         <!--begin::Search-->
         <div class="d-flex align-items-center position-relative my-1">
           <span class="svg-icon svg-icon-1 position-absolute ms-6">
@@ -117,6 +117,7 @@ interface Props {
   charts?: IChart[];
   value: Array<any>;
   selectedIds: Array<number>;
+  isNotSearch: boolean;
 }
 
 const props = defineProps<Props>();
