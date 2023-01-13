@@ -261,6 +261,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           pageTitle: "Slots",
           breadcrumbs: ["Slots"],
+          addPathName: "calendar",
         },
       },
       {
@@ -269,7 +270,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () =>
           import("@/views/dates/appointment/AppointmentList.vue"),
         meta: {
-          pageTitle: "Slots",
+          pageTitle: "Appointment",
           breadcrumbs: ["Slots"],
         },
       },

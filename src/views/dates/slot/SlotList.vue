@@ -19,26 +19,38 @@
         {{ getI18nDate(slot.date).format("ll") }}
       </template>
       <template v-slot:period="{ row: slot }">
-        <div style="display: flex; flex-direction: column;gap: 10px;" v-html="displayTimes(slot.values)"></div>
+        <div
+          style="display: flex; flex-direction: column; gap: 10px"
+          v-html="displayTimes(slot.values)"
+        ></div>
       </template>
       <template v-slot:user="{ row: slot }">
-        {{ slot.user_agency.user.name }} ({{slot.user_agency.user.email}})
+        {{ slot.user_agency.user.name }} ({{ slot.user_agency.user.email }})
       </template>
       <template v-slot:agency="{ row: slot }">
-        {{ slot.user_agency.agency.name }} ({{slot.user_agency.agency.location}})
+        {{ slot.user_agency.agency.name }} ({{
+          slot.user_agency.agency.location
+        }})
       </template>
       <template v-slot:created_at="{ row: slot }">
         {{ getI18nDate(slot.created_at).fromNow() }}
       </template>
 
-      <template v-slot:actions="{ row: onboard }">
+      <template v-slot:actions="{ row: customer }">
         <drop-down-menu name="Actions" :menu="menu">
+          <template v-slot:update>
+            <a @click="showDetail(customer.id)" class="menu-link px-3">View</a>
+          </template>
           <template v-slot:view>
-            <router-link
-              :to="{ name: 'unboarding-detail', params: { id: onboard.id } }"
-              class="menu-link px-3"
-              >Afficher
-            </router-link>
+            <a class="menu-link px-3">Update </a>
+          </template>
+          <template v-slot:delete>
+            <div
+              class="menu-link text-danger px-3"
+              @click="deleteSlot(customer.id)"
+            >
+              Delete
+            </div>
           </template>
         </drop-down-menu>
       </template>
@@ -59,9 +71,8 @@ import { getAllSlotsJoined } from "@/core/services";
 import DropDownMenu from "@/components/dropdown/DropDownMenu.vue";
 import MyLoader from "@/components/Loader.vue";
 import { getI18nDate } from "@/core/helpers";
-import { RouterLink } from "vue-router";
 
-const menu = ref<string[]>(["view"]);
+const menu = ref<string[]>(["view", "update", "delete"]);
 const isLoading = ref<boolean>(false);
 
 const tableData = ref<Array<ISlot>>([]);
@@ -121,6 +132,7 @@ const onItemSelect = (selectedItems: Array<number>) => {
 const searchItems = (selectedItems: Array<number>) => {
   selectedIds.value = selectedItems;
 };
+const deleteSlot = (id: number) => console.log(id);
 
 // Filter logic
 const searchValue = ref<string>("");
@@ -137,7 +149,9 @@ const displayTimes = (periods: ISlotPeriod[]): string =>
   periods
     .map(
       (p) =>
-        `<div style="display: flex;gap: 5px;align-items: center;justify-content: center;">${p.start} - ${p.end} ${
+        `<div style="display: flex;gap: 5px;align-items: center;justify-content: center;">${
+          p.start
+        } - ${p.end} ${
           p.available
             ? '<span class="badge badge-success">Available</span>'
             : '<span class="badge badge-danger">Unavailable</span>'
