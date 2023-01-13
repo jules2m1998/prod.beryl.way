@@ -1,4 +1,4 @@
-import type {IHttpError, IHttpResponse} from "@/types/https";
+import type { IHttpError, IHttpResponse } from "@/types/https";
 import ApiService from "./ApiService";
 
 /**
@@ -9,6 +9,20 @@ import ApiService from "./ApiService";
 const getAll = async <T>(path: string): Promise<T[] | null> => {
   try {
     const response = await ApiService.get(path);
+    const data = response.data as IHttpResponse<T>;
+
+    return data.data as T[];
+  } catch (error) {
+    return null;
+  }
+};
+
+export const getWithParams = async <T>(
+  path: string,
+  params: any
+): Promise<T[] | null> => {
+  try {
+    const response = await ApiService.getWithParams(path, params);
     const data = response.data as IHttpResponse<T>;
 
     return data.data as T[];

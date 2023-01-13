@@ -19,7 +19,13 @@
         {{ getI18nDate(slot.date).format("ll") }}
       </template>
       <template v-slot:period="{ row: slot }">
-        {{ displayTimes(slot.values) }}
+        <div style="display: flex; flex-direction: column;gap: 10px;" v-html="displayTimes(slot.values)"></div>
+      </template>
+      <template v-slot:user="{ row: slot }">
+        {{ slot.user_agency.user.name }} ({{slot.user_agency.user.email}})
+      </template>
+      <template v-slot:agency="{ row: slot }">
+        {{ slot.user_agency.agency.name }} ({{slot.user_agency.agency.location}})
       </template>
       <template v-slot:created_at="{ row: slot }">
         {{ getI18nDate(slot.created_at).fromNow() }}
@@ -49,7 +55,7 @@ import Datatable from "@/components/kt-datatable/KTDataTable.vue";
 import arraySort from "array-sort";
 import type { Sort } from "@/components/kt-datatable//table-partials/models";
 import { searchByName } from "@/core/helpers/array";
-import { getAllSlots } from "@/core/services";
+import { getAllSlotsJoined } from "@/core/services";
 import DropDownMenu from "@/components/dropdown/DropDownMenu.vue";
 import MyLoader from "@/components/Loader.vue";
 import { getI18nDate } from "@/core/helpers";
@@ -70,6 +76,18 @@ const tableHeader = ref([
   {
     columnName: "Period",
     columnLabel: "period",
+    sortEnabled: false,
+    columnWidth: 230,
+  },
+  {
+    columnName: "User",
+    columnLabel: "user",
+    sortEnabled: false,
+    columnWidth: 230,
+  },
+  {
+    columnName: "Agency",
+    columnLabel: "agency",
     sortEnabled: false,
     columnWidth: 230,
   },
@@ -116,11 +134,20 @@ const searchByText = (e: string) => {
 };
 
 const displayTimes = (periods: ISlotPeriod[]): string =>
-  periods.map((p) => `${p.start} - ${p.end}`).join("; ");
+  periods
+    .map(
+      (p) =>
+        `<div style="display: flex;gap: 5px;align-items: center;justify-content: center;">${p.start} - ${p.end} ${
+          p.available
+            ? '<span class="badge badge-success">Available</span>'
+            : '<span class="badge badge-danger">Unavailable</span>'
+        }</div> `
+    )
+    .join("");
 
 onMounted(async () => {
   isLoading.value = true;
-  const ob = await getAllSlots();
+  const ob = await getAllSlotsJoined();
   if (ob)
     tableData.value = ob.map((slotS) => ({
       ...slotS,

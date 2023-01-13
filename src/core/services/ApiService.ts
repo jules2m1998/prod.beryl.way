@@ -125,6 +125,19 @@ class ApiService {
   }
 
   /**
+   * @description Send the PUT HTTP request
+   * @param resource: string
+   * @param params: AxiosRequestConfig
+   * @returns Promise<AxiosResponse>
+   */
+  public static getWithParams(
+    resource: string,
+    params: any
+  ): Promise<AxiosResponse> {
+    return ApiService.vueInstance.axios.get(`${resource}`, { params });
+  }
+
+  /**
    * @description set the POST HTTP request
    * @param resource: string
    * @param params: AxiosRequestConfig
