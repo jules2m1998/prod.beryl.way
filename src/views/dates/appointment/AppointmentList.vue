@@ -137,6 +137,10 @@ const deleteAppointment = (id: number) => {
   console.log(id);
 };
 
+const showDetail = (e: any) => {
+  console.log(e);
+};
+
 // Filter logic
 const searchValue = ref<string>("");
 

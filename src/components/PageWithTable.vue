@@ -13,7 +13,7 @@
     </div>
     <div class="card rounded-0">
       <div class="card-body">
-        <many-chart :charts="props.charts"></many-chart>
+        <many-chart :charts="props.charts || []"></many-chart>
       </div>
     </div>
   </div>
@@ -117,7 +117,7 @@ interface Props {
   charts?: IChart[];
   value: Array<any>;
   selectedIds: Array<number>;
-  isNotSearch: boolean;
+  isNotSearch?: boolean;
 }
 
 const props = defineProps<Props>();

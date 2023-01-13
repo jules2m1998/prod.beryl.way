@@ -145,6 +145,10 @@ const searchByText = (e: string) => {
   searchValue.value = e;
 };
 
+const showDetail = (e: any) => {
+  console.log(e);
+};
+
 const displayTimes = (periods: ISlotPeriod[]): string =>
   periods
     .map(
