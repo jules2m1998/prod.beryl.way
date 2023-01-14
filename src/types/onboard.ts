@@ -9,8 +9,8 @@ interface IOnboard extends IModel {
   surname?: string;
   father_name: string;
   mother_name: string;
-  path: string;
-  signature: string;
+  path: string; //
+  signature: string; //
   is_saving: string;
   account_reason: string;
   matrimonial_status: string;
@@ -33,11 +33,12 @@ interface IOnboard extends IModel {
   has_read: string;
   info_delivered: string;
   code: string;
-  pdf_path?: string;
-  selfie: string;
-  id_card: string;
+  pdf_path?: string; //
+  selfie: string; //
+  id_card: string; //
   account_type: string;
   opt_code: string;
+  status: string;
   user_agent?: IUserAgency;
 }
 
