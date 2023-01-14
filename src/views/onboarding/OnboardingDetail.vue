@@ -703,6 +703,107 @@
         <!--end::Input group-->
 
         <!--begin::Input group-->
+        <div class="row mb-7" v-if="currentOnboard?.processed_at">
+          <!--begin::Label-->
+          <label class="col-lg-4 fw-semobold text-muted">Processed at</label>
+          <!--end::Label-->
+
+          <!--begin::Col-->
+          <div class="col-lg-8">
+            <span class="fw-semobold fs-6 text-dark text-hover-primary">{{
+              getI18nDate(new Date(currentOnboard.processed_at)).format("ll")
+            }}</span>
+          </div>
+          <!--end::Col-->
+        </div>
+        <!--end::Input group-->
+
+        <!--begin::Input group-->
+        <div class="row mb-7" v-if="currentOnboard?.processor">
+          <!--begin::Label-->
+          <label class="col-lg-4 fw-semobold text-muted">Processed by</label>
+          <!--end::Label-->
+
+          <!--begin::Col-->
+          <div class="col-lg-8">
+            <span class="fw-semobold fs-6 text-dark text-hover-primary"
+              >{{ currentOnboard.processor.user.name }} ({{
+                currentOnboard.processor.agency.name
+              }})</span
+            >
+          </div>
+          <!--end::Col-->
+        </div>
+        <!--end::Input group-->
+
+        <!--begin::Input group-->
+        <div class="row mb-7" v-if="currentOnboard?.finished_at">
+          <!--begin::Label-->
+          <label class="col-lg-4 fw-semobold text-muted">Finished at</label>
+          <!--end::Label-->
+
+          <!--begin::Col-->
+          <div class="col-lg-8">
+            <span class="fw-semobold fs-6 text-dark text-hover-primary">{{
+              getI18nDate(new Date(currentOnboard.finished_at)).format("ll")
+            }}</span>
+          </div>
+          <!--end::Col-->
+        </div>
+        <!--end::Input group-->
+
+        <!--begin::Input group-->
+        <div class="row mb-7" v-if="currentOnboard?.finisher">
+          <!--begin::Label-->
+          <label class="col-lg-4 fw-semobold text-muted">Finished by</label>
+          <!--end::Label-->
+
+          <!--begin::Col-->
+          <div class="col-lg-8">
+            <span class="fw-semobold fs-6 text-dark text-hover-primary"
+              >{{ currentOnboard.finisher.user.name }} ({{
+                currentOnboard.finisher.agency.name
+              }})</span
+            >
+          </div>
+          <!--end::Col-->
+        </div>
+        <!--end::Input group-->
+        <!--begin::Input group-->
+        <div class="row mb-7" v-if="currentOnboard?.validate_at">
+          <!--begin::Label-->
+          <label class="col-lg-4 fw-semobold text-muted">Validate at</label>
+          <!--end::Label-->
+
+          <!--begin::Col-->
+          <div class="col-lg-8">
+            <span class="fw-semobold fs-6 text-dark text-hover-primary">{{
+              getI18nDate(new Date(currentOnboard.validate_at)).format("ll")
+            }}</span>
+          </div>
+          <!--end::Col-->
+        </div>
+        <!--end::Input group-->
+
+        <!--begin::Input group-->
+        <div class="row mb-7" v-if="currentOnboard?.validator">
+          <!--begin::Label-->
+          <label class="col-lg-4 fw-semobold text-muted">Validate by</label>
+          <!--end::Label-->
+
+          <!--begin::Col-->
+          <div class="col-lg-8">
+            <span class="fw-semobold fs-6 text-dark text-hover-primary"
+              >{{ currentOnboard.validator.user.name }} ({{
+                currentOnboard.validator.agency.name
+              }})</span
+            >
+          </div>
+          <!--end::Col-->
+        </div>
+        <!--end::Input group-->
+
+        <!--begin::Input group-->
         <div class="row mb-10">
           <!--begin::Label-->
           <label class="col-lg-4 fw-semobold text-muted">Is resident ?</label>
@@ -762,6 +863,13 @@
             <label class="col-lg-4 fw-semobold text-muted">Id card</label>
             <img
               :src="getImagePathToServer(currentOnboard?.id_card)"
+              alt="image"
+            />
+          </div>
+          <div class="my-img-block">
+            <label class="col-lg-4 fw-semobold text-muted">Selfie</label>
+            <img
+              :src="getImagePathToServer(currentOnboard?.selfie)"
               alt="image"
             />
           </div>

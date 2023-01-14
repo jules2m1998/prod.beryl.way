@@ -1,7 +1,7 @@
 import type { IModel } from "./model";
 import type { IUserAgency } from "./user-agency";
 
-interface IOnboard extends IModel {
+export interface IOnboard extends IModel {
   interaction_id: string;
   is_resident: string;
   in_economic_zone: string;
@@ -42,6 +42,16 @@ interface IOnboard extends IModel {
 
   remark: string;
   user_agent?: IUserAgency;
-}
 
-export type { IOnboard };
+  processor_id?: number;
+  processor?: IUserAgency;
+  processed_at?: string;
+
+  finisher_id?: number;
+  finisher?: IUserAgency;
+  finished_at?: string;
+
+  validator_id?: number;
+  validator?: IUserAgency;
+  validate_at?: string;
+}
