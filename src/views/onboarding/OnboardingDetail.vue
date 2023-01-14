@@ -156,7 +156,13 @@
                         data-kt-countup-value="4500"
                         data-kt-countup-prefix="$"
                       >
-                        {{ formatToXaf(+currentOnboard?.monthly_revenue) }}
+                        {{
+                          formatToXaf(
+                            currentOnboard?.monthly_revenue
+                              ? +currentOnboard?.monthly_revenue
+                              : 0
+                          )
+                        }}
                       </div>
                     </div>
                     <!--end::Number-->
@@ -182,7 +188,7 @@
                       >
                         {{
                           getI18nDate(
-                            new Date(currentOnboard?.created_at)
+                            new Date(currentOnboard?.created_at || "")
                           ).fromNow()
                         }}
                       </div>
@@ -259,6 +265,119 @@
       <div class="card-header cursor-pointer">
         <!--begin::Card title-->
         <div class="card-title m-0">
+          <h3 class="fw-bold m-0">Edit Unboarding</h3>
+        </div>
+        <!--end::Card title-->
+      </div>
+      <!--begin::Card header-->
+
+      <!--begin::Card body-->
+      <div class="card-body p-9">
+        <!--begin::Form-->
+        <VForm
+          id="kt_account_profile_details_form"
+          class="form"
+          @submit="saveChanges"
+          @invalid-submit="handleInvalid"
+          :validation-schema="statusValidator"
+        >
+          <!--begin::Card body-->
+          <div class="p-9">
+            <!--begin::Input group-->
+            <div class="row mb-6">
+              <!--begin::Label-->
+              <label class="col-lg-4 col-form-label required fw-semobold fs-6"
+                >Status</label
+              >
+              <!--end::Label-->
+
+              <!--begin::Col-->
+              <div class="col-lg-8 fv-row">
+                <Field
+                  as="select"
+                  name="status"
+                  class="form-select form-select-solid form-select-lg fw-semobold"
+                  v-model="selectedStatus"
+                >
+                  <option :value="v" v-for="(v, k) in status" :key="k">
+                    {{ v }}
+                  </option>
+                </Field>
+                <div class="fv-plugins-message-container">
+                  <div class="fv-help-block">
+                    <ErrorMessage name="status" />
+                  </div>
+                </div>
+              </div>
+              <!--end::Col-->
+            </div>
+            <!--end::Input group-->
+
+            <!--begin::Input group-->
+            <div class="row mb-6" v-if="isRejected">
+              <!--begin::Label-->
+              <label class="col-lg-4 col-form-label required fw-semobold fs-6"
+                >Remark</label
+              >
+              <!--end::Label-->
+
+              <!--begin::Col-->
+              <div class="col-lg-8 fv-row">
+                <Field
+                  type="text"
+                  as="textarea"
+                  name="remark"
+                  class="form-control form-control-lg form-control-solid"
+                  placeholder="Remark"
+                  v-model="remark"
+                />
+                <div class="fv-plugins-message-container">
+                  <div class="fv-help-block">
+                    <ErrorMessage name="remark" />
+                  </div>
+                </div>
+              </div>
+              <!--end::Col-->
+            </div>
+            <!--end::Input group-->
+          </div>
+          <!--end::Card body-->
+
+          <!--begin::Actions-->
+          <div class="card-footer d-flex justify-content-end py-6 px-9">
+            <button
+              type="reset"
+              class="btn btn-light btn-active-light-primary me-2"
+            >
+              Discard
+            </button>
+
+            <button
+              type="submit"
+              id="kt_account_profile_details_submit"
+              ref="submitButton1"
+              class="btn btn-primary"
+            >
+              <span class="indicator-label"> Save Changes </span>
+              <span class="indicator-progress">
+                Please wait...
+                <span
+                  class="spinner-border spinner-border-sm align-middle ms-2"
+                ></span>
+              </span>
+            </button>
+          </div>
+          <!--end::Actions-->
+        </VForm>
+        <!--end::Form-->
+      </div>
+    </div>
+
+    <div class="card mb-5 mb-xl-10" id="kt_profile_details_view">
+      <!--begin::Card header-->
+      <div class="card-header cursor-pointer">
+        <!--begin::Card title-->
+        <div class="card-title m-0">
           <h3 class="fw-bold m-0">Unboarding Details</h3>
         </div>
         <!--end::Card title-->
@@ -306,7 +425,9 @@
           <!--begin::Col-->
           <div class="col-lg-8">
             <span class="fw-bold fs-6 text-dark">{{
-              getI18nDate(new Date(currentOnboard?.date_of_birth)).format("ll")
+              getI18nDate(new Date(currentOnboard?.date_of_birth || "")).format(
+                "ll"
+              )
             }}</span>
           </div>
           <!--end::Col-->
@@ -321,7 +442,9 @@
           <!--begin::Col-->
           <div class="col-lg-8">
             <span class="fw-bold fs-6 text-dark">{{
-              getI18nDate(new Date(currentOnboard?.delivery_date)).format("ll")
+              getI18nDate(new Date(currentOnboard?.delivery_date || "")).format(
+                "ll"
+              )
             }}</span>
           </div>
           <!--end::Col-->
@@ -646,14 +769,18 @@
       </div>
       <!--end::Card body-->
     </div>
+    <!--begin::details View-->
+    <!--end::Card body-->
   </template>
   <!--end::details View-->
   <loader v-else></loader>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
-import { getOneOnboard } from "@/core/services";
+import { computed, onMounted, ref } from "vue";
+import { ErrorMessage, Field, Form as VForm } from "vee-validate";
+
+import { getOneOnboard, putOnboard } from "@/core/services";
 import type { IOnboard } from "@/types";
 import type { IHttpError } from "@/types/https";
 import Loader from "@/components/Loader.vue";
@@ -662,31 +789,78 @@ import {
   getI18nDate,
   getImagePathToServer,
   formatPhoneNumber,
+  successAlert,
 } from "@/core/helpers";
+import * as Yup from "yup";
 
 const currentOnboard = ref<IOnboard | null>();
 const loading = ref<boolean>(false);
+const status = ref<string[]>([
+  "SENT",
+  "PROCESSED",
+  "REJECTED",
+  "VALID",
+  "DONE",
+]);
+const selectedStatus = ref("");
+const remark = ref("");
+const submitButton1 = ref<HTMLElement | null>(null);
+
+const isRejected = computed<boolean>(() => selectedStatus.value === "REJECTED");
+const statusValidator = computed(() =>
+  Yup.object().shape(
+    !isRejected.value
+      ? {
+          status: Yup.string().required().label("The status is required !"),
+        }
+      : {
+          status: Yup.string().required().label("The status is required !"),
+          remark: Yup.string().required().label("Motif"),
+        }
+  )
+);
+
+const saveChanges = async (e) => {
+  if (submitButton1.value) {
+    // Activate indicator
+    submitButton1.value.setAttribute("data-kt-indicator", "on");
+    if (currentOnboard.value) {
+      const data = e as Partial<IOnboard>;
+      let updated: any = await putOnboard(currentOnboard.value.id, data);
+      if (updated.success) {
+        await successAlert("Status updated");
+      }
+    }
+    submitButton1.value?.removeAttribute("data-kt-indicator");
+  }
+};
+const handleInvalid = (e) => console.log(e);
 
 onMounted(async () => {
   loading.value = true;
   const one = await getOneOnboard(1);
-  if (!(one as IHttpError).message) currentOnboard.value = one as IOnboard;
+  if (!(one as IHttpError).message) {
+    const r = one as IOnboard;
+    currentOnboard.value = r;
+    selectedStatus.value = r.status;
+    remark.value = r.remark;
+  }
   loading.value = false;
 });
 </script>
 
 <style scoped lang="scss">
-.my-img{
+.my-img {
   display: flex;
   flex-direction: column;
   gap: 10px;
 
-  &-block{
-    label{
+  &-block {
+    label {
       margin-bottom: 10px;
     }
-    img{
-      min-width: 100px;
+    img {
+      width: 200px;
       aspect-ratio: 1;
       object-fit: cover;
     }

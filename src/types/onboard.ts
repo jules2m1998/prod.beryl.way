@@ -39,6 +39,8 @@ interface IOnboard extends IModel {
   account_type: string;
   opt_code: string;
   status: string;
+
+  remark: string;
   user_agent?: IUserAgency;
 }
 

@@ -50,9 +50,11 @@ class ApiService {
           }
 
           await customAlert(title, text, "error");
-          const authStore = useAuthStore();
-          authStore.logout();
-          if (status === 401) await router.push({ name: "sign-in" });
+          if (status === 401) {
+            const authStore = useAuthStore();
+            authStore.logout();
+            await router.push({ name: "sign-in" });
+          }
         } else {
           await customAlert(
             '<h1 style="color:black !important;">Oops..</h1>',
@@ -117,7 +119,6 @@ class ApiService {
   /**
    * @description send the GET HTTP request
    * @param resource: string
-   * @param slug: string
    * @returns Promise<AxiosResponse>
    */
   public static get(resource: string): Promise<AxiosResponse> {

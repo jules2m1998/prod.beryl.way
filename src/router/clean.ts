@@ -52,7 +52,7 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
-        path: "/unboarding-request",
+        path: "/onboarding-request",
         name: "unboarding-request",
         component: () => import("@/views/onboarding/UnboardingRequest.vue"),
         meta: {
@@ -61,7 +61,7 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
-        path: "/unboarding-request/:id",
+        path: "/onboarding-request/:id",
         name: "unboarding-detail",
         component: () => import("@/views/onboarding/OnboardingDetail.vue"),
         meta: {

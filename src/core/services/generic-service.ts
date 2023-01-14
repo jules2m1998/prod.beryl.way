@@ -68,7 +68,7 @@ export const putWithParams = async <T, P>(
   params: P
 ): Promise<T | IHttpError> => {
   try {
-    const response = await ApiService.putWithParams(path, null, params);
+    const response = await ApiService.putWithParams(path, params, null);
     console.log(response);
     return response.data as T;
   } catch (e: any) {
