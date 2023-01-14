@@ -5,6 +5,7 @@
     :value="tableData"
     :table-header="tableHeader"
     :selected-ids="selectedIds"
+    v-if="!isLoading"
   >
     <Datatable
       @on-sort="sort"
@@ -79,6 +80,7 @@
       </template>
     </Datatable>
   </page-with-table>
+  <loader v-else></loader>
 </template>
 
 <script setup lang="ts">
@@ -93,6 +95,7 @@ import type { Sort } from "@/components/kt-datatable//table-partials/models";
 import { searchByName } from "@/core/helpers/array";
 import { highlightDetectedText } from "@/core/helpers/dom";
 import { getAllUsers } from "@/core/services";
+import Loader from "@/components/Loader.vue";
 
 const charts = ref<IChart[]>([
   {
@@ -169,6 +172,7 @@ const charts = ref<IChart[]>([
   },
 ]);
 const tableData = ref<Array<IUser>>([]);
+const isLoading = ref<boolean>(false);
 
 const tableHeader = ref([
   {
@@ -238,8 +242,9 @@ const searchByText = (e: string) => {
 };
 
 onMounted(async () => {
+  isLoading.value = true;
   const us = await getAllUsers();
   if (us) tableData.value = us;
-  console.log(us);
+  isLoading.value = false;
 });
 </script>
