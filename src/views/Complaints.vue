@@ -5,6 +5,7 @@
     :value="tableData"
     :table-header="tableHeader"
     :selected-ids="selectedIds"
+    v-if="!isLoading"
   >
     <Datatable
       @on-sort="sort"
@@ -12,28 +13,32 @@
       :data="arrayFind"
       :header="tableHeader"
       :enable-items-per-page-dropdown="true"
-      :checkbox-enabled="true"
       checkbox-label="id"
     >
+      <template v-slot:created_at="{ row: customer }">
+        {{ getI18nDate(customer.created_at).format("ll") }}
+      </template>
+      <template v-slot:detail="{ row: customer }">
+        {{ customer.detail }}
+      </template>
+      <template v-slot:first_transaction="{ row: customer }">
+        {{ customer.first_transaction }}
+      </template>
+      <template v-slot:last_transaction="{ row: customer }">
+        {{ customer.last_transaction }}
+      </template>
       <template v-slot:name="{ row: customer }">
-        <span v-html="highlightDetectedText(customer.name, searchValue)"></span>
+        {{ customer.name }}
       </template>
-      <template v-slot:email="{ row: customer }">
-        <a href="#" class="text-gray-600 text-hover-primary mb-1">
-          <span
-            v-html="highlightDetectedText(customer.field1, searchValue)"
-          ></span>
-        </a>
+      <template v-slot:service="{ row: customer }">
+        {{ customer.service.name }}
       </template>
-      <template v-slot:company="{ row: customer }">
-        <span
-          v-html="highlightDetectedText(customer.field2, searchValue)"
-        ></span>
-      </template>
-      <template v-slot:date="{ row: customer }">
-        <span
-          v-html="highlightDetectedText(customer.field3, searchValue)"
-        ></span>
+      <template v-slot:user="{ row: customer }">
+        <template v-if="customer.user_agency">
+          {{ customer.user_agency.user.name }} ({{
+            customer.user_agency.agency.name
+          }})
+        </template>
       </template>
       <template v-slot:actions="{ row: customer }">
         <a
@@ -69,19 +74,21 @@
       </template>
     </Datatable>
   </page-with-table>
+
+  <loader v-else></loader>
 </template>
 
 <script setup lang="ts">
 import PageWithTable from "@/components/PageWithTable.vue";
-import { ref, computed } from "vue";
-import type { IChart } from "@/types";
-import type { IUnboarding } from "@/core/data/Unboarding";
-import unboarding from "@/core/data/Unboarding";
+import { ref, computed, onMounted } from "vue";
+import type { IChart, IComplaint } from "@/types";
 import Datatable from "@/components/kt-datatable/KTDataTable.vue";
 import arraySort from "array-sort";
 import type { Sort } from "@/components/kt-datatable//table-partials/models";
 import { searchByName } from "@/core/helpers/array";
-import { highlightDetectedText } from "@/core/helpers/dom";
+import { getAllComplains } from "@/core/services";
+import { getI18nDate } from "../core/helpers";
+import Loader from "@/components/Loader.vue";
 
 const charts = ref<IChart[]>([
   {
@@ -157,31 +164,50 @@ const charts = ref<IChart[]>([
     ],
   },
 ]);
-const tableData = ref<Array<IUnboarding>>(unboarding);
+const tableData = ref<Array<IComplaint>>([]);
+const isLoading = ref<boolean>(false);
 
 const tableHeader = ref([
   {
-    columnName: "Field 1",
-    columnLabel: "name",
+    columnName: "Created at",
+    columnLabel: "created_at",
     sortEnabled: true,
     columnWidth: 175,
   },
   {
-    columnName: "Field 2",
-    columnLabel: "email",
+    columnName: "Detail",
+    columnLabel: "detail",
     sortEnabled: true,
     columnWidth: 230,
   },
   {
-    columnName: "Field 2",
-    columnLabel: "company",
+    columnName: "First transaction",
+    columnLabel: "first_transaction",
     sortEnabled: true,
     columnWidth: 175,
   },
   {
-    columnName: "Field 3",
-    columnLabel: "date",
+    columnName: "Last transaction",
+    columnLabel: "last_transaction",
     sortEnabled: true,
+    columnWidth: 225,
+  },
+  {
+    columnName: "Name",
+    columnLabel: "name",
+    sortEnabled: true,
+    columnWidth: 225,
+  },
+  {
+    columnName: "Service",
+    columnLabel: "service",
+    sortEnabled: false,
+    columnWidth: 225,
+  },
+  {
+    columnName: "User",
+    columnLabel: "user",
+    sortEnabled: false,
     columnWidth: 225,
   },
   {
@@ -219,4 +245,11 @@ const arrayFind = computed(() =>
 const searchByText = (e: string) => {
   searchValue.value = e;
 };
+
+onMounted(async () => {
+  isLoading.value = true;
+  const complains = await getAllComplains();
+  if (complains) tableData.value = complains;
+  isLoading.value = false;
+});
 </script>

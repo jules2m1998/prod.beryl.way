@@ -154,8 +154,26 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/users/:id",
+        name: "user-detail",
+        component: () => import("@/views/user/UserDetail.vue"),
+        meta: {
+          pageTitle: "user",
+          breadcrumbs: ["user"],
+        },
+      },
+      {
         path: "/users/add",
         name: "user-add",
+        component: () => import("@/views/user/AddUser.vue"),
+        meta: {
+          pageTitle: "add user",
+          breadcrumbs: ["user", "add"],
+        },
+      },
+      {
+        path: "/users/update/:id",
+        name: "user-update",
         component: () => import("@/views/user/AddUser.vue"),
         meta: {
           pageTitle: "add user",
