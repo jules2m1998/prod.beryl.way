@@ -5,3 +5,4 @@ export * from "./AppointmentService";
 export * from "./OnboardService";
 export * from "./ServiceService";
 export * from "./ComplaintService";
+export * from "./CreditService";

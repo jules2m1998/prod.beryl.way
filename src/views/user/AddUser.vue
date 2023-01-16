@@ -28,6 +28,7 @@
         @submit="saveChanges1"
         @invalid-submit="handleInvalid"
         :validation-schema="userValidator"
+        :initial-values="initialValues"
       >
         <!--begin::Card body-->
         <div class="card-body border-top p-9">
@@ -43,7 +44,7 @@
             <div class="col-lg-8">
               <form-image
                 v-model:file="file"
-                defaul-img="/media/default/default-agency.png"
+                :defaul-img="defaultImg"
               ></form-image>
             </div>
             <!--end::Col-->
@@ -254,7 +255,7 @@
             ref="submitButton1"
             class="btn btn-primary"
           >
-            <span class="indicator-label"> Create </span>
+            <span class="indicator-label"> Send </span>
             <span class="indicator-progress">
               Please wait...
               <span
@@ -274,15 +275,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent, ref, onMounted, computed } from "vue";
 import { ErrorMessage, Field, Form as VForm } from "vee-validate";
 import * as Yup from "yup";
 import type { IAgence, IUserRequest } from "@/types";
-import { objectToFormData } from "@/core/helpers";
+import {
+  differentsPropValue,
+  excludeParamsToObject,
+  getImagePathToServer,
+  objectToFormData, successAlert
+} from "@/core/helpers";
 import FormImage from "@/components/files/FormImage.vue";
-import { createUser, getAllAgence } from "@/core/services";
-import { makeRequestAndAlert } from "@/core/helpers";
+import { createUser, getAllAgence, getOneUser, updateUser } from "@/core/services";
 import MyLoader from "@/components/Loader.vue";
+import type { IHttpError } from "@/types/https";
+import type { IUser } from "@/types";
+import { useRoute } from "vue-router";
 
 interface ITypesInteraction {
   id: number;
@@ -303,10 +311,26 @@ export default defineComponent({
     const is_client = ref<0 | 1>(0);
     const val_con = ref();
     const file = ref<File | null>(null);
+    const route = useRoute();
+    const currentUser = ref<IUser | null>(null);
+    const defaultImg = ref<string>("/media/default/default-agency.png");
 
     const agences = ref<IAgence[]>([]);
     const interact = ref<any[]>([]);
     const is_loading = ref<boolean>(false);
+
+    const updateId = computed<number>(() => +route.params.id);
+    const initialValues = computed<Partial<IUserRequest>>(() => {
+      if (currentUser.value)
+        return {
+          name: currentUser.value.name,
+          phone: currentUser.value.phone,
+          email: currentUser.value.email,
+          password: "",
+          agency_id: currentUser.value.agencies[0]?.id,
+        };
+      return {};
+    });
 
     const userValidator = Yup.object().shape({
       name: Yup.string().required().label("Full name"),
@@ -317,6 +341,22 @@ export default defineComponent({
       interaction_type_id: Yup.string().required().label("Role"),
     });
 
+    const create = async (data: IUserRequest) => {
+      const formData = objectToFormData(data);
+      await createUser(formData);
+    };
+
+    const update = async (data: IUserRequest) => {
+      const updated = excludeParamsToObject(
+        data,
+        differentsPropValue<Partial<IUserRequest>>(data, initialValues.value)
+          .unchanged
+      );
+      const formData = objectToFormData(updated);
+      const updateResult = await updateUser(formData, updateId.value);
+      if ((updateResult as IHttpError).message) await successAlert("User updated successfully !")
+    };
+
     const saveChanges1 = async (e: any) => {
       if (submitButton1.value) {
         // Activate indicator
@@ -325,9 +365,8 @@ export default defineComponent({
         data.is_client = val_con.value ? 1 : 0;
         if (file.value) data.path = file.value;
 
-        const formData = objectToFormData(data);
-        await createUser(formData);
-        console.log(data);
+        if (!updateId.value) await create(data);
+        else await update(data);
         submitButton1.value?.removeAttribute("data-kt-indicator");
       }
     };
@@ -336,7 +375,20 @@ export default defineComponent({
       console.log(e);
     };
 
+    const loadUpdateUser = async () => {
+      if (updateId.value) {
+        const u = await getOneUser(updateId.value);
+        if (!(u as IHttpError).message) {
+          const user = u as IUser;
+          currentUser.value = user;
+          if (user.avatar) defaultImg.value = getImagePathToServer(user.avatar);
+        }
+      }
+    };
+
     onMounted(async () => {
+      is_loading.value = true;
+      await loadUpdateUser();
       const agencies = await getAllAgence();
       const interaction: ITypesInteraction[] = [
         {
@@ -359,6 +411,7 @@ export default defineComponent({
 
       if (agencies) agences.value = agencies;
       if (interaction) interact.value = interaction;
+      is_loading.value = false;
     });
 
     return {
@@ -372,6 +425,9 @@ export default defineComponent({
       interact,
       is_loading,
       userValidator,
+      currentUser,
+      initialValues,
+      defaultImg,
     };
   },
 });

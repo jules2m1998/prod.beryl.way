@@ -1,4 +1,5 @@
 import type { IUserAgency } from "./user-agency";
+import type { IAgence } from "@/types/agence";
 
 interface IUser {
   id: number;
@@ -18,6 +19,7 @@ interface IUser {
   role_id: number;
   role: any;
   user_agency: IUserAgency[];
+  agencies: IAgence[];
 }
 
 interface IUserLogin {

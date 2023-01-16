@@ -9,3 +9,4 @@ export * from "./user";
 export * from "./onboard";
 export * from "./service";
 export * from "./complaint";
+export * from "./ICredit";

@@ -1,6 +1,6 @@
 <template>
   <!--begin::Layout-->
-  <div class="d-flex flex-column">
+  <div v-if="!isLoading && currentUser" class="d-flex flex-column">
     <div class="card mb-5 mb-xl-8">
       <!--begin::Card body-->
       <div class="card-body pt-15">
@@ -8,7 +8,7 @@
         <div class="d-flex flex-center flex-column mb-5">
           <!--begin::Avatar-->
           <div class="symbol symbol-100px symbol-circle mb-7">
-            <img src="/media/avatars/300-1.jpg" alt="image" />
+            <img :src="getImagePathToServer(currentUser?.avatar)" alt="image" />
           </div>
           <!--end::Avatar-->
 
@@ -17,55 +17,38 @@
             href="#"
             class="fs-3 text-gray-800 text-hover-primary fw-bold mb-1"
           >
-            Max Smith
+            {{ currentUser?.name }}
           </a>
           <!--end::Name-->
 
           <!--begin::Position-->
-          <div class="fs-5 fw-semobold text-muted mb-6">Software Enginer</div>
+          <div class="fs-5 fw-semobold text-muted mb-6">
+            {{ currentUser?.email }}
+          </div>
           <!--end::Position-->
 
           <!--begin::Info-->
           <div class="d-flex flex-wrap flex-center">
             <!--begin::Stats-->
             <div
-              class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3"
+              class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3 me-3"
             >
               <div class="fs-4 fw-bold text-gray-700">
-                <span class="w-75px">6,900</span>
-                <span class="svg-icon svg-icon-3 svg-icon-success">
-                  <inline-svg src="/media/icons/duotune/arrows/arr066.svg" />
-                </span>
+                <span class="w-75px">#{{ currentUser?.matricule }}</span>
               </div>
-              <div class="fw-semobold text-muted">Earnings</div>
+              <div class="fw-semobold text-muted">Matricule</div>
             </div>
             <!--end::Stats-->
-
-            <!--begin::Stats-->
-            <div
-              class="border border-gray-300 border-dashed rounded py-3 px-3 mx-4 mb-3"
-            >
-              <div class="fs-4 fw-bold text-gray-700">
-                <span class="w-50px">130</span>
-                <span class="svg-icon svg-icon-3 svg-icon-danger">
-                  <inline-svg src="/media/icons/duotune/arrows/arr065.svg" />
-                </span>
-              </div>
-              <div class="fw-semobold text-muted">Tasks</div>
-            </div>
-            <!--end::Stats-->
-
             <!--begin::Stats-->
             <div
               class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3"
             >
               <div class="fs-4 fw-bold text-gray-700">
-                <span class="w-50px">500</span>
-                <span class="svg-icon svg-icon-3 svg-icon-success">
-                  <inline-svg src="/media/icons/duotune/arrows/arr066.svg" />
-                </span>
+                <span class="w-75px">{{
+                  formatPhoneNumber(currentUser?.phone)
+                }}</span>
               </div>
-              <div class="fw-semobold text-muted">Hours</div>
+              <div class="fw-semobold text-muted">Phone number</div>
             </div>
             <!--end::Stats-->
           </div>
@@ -96,14 +79,12 @@
             data-bs-trigger="hover"
             title="Edit customer details"
           >
-            <a
-              href="#"
+            <router-link
+              :to="{ name: 'user-update', params: { id: currentUser?.id } }"
               class="btn btn-sm btn-light-primary"
-              data-bs-toggle="modal"
-              data-bs-target="#kt_modal_update_customer"
             >
               Edit
-            </a>
+            </router-link>
           </span>
         </div>
         <!--end::Details toggle-->
@@ -113,38 +94,30 @@
         <!--begin::Details content-->
         <div id="kt_customer_view_details" class="collapse show">
           <div class="py-5 fs-6">
-            <!--begin::Badge-->
-            <div class="badge badge-light-info d-inline">Premium user</div>
-            <!--begin::Badge-->
-            <!--begin::Details item-->
-            <div class="fw-bold mt-5">Account ID</div>
-            <div class="text-gray-600">ID-45453423</div>
-            <!--begin::Details item-->
-            <!--begin::Details item-->
-            <div class="fw-bold mt-5">Billing Email</div>
+            <div class="fw-bold mt-5">Agencies</div>
             <div class="text-gray-600">
-              <a href="#" class="text-gray-600 text-hover-primary"
-                >info@keenthemes.com</a
-              >
+              <template v-for="(v, k) in currentUser?.agencies" :key="k">
+                {{ v.name }} <br />
+              </template>
             </div>
+            <!--begin::Badge-->
+            <!--begin::Details item-->
+            <div class="fw-bold mt-5">Token</div>
+            <div class="text-gray-600">{{ currentUser?.token }}</div>
             <!--begin::Details item-->
             <!--begin::Details item-->
-            <div class="fw-bold mt-5">Billing Address</div>
-            <div class="text-gray-600">
-              101 Collin Street, <br />Melbourne 3000 VIC <br />Australia
-            </div>
-            <!--begin::Details item-->
-            <!--begin::Details item-->
-            <div class="fw-bold mt-5">Language</div>
-            <div class="text-gray-600">English</div>
+            <div class="fw-bold mt-5">Opt code</div>
+            <div class="text-gray-600">{{ currentUser?.opt_code }}</div>
             <!--begin::Details item-->
             <!--begin::Details item-->
             <div class="fw-bold mt-5">Upcoming Invoice</div>
             <div class="text-gray-600">54238-8693</div>
             <!--begin::Details item-->
             <!--begin::Details item-->
-            <div class="fw-bold mt-5">Tax ID</div>
-            <div class="text-gray-600">TX-8674</div>
+            <div class="fw-bold mt-5">Created at</div>
+            <div class="text-gray-600">
+              {{ getI18nDate(currentUser?.created_at).format("ll") }}
+            </div>
             <!--begin::Details item-->
           </div>
         </div>
@@ -154,19 +127,33 @@
     </div>
   </div>
   <!--end::Layout-->
+  <loader v-else></loader>
 </template>
 
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 
 import { getOneUser } from "@/core/services";
+import Loader from "@/components/Loader.vue";
+import {
+  formatPhoneNumber,
+  getI18nDate,
+  getImagePathToServer,
+} from "@/core/helpers";
+import type { IUser } from "@/types";
+import type { IHttpError } from "@/types/https";
+
+const currentUser = ref<IUser | null>(null);
+const isLoading = ref<boolean>(false);
 
 const route = useRoute();
 
 onMounted(async () => {
+  isLoading.value = true;
   const id = +route.params.id;
   const u = await getOneUser(id);
-  console.log(u);
+  if (!(u as IHttpError).message) currentUser.value = u as IUser;
+  isLoading.value = false;
 });
 </script>

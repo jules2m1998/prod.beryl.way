@@ -72,7 +72,16 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/credit",
         name: "credit",
-        component: () => import("@/views/Credit.vue"),
+        component: () => import("@/views/credit/Credit.vue"),
+        meta: {
+          pageTitle: "credit",
+          breadcrumbs: ["credit"],
+        },
+      },
+      {
+        path: "/credit/:id",
+        name: "credit-detail",
+        component: () => import("@/views/credit/DetailCredit.vue"),
         meta: {
           pageTitle: "credit",
           breadcrumbs: ["credit"],
@@ -177,7 +186,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/user/AddUser.vue"),
         meta: {
           pageTitle: "add user",
-          breadcrumbs: ["user", "add"],
+          breadcrumbs: ["user", "update"],
         },
       },
       {

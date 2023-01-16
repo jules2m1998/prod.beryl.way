@@ -41,9 +41,7 @@ export const getWithParams = async <T>(
 const createOne = async <T, P>(path: string, request: P): Promise<T | null> => {
   try {
     const response = await ApiService.post(path, request);
-    const data = response.data.data as T;
-
-    return data;
+    return response.data.data as T;
   } catch (e: any) {
     return null;
   }
@@ -55,9 +53,7 @@ export const putOne = async <T, P>(
 ): Promise<T | IHttpError> => {
   try {
     const response = await ApiService.put(path, request);
-    const data = response.data.data as T;
-
-    return data;
+    return response.data.data as T;
   } catch (e: any) {
     return e as IHttpError;
   }
