@@ -196,6 +196,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           pageTitle: "question",
           breadcrumbs: ["question"],
+          addPathName: "questionsCreate",
         },
       },
       {
@@ -205,6 +206,15 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           pageTitle: "Question update",
           breadcrumbs: ["question", "update"],
+        },
+      },
+      {
+        path: "/questions/create",
+        name: "questionsCreate",
+        component: () => import("@/views/question/Update.vue"),
+        meta: {
+          pageTitle: "Question create",
+          breadcrumbs: ["question", "create"],
         },
       },
       {

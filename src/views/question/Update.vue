@@ -1,5 +1,5 @@
 <template>
-  <div class="card rounded-0 mb-5 mb-xl-10">
+  <div v-if="!isLoading" class="card rounded-0 mb-5 mb-xl-10">
     <!--begin::Content-->
     <div id="kt_account_profile_details" class="collapse show">
       <!--begin::Form-->
@@ -7,7 +7,7 @@
         id="kt_account_profile_details_form"
         class="form"
         novalidate
-        @submit="() => null"
+        @submit="onSubmit"
       >
         <!--begin::Card body-->
         <div class="card-body border-top p-9">
@@ -24,7 +24,7 @@
               <Field
                 :model-value="current?.title"
                 class="form-control form-control-lg form-control-solid"
-                name="question"
+                name="title"
                 placeholder="Edit question..."
                 type="text"
               />
@@ -64,7 +64,7 @@
                   </div>
                 </div>
                 <button
-                  v-if="response.length > 1"
+                  v-if="current && current.answers && current?.answers?.length > 1"
                   class="btn btn-link me-2"
                   @click.prevent="removeStep(k)"
                 >
@@ -95,7 +95,7 @@
 
           <button
             id="kt_account_profile_details_submit"
-            ref="submitButton1"
+            ref="submitButton"
             class="btn btn-primary"
             type="submit"
           >
@@ -113,23 +113,24 @@
       <!--end::Form-->
     </div>
   </div>
-  <loader></loader>
+  <loader v-else></loader>
   <!--end::Content-->
 </template>
 
 <script setup lang="ts">
 import { ErrorMessage, Field, Form as VForm } from "vee-validate";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import type { Ref } from "vue";
-import { computed, onMounted, ref } from "vue";
-import type { IFaq, IFaqWithResponse } from "@/types/faq";
-import { getOneFaq } from "@/core/services";
+import { onMounted, ref } from "vue";
+import type { IAnswer, IFaq, IFaqWithResponse } from "@/types/faq";
+import { createFaq, type FaqR, getOneFaq, putFaq } from "@/core/services";
 import type { IHttpError } from "@/types/https";
 import Loader from "@/components/Loader.vue";
+import { successAlert } from "@/core/helpers";
 
 const route = useRoute();
+const router = useRouter();
 
-const response: Ref<string[]> = ref<string[]>([""]);
 const current: Ref<Partial<IFaqWithResponse>> = ref<Partial<IFaqWithResponse>>({
   title: "",
   answers: [
@@ -140,6 +141,7 @@ const current: Ref<Partial<IFaqWithResponse>> = ref<Partial<IFaqWithResponse>>({
   ],
 });
 const isLoading: Ref<boolean> = ref<boolean>(false);
+const submitButton = ref<HTMLElement | null>(null);
 
 onMounted(async () => {
   const id = +route.params.id;
@@ -155,15 +157,56 @@ onMounted(async () => {
 });
 
 const addStep = () => {
-  response.value.push("");
+  current?.value.answers?.push({
+    value: "",
+    step: current.value.answers?.length,
+  });
 };
 
-const isEmptyStep = computed<boolean>(() => {
-  return response.value.length > 1;
-});
+const onSubmit = async (e: any) => {
+  if (submitButton.value) {
+    // Activate indicator
+    submitButton.value.setAttribute("data-kt-indicator", "on");
+    const title = e.title;
+    delete e.title;
+    const response: IAnswer[] = Object.keys(e)
+      .filter((value) => value.startsWith("question"))
+      .map((k, index) => ({
+        step: index + 1,
+        value: e[k],
+      }));
+    const body: FaqR = {
+      title,
+      answers: JSON.stringify(response),
+    };
+
+    let res: IFaq | null | IHttpError = null;
+    const id = +route.params.id;
+
+    if (!id) {
+      res = await createFaq(body);
+    } else {
+      res = await putFaq(body, id);
+    }
+    console.log(res);
+    if (res && !(res as IHttpError).errors) {
+      await successAlert(`Question ${!id ? "created" : "updated"} successfully`);
+      await router.push({
+        name: "questions",
+      });
+    }
+    submitButton.value?.removeAttribute("data-kt-indicator");
+  }
+};
 
 const removeStep = (position: number) => {
-  if (response.value.length > 1)
-    response.value = response.value.filter((_, index) => index !== position);
+  if (
+    current.value &&
+    current.value.answers &&
+    current?.value.answers?.length > 1
+  )
+    current.value.answers = current?.value.answers?.filter(
+      (_, index) => index !== position
+    );
 };
 </script>
