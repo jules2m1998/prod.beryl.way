@@ -120,7 +120,7 @@
             <!--begin::Col-->
             <div class="">
               <span class="fw-bold fs-6 text-dark">{{
-                formatToXaf(current?.user_agency.user.email)
+                current?.user_agency.user.phone
               }}</span>
             </div>
             <!--end::Col-->
