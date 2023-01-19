@@ -41,36 +41,15 @@
         </template>
       </template>
       <template v-slot:actions="{ row: customer }">
-        <a
-          href="#"
-          class="btn btn-sm btn-light btn-active-light-primary"
-          data-kt-menu-trigger="click"
-          data-kt-menu-placement="bottom-end"
-          data-kt-menu-flip="top-end"
-          >Actions
-          <span class="svg-icon svg-icon-5 m-0">
-            <inline-svg src="/media/icons/duotune/arrows/arr072.svg" />
-          </span>
-        </a>
-        <!--begin::Menu-->
-        <div
-          class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semobold fs-7 w-125px py-4"
-          data-kt-menu="true"
-        >
-          <!--begin::Menu item-->
-          <div class="menu-item px-3">
-            <router-link to="#" class="menu-link px-3">View</router-link>
-          </div>
-          <!--end::Menu item-->
-          <!--begin::Menu item-->
-          <div class="menu-item px-3">
-            <a @click="searchItems(customer.id)" class="menu-link px-3"
-              >Delete</a
+        <drop-down-menu name="Actions" :menu="menu">
+          <template v-slot:view>
+            <router-link
+              :to="{ name: 'complaints-detail', params: { id: customer.id } }"
+              class="menu-link px-3"
+              >Détail</router-link
             >
-          </div>
-          <!--end::Menu item-->
-        </div>
-        <!--end::Menu-->
+          </template>
+        </drop-down-menu>
       </template>
     </Datatable>
   </page-with-table>
@@ -84,11 +63,12 @@ import { ref, computed, onMounted } from "vue";
 import type { IChart, IComplaint } from "@/types";
 import Datatable from "@/components/kt-datatable/KTDataTable.vue";
 import arraySort from "array-sort";
-import type { Sort } from "@/components/kt-datatable//table-partials/models";
+import type { Sort } from "@/components/kt-datatable/table-partials/models";
 import { searchByName } from "@/core/helpers/array";
 import { getAllComplains } from "@/core/services";
-import { getI18nDate } from "../core/helpers";
+import { getI18nDate } from "@/core/helpers";
 import Loader from "@/components/Loader.vue";
+import DropDownMenu from "@/components/dropdown/DropDownMenu.vue";
 
 const charts = ref<IChart[]>([
   {
@@ -166,6 +146,7 @@ const charts = ref<IChart[]>([
 ]);
 const tableData = ref<Array<IComplaint>>([]);
 const isLoading = ref<boolean>(false);
+const menu = ref<string[]>(["view"]);
 
 const tableHeader = ref([
   {

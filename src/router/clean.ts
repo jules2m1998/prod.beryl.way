@@ -146,7 +146,16 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/complaints",
         name: "complaints",
-        component: () => import("@/views/Complaints.vue"),
+        component: () => import("@/views/complaint/index.vue"),
+        meta: {
+          pageTitle: "complaint",
+          breadcrumbs: ["complaint"],
+        },
+      },
+      {
+        path: "/complaints/:id",
+        name: "complaints-detail",
+        component: () => import("@/views/complaint/Detail.vue"),
         meta: {
           pageTitle: "complaint",
           breadcrumbs: ["complaint"],

@@ -1,8 +1,10 @@
 import type { IModel } from "./model";
+import type { IUserAgency } from "@/types/user-agency";
 
 export interface IComplaint extends IModel {
   id: number;
   user_agency_id: string;
+  user_agency: IUserAgency;
   detail: string;
   account_number: string;
   card_start: string;
