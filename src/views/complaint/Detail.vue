@@ -120,7 +120,7 @@
             <!--begin::Col-->
             <div class="">
               <span class="fw-bold fs-6 text-dark">{{
-                current?.user_agency.user.phone
+                formatPhoneNumber(current?.user_agency.user.phone)
               }}</span>
             </div>
             <!--end::Col-->
@@ -199,7 +199,7 @@ import type { IComplaint } from "@/types";
 import type { IHttpError } from "@/types/https";
 import Loader from "@/components/Loader.vue";
 import { getImagePathToServer } from "@/core/helpers";
-import { formatToXaf } from "@/core/helpers";
+import { formatPhoneNumber } from "@/core/helpers";
 
 const route = useRoute();
 const current = ref<IComplaint | null>(null);
