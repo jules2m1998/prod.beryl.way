@@ -1,5 +1,6 @@
 import type { IModel } from "./model";
 import type { IUserAgency } from "@/types/user-agency";
+import type { IService } from "@/types/service";
 
 export interface IComplaint extends IModel {
   id: number;
@@ -13,6 +14,7 @@ export interface IComplaint extends IModel {
   first_transaction: string;
   last_transaction: string;
   service_id: string;
+  service: IService;
   path: string;
   name: string;
   phone: string;

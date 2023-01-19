@@ -146,6 +146,20 @@
         </div>
         <div class="col-md-9">
           <!--begin::Row-->
+          <div class="mb-7 btn btn-light">
+            <!--begin::Label-->
+            <label class="fw-semobold text-muted">Service</label>
+            <!--end::Label-->
+            <!--begin::Col-->
+            <div>
+              <span class="fw-bold fs-6 text-dark">{{
+                current?.service.name
+              }}</span>
+            </div>
+            <!--end::Col-->
+          </div>
+          <!--end::Row-->
+          <!--begin::Row-->
           <div class="mb-7">
             <!--begin::Label-->
             <label class="fw-semobold text-muted">Motif</label>
