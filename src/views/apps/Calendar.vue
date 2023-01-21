@@ -33,7 +33,11 @@
 
 <script setup lang="ts">
 import "@fullcalendar/core/vdom";
-import type { CalendarOptions, EventClickArg, EventInput } from "@fullcalendar/vue3";
+import type {
+  CalendarOptions,
+  EventClickArg,
+  EventInput,
+} from "@fullcalendar/vue3";
 import FullCalendar from "@fullcalendar/vue3";
 
 import NewEventModal from "@/components/modals/forms/NewEventModal.vue";
@@ -48,7 +52,10 @@ import { ON_PROGESS_COLOR } from "@/core/data/const";
 import { Modal } from "bootstrap";
 import { computed, onMounted, ref } from "vue";
 import type { IAppointment, ISlot } from "@/types";
-import { getAllAppointment, getAllSlots } from "@/core/services/AppointmentService";
+import {
+  getAllAppointment,
+  getAllSlots,
+} from "@/core/services/AppointmentService";
 
 const isLoading = ref<boolean>(false);
 

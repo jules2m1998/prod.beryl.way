@@ -40,7 +40,7 @@
       <template v-slot:actions="{ row: customer }">
         <drop-down-menu name="Actions" :menu="menu">
           <template v-slot:update>
-            <a @click="showDetail(customer.id)" class="menu-link px-3">View</a>
+            <router-link :to="{ name: 'appointment-detail', params: { id: customer.id } }" class="menu-link px-3">View</router-link>
           </template>
           <template v-slot:view>
             <a class="menu-link px-3">Update </a>

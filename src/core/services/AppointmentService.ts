@@ -3,7 +3,13 @@ import type {
   IAppointmentRequest,
   ISlotWithString,
 } from "@/types";
-import { getAll, createOne, getWithParams } from "./generic-service";
+import {
+  createOne,
+  getAll,
+  getOne,
+  getWithParams,
+  putWithParams,
+} from "./generic-service";
 
 const getAllAppointment = (): Promise<IAppointment[] | null> =>
   getAll<IAppointment>("appointment");
@@ -18,5 +24,17 @@ const createAppointment = (
   request: IAppointmentRequest
 ): Promise<IAppointment | null> =>
   createOne<IAppointment, IAppointmentRequest>("slot", request);
+
+export const getOneAppointment = (id: number) =>
+  getOne<IAppointment>(`appointment/${id}`);
+
+export const updateOneAppointment = (
+  id: number,
+  request: Partial<IAppointment>
+) =>
+  putWithParams<{ success: boolean }, Partial<IAppointment>>(
+    `appointment/${id}`,
+    request
+  );
 
 export { getAllAppointment, createAppointment, getAllSlots };

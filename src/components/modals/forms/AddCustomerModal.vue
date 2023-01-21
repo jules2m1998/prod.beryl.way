@@ -607,8 +607,8 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from "vue";
-import {hideModal} from "@/core/helpers/dom";
+import { defineComponent, ref } from "vue";
+import { hideModal } from "@/core/helpers/dom";
 import Swal from "sweetalert2";
 
 export default defineComponent({

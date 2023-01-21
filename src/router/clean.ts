@@ -321,6 +321,15 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: "/appointment/:id",
+        name: "appointment-detail",
+        component: () => import("@/views/dates/appointment/Detail.vue"),
+        meta: {
+          pageTitle: "Appointment",
+          breadcrumbs: ["Slots"],
+        },
+      },
+      {
         path: "/crafted/pages/profile",
         name: "profile",
         component: () => import("@/components/page-layouts/Profile.vue"),

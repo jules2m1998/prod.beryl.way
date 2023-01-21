@@ -7,6 +7,9 @@ interface IAppointment extends IModel {
   time: Date;
   reason: string;
   recalled: string;
+  file1: string;
+  file2: string;
+  status: string;
 
   client: IUserAgency;
   agent: IUserAgency;
