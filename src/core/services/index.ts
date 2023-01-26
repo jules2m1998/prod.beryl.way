@@ -7,3 +7,4 @@ export * from "./ServiceService";
 export * from "./ComplaintService";
 export * from "./CreditService";
 export * from "./FaqService";
+export * from "./ChatService";

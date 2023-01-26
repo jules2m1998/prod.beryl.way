@@ -1,6 +1,6 @@
 <template>
   <!--begin::Layout-->
-  <div class="d-flex flex-column flex-lg-row">
+  <div v-if="!isLoading" class="d-flex flex-column flex-lg-row">
     <!--begin::Sidebar-->
     <div
       class="flex-column flex-lg-row-auto w-100 w-lg-300px w-xl-400px mb-10 mb-lg-0"
@@ -45,21 +45,28 @@
             data-kt-scroll-wrappers="#kt_content, #kt_chat_contacts_body"
             data-kt-scroll-offset="0px"
           >
-            <template v-for="(item, index) in contacts" :key="index">
-              <div class="d-flex flex-stack py-4">
+            <template v-for="(item, index) in conversations" :key="index">
+              <div
+                class="d-flex flex-stack py-4 selected"
+                @click="() => selectConversation(index)"
+              >
                 <!--begin::Details-->
                 <div class="d-flex align-items-center">
                   <!--begin::Avatar-->
                   <div class="symbol symbol-45px symbol-circle">
-                    <img v-if="item.image" :src="item.image" alt="" />
+                    <img
+                      v-if="item.user.avatar"
+                      :src="getImagePathToServer(item.user.avatar)"
+                      alt=""
+                    />
                     <span
                       v-else
-                      :class="`bg-light-${item.color} text-${item.color}`"
+                      :class="`bg-light-danger text-danger`"
                       class="symbol-label fs-6 fw-bold"
-                      >{{ item.name.charAt(0) }}</span
+                      >{{ item.user.name.charAt(0) }}</span
                     >
                     <div
-                      v-if="item.online"
+                      v-if="false"
                       class="symbol-badge bg-success start-100 top-100 border-4 h-15px w-15px ms-n2 mt-n2"
                     ></div>
                   </div>
@@ -69,10 +76,10 @@
                     <a
                       href="#"
                       class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2"
-                      >{{ item.name }}</a
+                      >{{ item.user.name }}</a
                     >
                     <div class="fw-semobold text-gray-400">
-                      {{ item.email }}
+                      {{ item.user.email }}
                     </div>
                   </div>
                   <!--end::Details-->
@@ -81,7 +88,9 @@
 
                 <!--begin::Lat seen-->
                 <div class="d-flex flex-column align-items-end ms-2">
-                  <span class="text-muted fs-7 mb-1">{{ item.time }}</span>
+                  <span class="text-muted fs-7 mb-1">{{
+                    getI18nDate(new Date(item.created_at)).fromNow()
+                  }}</span>
                 </div>
                 <!--end::Lat seen-->
               </div>
@@ -96,7 +105,7 @@
     <!--end::Sidebar-->
 
     <!--begin::Content-->
-    <div class="flex-lg-row-fluid ms-lg-7 ms-xl-10">
+    <div class="flex-lg-row-fluid ms-lg-7 ms-xl-10" v-if="selectedConversion">
       <!--begin::Messenger-->
       <div class="card" id="kt_chat_messenger">
         <!--begin::Card header-->
@@ -154,11 +163,11 @@
                 <a
                   href="#"
                   class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 mb-2 lh-1"
-                  >Brian Cox</a
+                  >{{ selectedConversion.reason }}</a
                 >
 
                 <!--begin::Info-->
-                <div class="mb-0 lh-1">
+                <div class="mb-0 lh-1" v-if="false">
                   <span
                     class="badge badge-success badge-circle w-10px h-10px me-1"
                   ></span>
@@ -205,21 +214,30 @@
             data-kt-scroll-wrappers="#kt_content, #kt_chat_messenger_body"
             data-kt-scroll-offset="-2px"
           >
-            <template v-for="(item, index) in messages" :key="index">
+            <template
+              v-for="(item, index) in selectedConversion.messages"
+              :key="index"
+            >
               <MessageIn
                 ref="messagesInRef"
-                v-if="item.type === 'in'"
-                :name="item.name"
-                :image="item.image"
-                :time="item.time"
-                :text="item.text"
+                v-if="!item.responder_id"
+                :name="selectedConversion.user.name"
+                :image="getImagePathToServer(selectedConversion.user.avatar)"
+                :time="getI18nDate(new Date(item.created_at)).fromNow()"
+                :text="item.message"
+                :image-message="
+                  item.link ? getImagePathToServer(item.link) : undefined
+                "
               ></MessageIn>
               <MessageOut
                 ref="messagesOutRef"
-                v-if="item.type === 'out'"
-                :image="item.image"
-                :time="item.time"
-                :text="item.text"
+                v-else
+                :image="getImagePathToServer(user.user.avatar)"
+                :time="getI18nDate(new Date(item.created_at)).fromNow()"
+                :text="item.message"
+                :image-message="
+                  item.link ? getImagePathToServer(item.link) : undefined
+                "
               ></MessageOut>
             </template>
           </div>
@@ -282,15 +300,21 @@
     <!--end::Content-->
   </div>
   <!--end::Layout-->
+
+  <loader v-else></loader>
 </template>
 
-<script lang="ts">
-import {computed, defineComponent, ref} from "vue";
-import {useRoute} from "vue-router";
+<script lang="ts" setup>
+import { computed, onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
 import Dropdown4 from "@/components/dropdown/Dropdown4.vue";
-import contacts from "@/core/data/contacts";
 import MessageIn from "@/components/messenger-parts/MessageIn.vue";
 import MessageOut from "@/components/messenger-parts/MessageOut.vue";
+import type { IConversation } from "@/types";
+import { getAllDiscussions } from "@/core/services";
+import Loader from "@/components/Loader.vue";
+import { getI18nDate, getImagePathToServer } from "@/core/helpers";
+import { useAuthStore } from "@/stores/auth";
 
 interface KTMessage {
   type: string;
@@ -300,120 +324,123 @@ interface KTMessage {
   text: string;
 }
 
-export default defineComponent({
-  name: "private-chat",
-  components: {
-    MessageIn,
-    MessageOut,
-    Dropdown4,
+const messagesRef = ref<null | HTMLElement>(null);
+const messagesInRef = ref<null | HTMLElement>(null);
+const messagesOutRef = ref<null | HTMLElement>(null);
+
+const isLoading = ref<boolean>(false);
+const conversations = ref<IConversation[]>([]);
+const selectedIndex = ref<number>(0);
+const user = useAuthStore();
+
+const selectedConversion = computed<IConversation | null>(
+  () => conversations.value[selectedIndex.value]
+);
+
+const route = useRoute();
+
+const messages = ref<Array<KTMessage>>([
+  {
+    type: "in",
+    name: "Brian Cox",
+    image: "/media/avatars/300-25.jpg",
+    time: "5 Hours",
+    text: "How likely are you to recommend our company to your friends and family ?",
   },
-  setup() {
-    const messagesRef = ref<null | HTMLElement>(null);
-    const messagesInRef = ref<null | HTMLElement>(null);
-    const messagesOutRef = ref<null | HTMLElement>(null);
+  {
+    type: "out",
+    image: "/media/avatars/300-1.jpg",
+    time: "2 Hours",
+    text: "Hey there, we’re just writing to let you know that you’ve been subscribed to a repository on GitHub.",
+  },
+  {
+    type: "in",
+    name: "Brian Cox",
+    image: "/media/avatars/300-25.jpg",
+    time: "2 Hour",
+    text: "Ok, Understood!",
+  },
+  {
+    type: "out",
+    image: "/media/avatars/300-1.jpg",
+    time: "2 Hours",
+    text: "You’ll receive notifications for all issues, pull requests!",
+  },
+  {
+    type: "in",
+    name: "Brian Cox",
+    image: "/media/avatars/300-25.jpg",
+    time: "1 Hour",
+    text: "You can unwatch this repository immediately by clicking here: Keenthemes.com",
+  },
+  {
+    type: "out",
+    image: "/media/avatars/300-1.jpg",
+    time: "4 mins",
+    text: "Most purchased Business courses during this sale!",
+  },
+  {
+    type: "in",
+    name: "Brian Cox",
+    image: "/media/avatars/300-25.jpg",
+    time: "2 mins",
+    text: "Company BBQ to celebrate the last quater achievements and goals. Food and drinks provided",
+  },
+]);
 
-    const route = useRoute();
+const newMessageText = ref("");
 
-    const messages = ref<Array<KTMessage>>([
-      {
-        type: "in",
-        name: "Brian Cox",
-        image: "/media/avatars/300-25.jpg",
-        time: "5 Hours",
-        text: "How likely are you to recommend our company to your friends and family ?",
-      },
-      {
-        type: "out",
-        image: "/media/avatars/300-1.jpg",
-        time: "2 Hours",
-        text: "Hey there, we’re just writing to let you know that you’ve been subscribed to a repository on GitHub.",
-      },
-      {
-        type: "in",
-        name: "Brian Cox",
-        image: "/media/avatars/300-25.jpg",
-        time: "2 Hour",
-        text: "Ok, Understood!",
-      },
-      {
-        type: "out",
-        image: "/media/avatars/300-1.jpg",
-        time: "2 Hours",
-        text: "You’ll receive notifications for all issues, pull requests!",
-      },
-      {
-        type: "in",
-        name: "Brian Cox",
-        image: "/media/avatars/300-25.jpg",
-        time: "1 Hour",
-        text: "You can unwatch this repository immediately by clicking here: Keenthemes.com",
-      },
-      {
-        type: "out",
-        image: "/media/avatars/300-1.jpg",
-        time: "4 mins",
-        text: "Most purchased Business courses during this sale!",
-      },
-      {
-        type: "in",
-        name: "Brian Cox",
-        image: "/media/avatars/300-25.jpg",
-        time: "2 mins",
-        text: "Company BBQ to celebrate the last quater achievements and goals. Food and drinks provided",
-      },
-    ]);
+const addNewMessage = () => {
+  if (!newMessageText.value) {
+    return;
+  }
+  messages.value.push({
+    type: "out",
+    image: "/media/avatars/300-1.jpg",
+    time: "Just now",
+    text: newMessageText.value,
+  });
 
-    const newMessageText = ref("");
+  setTimeout(() => {
+    if (messagesRef.value) {
+      messagesRef.value.scrollTop = messagesRef.value.scrollHeight;
+    }
+  }, 1);
 
-    const addNewMessage = () => {
-      if (!newMessageText.value) {
-        return;
-      }
-      messages.value.push({
-        type: "out",
-        image: "/media/avatars/300-1.jpg",
-        time: "Just now",
-        text: newMessageText.value,
-      });
-
-      setTimeout(() => {
-        if (messagesRef.value) {
-          messagesRef.value.scrollTop = messagesRef.value.scrollHeight;
-        }
-      }, 1);
-
-      newMessageText.value = "";
-      setTimeout(() => {
-        messages.value.push({
-          type: "in",
-          name: "Ja Morant",
-          image: "/media/avatars/300-25.jpg",
-          time: "Just now",
-          text: "Thank you for your awesome support!",
-        });
-
-        setTimeout(() => {
-          if (messagesRef.value) {
-            messagesRef.value.scrollTop = messagesRef.value.scrollHeight;
-          }
-        }, 1);
-      }, 2000);
-    };
-
-    const isGroupChat = computed(() => {
-      return route.path.indexOf("/group-chat") !== -1;
+  newMessageText.value = "";
+  setTimeout(() => {
+    messages.value.push({
+      type: "in",
+      name: "Ja Morant",
+      image: "/media/avatars/300-25.jpg",
+      time: "Just now",
+      text: "Thank you for your awesome support!",
     });
 
-    return {
-      messages,
-      messagesRef,
-      newMessageText,
-      addNewMessage,
-      messagesInRef,
-      messagesOutRef,
-      contacts,
-      isGroupChat,
-    };
-  },
+    setTimeout(() => {
+      if (messagesRef.value) {
+        messagesRef.value.scrollTop = messagesRef.value.scrollHeight;
+      }
+    }, 1);
+  }, 2000);
+};
+
+const isGroupChat = computed(() => {
+  return route.path.indexOf("/group-chat") !== -1;
+});
+
+const fetchConversions = async () => {
+  isLoading.value = true;
+  const conv = await getAllDiscussions();
+  if (conv) conversations.value = conv;
+  isLoading.value = false;
+};
+
+const selectConversation = (id: number) => {
+  selectedIndex.value = id;
+};
+
+onMounted(async () => {
+  await fetchConversions();
 });
 </script>

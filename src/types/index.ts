@@ -10,3 +10,5 @@ export * from "./onboard";
 export * from "./service";
 export * from "./complaint";
 export * from "./ICredit";
+export * from "./conversation";
+export * from "./message";

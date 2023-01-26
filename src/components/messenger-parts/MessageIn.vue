@@ -21,9 +21,16 @@
       </div>
       <!--end::User-->
 
+      <img
+        class="rounded-2 mb-2"
+        :src="imageMessage"
+        alt="Message image"
+        v-if="imageMessage"
+      />
+
       <!--begin::Text-->
       <div
-        class="p-5 rounded bg-light-info text-dark fw-semobold mw-lg-400px text-start"
+        class="p-5 rounded bg-light-info text-dark fw-semibold mw-lg-400px text-start"
         data-kt-element="message-text"
       >
         {{ text }}
@@ -35,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "message-out",
@@ -44,6 +51,11 @@ export default defineComponent({
     image: String,
     time: String,
     text: String,
+    imageMessage: {
+      type: String,
+      required: false,
+      default: null,
+    },
   },
 });
 </script>

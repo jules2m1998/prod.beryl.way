@@ -9,6 +9,7 @@ export interface User {
   surname: string;
   email: string;
   password: string;
+  avatar: string;
   api_token: string;
 }
 
